@@ -1,7 +1,8 @@
-import axios from "axios";
-import { useState } from "react";
-import { FaBars } from "react-icons/fa6";
-import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useState } from 'react';
+import { FaBars } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const PostCard = ({ id , title , description , date_create ,image , author  }) => {
@@ -111,6 +112,18 @@ const PostCard = ({ id , title , description , date_create ,image , author  }) =
             </div>
         </div>
     );
+};
+
+PostCard.propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    date_create: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        avatar: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default PostCard;
