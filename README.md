@@ -17,7 +17,7 @@ To run this project locally, follow these steps:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/Socia-Media-Mern.git
+git clone https://github.com/AyoubChaiba/Socia-Media-Mern.git
 
 # Navigate to the project directory
 cd Socia-Media-Mern
