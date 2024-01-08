@@ -15,11 +15,15 @@ This project aims to create a feature-rich social media platform with the follow
 
 To run this project locally, follow these steps:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/Socia-Media-Mern.git
-cd Socia-Media-Mern
-npm install
-npm start
-Open your browser and visit http://localhost:3000 to view the application.
+```bash
+# Clone the repository
+git clone https://github.com/your-username/Socia-Media-Mern.git
 
+# Navigate to the project directory
+cd Socia-Media-Mern
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
