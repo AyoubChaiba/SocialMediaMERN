@@ -1,4 +1,4 @@
-# Socia-Media-Mern 🌐🚀
+# Socia-Media-Mern-Stack-project 🌐🚀
 
 Socia-Media-Mern is a feature-rich social media platform built using the MERN (MongoDB, Express.js, React, Node.js) stack.
 
