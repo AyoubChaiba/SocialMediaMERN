@@ -26,4 +26,4 @@ cd Socia-Media-Mern
 npm install
 
 # Start the development server
-npm start
+npm run dev
