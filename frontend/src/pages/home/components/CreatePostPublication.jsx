@@ -6,36 +6,35 @@ import { FaSpinner } from "react-icons/fa6";
 
 
 const CreatePostPublication = () => {
-  const apiUrl = import.meta.env.VITE_APP_URL_API;
-    const {token , profile , isLogin} = useSelector(state => state.profile)
-
-    const [formData, setFormData] = useState({
-      title: '',
-      description: '',
-      image: null,
-      imageUrl: '',
-    });
-
+    const apiUrl = import.meta.env.VITE_APP_URL_API;
     const [Loading , setLoading] = useState(false)
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
-  
+    const {token} = useSelector(state => state.profile)
+
+      const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        image: null,
+        imageUrl: '',
+      });
+
+      const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      };
+
     const handleImageChange = (e) => {
       const imageFile = e.target.files[0];
-      const imageUrl = URL.createObjectURL(imageFile);  
+      const imageUrl = URL.createObjectURL(imageFile);
       setFormData((prevData) => ({
         ...prevData,
         image: imageFile,
         imageUrl: imageUrl,
       }));
     };
-  
+
     const handleFormSubmit = async (e) => {
       setLoading(true)
       e.preventDefault();

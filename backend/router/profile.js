@@ -15,8 +15,9 @@ let {JWT_SECRET} = process.env;
 
 profileRoute.get('/user', auth , async (req ,res) => {
     try {
-        let profile = await Profile.findOne(req.profile._id);
-        if (!profile) {
+        let id = req.profile.userId
+        let User = await Profile.findOne({_id : id});
+        if (!User) {
             return res.status(404).json({
                 message : "User not found"
             })
@@ -24,11 +25,11 @@ profileRoute.get('/user', auth , async (req ,res) => {
             return res.status(200).json({
                 message : "user is found",
                 profile : {
-                    id : profile._id ,
-                    username : profile.username,
-                    email : profile.email,
-                    created : profile.createdAt ,
-                    avatar : `http://localhost:3000/images/${profile.avatar}`
+                    id : User._id ,
+                    username : User.username ,
+                    email : User.email ,
+                    created : User.createdAt ,
+                    avatar : `http://localhost:3000/images/${User.avatar}` ,
                 }
             })
         }

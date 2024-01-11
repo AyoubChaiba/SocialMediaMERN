@@ -14,8 +14,7 @@ const Login = () => {
 
     const dispatch = useDispatch()
 
-
-    const {isLogin} = useSelector(state => state.profile);
+    const {isLogin } = useSelector(state => state.profile);
 
     let navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_APP_URL_API;
@@ -46,7 +45,6 @@ const Login = () => {
             toast.error(error.response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
-            
         } finally {
             setLoading(false);
         }

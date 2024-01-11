@@ -7,7 +7,9 @@ import dotenv from 'dotenv';
 import profileRoute from './router/profile.js';
 import publicationRoute from './router/publication.js';
 
-dotenv.config(); 
+process.noDeprecation = true;
+
+dotenv.config();
 
 let app = express();
 

@@ -10,7 +10,7 @@ export let auth = (req, res , next) => {
         let token = req.headers.authorization.split(" ")[1];
         let decodedToken = jwt.verify(token, JWT_SECRET);
         req.profile = decodedToken;
-        console.error("verifying token");
+        // console.error("verifying token");
         next();
     } catch (err) {
         console.error("Error verifying"  , err);

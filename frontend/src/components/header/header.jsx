@@ -26,7 +26,7 @@ let Header = () => {
                         "Authorization": `Bearer ${token}`
                     }
                 })
-                // console.log(response.data)
+                console.log(response.data)
                 disPatch(setCurrentProfile(response.data.profile))
             } catch (error) {
                 if (error?.response?.status === 401) {

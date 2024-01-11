@@ -6,6 +6,7 @@ import CreatePostPublication from './components/CreatePostPublication';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditPostPublication from './components/EditPostPublication';
+import PropTypes from 'prop-types';
 
 const Home = ({edit}) => {
 
@@ -32,7 +33,7 @@ const Home = ({edit}) => {
 // name: `Follower ${index + 1}`,
 // }));
 
-const sampleActiveUsers = Array.from({ length: 20 }, (_, index) => ({
+const sampleActiveUsers = Array.from({ length: 1 }, (_, index) => ({
 id: index + 1,
 name: `Active User ${index + 1}`,
 }));
@@ -67,6 +68,10 @@ return (
         </div>
     </div>
 );
+};
+
+Home.propTypes = {
+    edit: PropTypes.bool.isRequired,
 };
 
 export default Home;

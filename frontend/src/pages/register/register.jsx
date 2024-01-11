@@ -1,14 +1,20 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaSpinner } from "react-icons/fa6";
+import { useSelector } from 'react-redux';
 
 const Register = () => {
     const [Loading , setLoading] = useState(false);
     const apiURL = import.meta.env.VITE_APP_URL_API ;
     let navigate = useNavigate()
+    const {isLogin } = useSelector(state => state.profile)
+
+    useEffect(()=> {
+        isLogin && navigate('/')
+    },[])
 
     const formik = useFormik({
         initialValues: {
@@ -17,7 +23,6 @@ const Register = () => {
         password: '',
         },
         onSubmit: async (values) => {
-            console.log(values)
             setLoading(true)
             try {
                 let response = await axios.post(`${apiURL}/profile/register`,values);
@@ -25,7 +30,7 @@ const Register = () => {
                 toast.success(user.message,{
                     position: toast.POSITION.BOTTOM_RIGHT
                 })
-                navigate('/')
+                navigate('/login')
             } catch(error) {
                 console.log(error)
                 toast.error(error.response.data.username,{
@@ -39,11 +44,6 @@ const Register = () => {
             }
         },
     });
-
-    
-
-
-
 
 return (
         <div className="flex items-center justify-center h-screen">

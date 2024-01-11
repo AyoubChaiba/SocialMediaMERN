@@ -26,7 +26,7 @@ publicationRoute.post('/', auth, upload.single('image'), async (req ,res)=>{
             const populatedPublication = await Publication.findById(publication._id).populate('author');
             return res.status(200).json({
                 message : 'Publication created successfully.' ,
-                publication : { 
+                publication : {
                     id : populatedPublication._id ,
                     title : populatedPublication.title ,
                     description : populatedPublication.description ,
@@ -50,8 +50,8 @@ publicationRoute.post('/', auth, upload.single('image'), async (req ,res)=>{
 
 publicationRoute.get('/', async (req,res)=>{
     try {
-        const populatedPublication = await Publication.find().populate('author');
-        let formatPublication = populatedPublication.map((publicatin)=> {
+        const populatedPublication = await Publication.find().sort({ createdAt: -1 }).limit(50).populate('author');
+        let formatPublication = populatedPublication.map( publicatin => {
             return {
                 id : publicatin._id ,
                 title : publicatin.title ,
@@ -105,7 +105,6 @@ publicationRoute.get('/:id', async (req , res)=>{
     }
 })
 
-
 publicationRoute.delete('/:id', async (req , res)=>{
     try {
         let id = req.params.id;
@@ -115,7 +114,7 @@ publicationRoute.delete('/:id', async (req , res)=>{
             })
         }
         let publication = await Publication.findByIdAndDelete(id);
-        if (!publication) {  
+        if (!publication) {
             return res.status(404).json({ message: 'id not found'})
         } ;
         return res.status(200).json({
@@ -131,7 +130,7 @@ publicationRoute.delete('/:id', async (req , res)=>{
     }
 })
 
-publicationRoute.put('/:id',upload.single('image'), async (req, res)=>{
+publicationRoute.put( '/:id' , upload.single('image') , async (req, res) => {
     try {
         let id = req.params.id;
         let image = req?.file?.filename ;
@@ -143,7 +142,7 @@ publicationRoute.put('/:id',upload.single('image'), async (req, res)=>{
         let { title, description} = req.body;
         let data = image ? {title , description ,image} : {title , description}
         let publication = await Publication.findByIdAndUpdate(id,data,{new : true , runValidators: true});
-        if (!publication) {  
+        if (!publication) {
             return res.status(404).json({ message: 'publication not found'})
         };
         return res.status(200).json({
@@ -159,35 +158,6 @@ publicationRoute.put('/:id',upload.single('image'), async (req, res)=>{
         })
     }
 });
-
-
-// publicationRoute.put('/:id', async (req, res)=>{
-//     try {
-//         let id = req.params.id;
-//         if (!mongoose.Types.ObjectId.isValid(id)) {
-//             return res.status(400).json({
-//                 message : "invalid publication id"
-//             })
-//         }
-//         let { title, description } = req.body;
-//         let publication = await Publication.findByIdAndUpdate(id,{title ,description},{new : true , runValidators: true});
-//         if (!publication) {  
-//             return res.status(404).json({ message: 'publication not found'})
-//         };
-//         return res.status(200).json({
-//             title : publication.title,
-//             description : publication.description,
-//             id : publication.id,
-//             message : "this publication is updated successfully"
-//         });
-//     } catch (error) {
-//         console.error("An error occurred", error);
-//         return res.status(500).json({
-//             message : error.message
-//         })
-//     }
-// });
-
 
 
 export default publicationRoute ;
