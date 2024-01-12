@@ -88,7 +88,7 @@ publicationRoute.get('/:id', async (req , res)=>{
             )
         }
         let publication = await Publication.findById(id);
-        if (!publication) {  
+        if (!publication) {
             return res.status(404).json({ message: 'publication not found'})
         } ;
         return res.status(200).json({

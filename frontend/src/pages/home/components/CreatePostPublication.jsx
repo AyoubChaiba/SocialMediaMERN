@@ -60,6 +60,7 @@ const CreatePostPublication = () => {
         setLoading(false)
       }
     };
+
 return (
     <div className="">
         <form onSubmit={handleFormSubmit} className="bg-white p-6 rounded shadow-md">

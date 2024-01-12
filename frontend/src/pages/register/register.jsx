@@ -14,7 +14,7 @@ const Register = () => {
 
     useEffect(()=> {
         isLogin && navigate('/')
-    },[])
+    },[isLogin])
 
     const formik = useFormik({
         initialValues: {
