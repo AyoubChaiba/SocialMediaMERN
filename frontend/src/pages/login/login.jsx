@@ -32,7 +32,7 @@ const Login = () => {
             ),
         })
 
-    const { register , handleSubmit , formState : { errors , isValid , isSubmitting  } } = useForm({
+    const { register , handleSubmit , formState : { errors , isValid , isSubmitting , submitCount  } } = useForm({
         mode : 'onBlur' ,
         resolver : yupResolver(schema) ,
         defaultValues : {
@@ -63,7 +63,6 @@ const Login = () => {
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <p></p>
             <form onSubmit={handleSubmit(loginProfile)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/3">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
@@ -89,12 +88,16 @@ const Login = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <button className="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="submit"
-                        disabled={ isSubmitting  || !isValid }>
-                        {isSubmitting  && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
-                        {isSubmitting  ? 'Loding...' : 'Sign In' }
-                    </button>
+                    {submitCount > 10 ?
+                        <div className="message-block">
+                            <p className="text-red-500">You have been blocked</p>
+                        </div>:
+                        <button className="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="submit"
+                            disabled={ isSubmitting  || !isValid  }>
+                            {isSubmitting  && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
+                            {isSubmitting  ? 'Loding...' : 'Sign In' }
+                        </button>}
                 </div>
             </form>
         </div>
