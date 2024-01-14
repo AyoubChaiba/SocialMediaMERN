@@ -1,4 +1,4 @@
-import  { useEffect , useState } from 'react';
+import  { useEffect  } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import {useSelector, useDispatch} from 'react-redux';
 import { setLoginOut , setCurrentProfile , setToken } from '../../toolkit/profile';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginSchema } from '../../lib/validation';
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -21,20 +21,11 @@ const Login = () => {
         isLogin && navigate('/')
     },[isLogin])
 
-    const schema = yup.object().shape({
-        username: yup.string().required('Username is required').min(4).max(20),
-        password: yup.string().required('Password is required')
-            .min(5, 'Password must be at least 8 characters')
-            .max(20, 'Password must not exceed 20 characters')
-            .matches(
-                /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-                'Password must contain at least one letter, one number, and one special character'
-            ),
-        })
+
 
     const { register , handleSubmit , formState : { errors , isValid , isSubmitting , submitCount  } } = useForm({
         mode : 'onBlur' ,
-        resolver : yupResolver(schema) ,
+        resolver : yupResolver(LoginSchema) ,
         defaultValues : {
             username : "" ,
             password : "" ,

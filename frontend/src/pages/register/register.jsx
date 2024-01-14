@@ -1,27 +1,18 @@
 import axios from 'axios';
-import {  useEffect, useState } from 'react';
+import {  useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaSpinner } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { RegisterSchema } from '../../lib/validation/'
 
 
-const schema = yup.object().shape({
-    username: yup.string().min(3).max(15).required('username is required'),
-    email: yup.string().email('There are errors in writing an email').required('Email is required'),
-    password: yup.string().min(8).max(20).required('password is required').matches(
-        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-        'Password must contain at least one letter, one number, and one special character'
-    ),
-})
 
 const Register = () => {
     let navigate = useNavigate()
-    const {isLogin } = useSelector(state => state.profile)
-    const [Loading , setLoading] = useState(false);
+    const { isLogin } = useSelector(state => state.profile)
     const apiURL = import.meta.env.VITE_APP_URL_API ;
 
     useEffect(()=> {
@@ -29,9 +20,9 @@ const Register = () => {
     },[isLogin])
 
 
-    const { register , handleSubmit , formState: { errors , isValid } } = useForm({
+    const { register , handleSubmit , formState: { errors , isValid , isSubmitting } } = useForm({
         mode : 'onBlur' ,
-        resolver: yupResolver(schema) ,
+        resolver: yupResolver(RegisterSchema) ,
         defaultValues : {
             username : '',
             email : '',
@@ -41,7 +32,6 @@ const Register = () => {
 
 
     let submitForm = async (values) => {
-        setLoading(true);
         try {
             let response = await axios.post(`${apiURL}/profile/register`, values);
             let user = response.data;
@@ -64,8 +54,6 @@ const Register = () => {
             position: toast.POSITION.BOTTOM_RIGHT,
             });
         }
-        } finally {
-        setLoading(false);
         }
     };
 
@@ -77,7 +65,9 @@ return (
                 <input
                     type="text"
                     {...register("username")}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder='Username'
+                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                        ${errors.username ? ' border-red-500' : ''}`}
                 />
                 <p className='text-red-500'>{errors.username?.message}</p>
                 </div>
@@ -87,7 +77,9 @@ return (
                 <input
                     type="email"
                     {...register("email")}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder='Email'
+                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                        ${errors.email ? ' border-red-500' : ''}`}
                 />
                 <p className='text-red-500'>{errors.email?.message}</p>
                 </div>
@@ -96,17 +88,19 @@ return (
                 <label name="password" className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                 <input
                     type="password"
+                    placeholder='Password'
                     {...register("password")}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                        ${errors.password ? ' border-red-500' : ''}`}
                 />
                 <p className='text-red-500'>{errors.password?.message}</p>
                 </div>
                 <button className="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit"
-                    disabled={ Loading || !isValid }
+                    disabled={ isSubmitting || !isValid }
                 >
-                    {Loading && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
-                    {Loading ? 'Loding...' : 'Sign In' }
+                    {isSubmitting && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
+                    {isSubmitting ? 'Loding...' : 'Sign In' }
                 </button>
             </form>
         </div>
