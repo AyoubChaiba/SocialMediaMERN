@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterSchema } from '../../lib/validation/'
+import { AXIOS_CLIENT } from '../../api/axios';
 
 
 
 const Register = () => {
     let navigate = useNavigate()
     const { isLogin } = useSelector(state => state.profile)
-    const apiURL = import.meta.env.VITE_APP_URL_API ;
 
     useEffect(()=> {
         isLogin && navigate('/')
@@ -31,23 +31,26 @@ const Register = () => {
     })
 
 
-    let submitForm = async (values) => {
+    let submitForm = async (data) => {
         try {
-            let response = await axios.post(`${apiURL}/profile/register`, values);
-            let user = response.data;
-            toast.success(user.message, { position: toast.POSITION.BOTTOM_RIGHT });
+            let response = await AXIOS_CLIENT.post(`/profile/register`, data);
+            const  USER_DATA = response.data;
+            sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
+            toast.success(USER_DATA.message, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
             navigate('/login');
         } catch (error) {
         console.error('Error submitting form:', error);
         if (error.response) {
             if (error.response.status === 400) {
-            toast.error('Invalid request. Please check your data.', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
+                toast.error('Invalid request. Please check your data.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
             } else {
-            toast.error('An error occurred. Please try again later.', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-            });
+                toast.error('An error occurred. Please try again later.', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                });
             }
         } else {
             toast.error('Network error. Please check your internet connection.', {

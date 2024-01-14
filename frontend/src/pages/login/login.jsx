@@ -1,5 +1,4 @@
 import  { useEffect  } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
@@ -8,14 +7,13 @@ import { setLoginOut , setCurrentProfile , setToken } from '../../toolkit/profil
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../../lib/validation';
-
+import { AXIOS_CLIENT } from '../../api/axios';
 const Login = () => {
+
     const dispatch = useDispatch()
+    let navigate = useNavigate();
 
     const {isLogin } = useSelector(state => state.profile);
-
-    let navigate = useNavigate();
-    const apiUrl = import.meta.env.VITE_APP_URL_API;
 
     useEffect(()=> {
         isLogin && navigate('/')
@@ -35,7 +33,7 @@ const Login = () => {
 
     let loginProfile = async (data) => {
         try {
-            let response = await axios.post(`${apiUrl}/profile/login`, data);
+            let response = await AXIOS_CLIENT.post('/profile/login',data)
             const  USER_DATA = response.data;
             sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
             dispatch(setLoginOut(true));
