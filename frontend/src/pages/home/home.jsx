@@ -1,11 +1,6 @@
-import PostCard from './components/PostCard';
-// import Followers from './components/Followers';
-import ActiveUsers from './components/ActiveUsers';
-import ProfileCard from './components/ProfileCard';
-import CreatePostPublication from './components/CreatePostPublication';
+import { PostCard , ActiveUsers , ProfileCard , CreatePostPublication , EditPostPublication , Followers  } from '../../components';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditPostPublication from './components/EditPostPublication';
 import PropTypes from 'prop-types';
 
 const Home = ({edit}) => {
@@ -52,7 +47,7 @@ return (
                     <CreatePostPublication />
                     <div className='grid grid-cols-1 lg:grid-cols-1 my-4'>
                         {publication.map((post, i) => (
-                            <PostCard key={i} {...post} /> 
+                            <PostCard key={i} {...post} />
                         ))}
                     </div>
                 </> :

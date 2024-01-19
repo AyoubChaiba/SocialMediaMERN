@@ -1,17 +1,16 @@
-import axios  from "axios";
-
+import axios from "axios";
 
 const AXIOS_CLIENT = axios.create({
     baseURL: import.meta.env.VITE_APP_URL_API
-})
+});
 
-
-AXIOS_CLIENT.interceptors.request.use( (config) => {
-    let token = sessionStorage.getItem('currentToken') ;
+AXIOS_CLIENT.interceptors.request.use((config) => {
+    let token = JSON.parse(sessionStorage.getItem('currentToken'));
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+        config.headers['Content-Type'] = 'application/json';
+        config.headers.Authorization = `Bearer ${token}`;
     }
-    return config
-})
+    return config;
+});
 
-export {AXIOS_CLIENT}
+export { AXIOS_CLIENT };

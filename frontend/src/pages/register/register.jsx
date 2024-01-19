@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {  useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterSchema } from '../../lib/validation/'
 import { AXIOS_CLIENT } from '../../api/axios';
-
 
 
 const Register = () => {

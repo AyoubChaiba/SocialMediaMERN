@@ -13,7 +13,6 @@ export let auth = (req, res , next) => {
         // console.error("verifying token");
         next();
     } catch (err) {
-        console.error("Error verifying"  , err);
         res.status(401).json({
             message : "Invalid",
             error : err.message ,

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import {useSelector, useDispatch} from 'react-redux';
-import { setLoginOut , setCurrentProfile , setToken } from '../../toolkit/profile';
+import { setLoginOut , setCurrentProfile , setToken } from '../../toolkit/profileSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../../lib/validation';
@@ -33,7 +33,7 @@ const Login = () => {
 
     let loginProfile = async (data) => {
         try {
-            let response = await AXIOS_CLIENT.post('/profile/login',data)
+            let response = await AXIOS_CLIENT.post('/profile/login', data)
             const  USER_DATA = response.data;
             sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
             dispatch(setLoginOut(true));

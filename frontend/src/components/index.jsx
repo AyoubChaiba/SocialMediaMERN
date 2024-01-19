@@ -1,3 +1,8 @@
-export {default as Header} from './header/header';
-export {default as Footer} from './footer/footer';
-export {default as Container} from './container/container'
+// home components
+
+export {default as ActiveUsers} from './home/ActiveUsers';
+export {default as ProfileCard} from './home/ProfileCard';
+export {default as PostCard} from './home/PostCard.jsx';
+export {default as Followers} from './home/Followers';
+export {default as EditPostPublication} from './home/EditPostPublication.jsx';
+export {default as CreatePostPublication} from './home/CreatePostPublication.jsx';
