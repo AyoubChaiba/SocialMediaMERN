@@ -23,10 +23,10 @@ const Home = ({edit}) => {
 
     // console.log(publication)
 
-// const sampleFollowers = Array.from({ length: 20 }, (_, index) => ({
-// id: index + 1,
-// name: `Follower ${index + 1}`,
-// }));
+const sampleFollowers = Array.from({ length: 20 }, (_, index) => ({
+id: index + 1,
+name: `Follower ${index + 1}`,
+}));
 
 const sampleActiveUsers = Array.from({ length: 1 }, (_, index) => ({
 id: index + 1,
@@ -57,7 +57,7 @@ return (
 
         <div className="col-span-2">
             {/* <div className="sticky top-20"> */}
-                {/* <Followers followers={sampleFollowers} /> */}
+                <Followers followers={sampleFollowers} />
                 <ActiveUsers activeUsers={sampleActiveUsers} />
             {/* </div> */}
         </div>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import UserProfileForm from './UserProfileForm ';
-import UserProfileDetails from './UserProfileDetails';
+import { UserProfileForm , UserProfileDetails } from '../../components/';
 
 const EditProfilePage = () => {
     const [userData, setUserData] = useState({
@@ -17,11 +16,11 @@ const EditProfilePage = () => {
 
     return (
         <div className="container mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <UserProfileDetails userData={userData} />
-            <UserProfileForm onSubmit={handleFormSubmit} userData={userData} />
-        </div>
+            <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* <UserProfileDetails userData={userData} /> */}
+                    <UserProfileForm onSubmit={handleFormSubmit} userData={userData} />
+                </div>
         </div>
     );
 };
