@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import {useSelector, useDispatch} from 'react-redux';
-import { setLoginOut , setCurrentProfile , setToken } from '../../toolkit/profileSlice';
+import { setLoginOut , setCurrentProfile , setToken } from '../toolkit/profileSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginSchema } from '../../lib/validation';
-import { AXIOS_CLIENT } from '../../api/axios';
+import { LoginSchema } from '../lib/validation';
+import { AXIOS_CLIENT } from '../api/axios';
 const Login = () => {
 
     const dispatch = useDispatch()

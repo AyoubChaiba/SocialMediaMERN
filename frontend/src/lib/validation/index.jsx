@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-
 export const LoginSchema = yup.object().shape({
     username: yup.string().required('Username is required').min(4).max(20),
     password: yup.string().required('Password is required')
