@@ -26,7 +26,7 @@ const EditPostPublication = () => {
           const response = await axios.get(`${apiUrl}/publication/${id}`)
           console.log(response.data)
           setFormData({
-            ...formData , 
+            ...formData ,
             title : response.data.title ,
             description: response.data.description,
             imageUrl: response.data.image,
@@ -48,7 +48,7 @@ const EditPostPublication = () => {
   
     const handleImageChange = (e) => {
       const imageFile = e.target.files[0];
-      const imageUrl = URL.createObjectURL(imageFile);  
+      const imageUrl = URL.createObjectURL(imageFile);
       setFormData((prevData) => ({
         ...prevData,
         image: imageFile,
@@ -114,7 +114,7 @@ return (
             required
         />
 
-<label htmlFor="image" className="block text-sm font-semibold mt-3 mb-2">
+        <label htmlFor="image" className="block text-sm font-semibold mt-3 mb-2">
           Image
         </label>
         <input

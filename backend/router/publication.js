@@ -133,7 +133,7 @@ publicationRoute.delete('/:id', async (req , res)=>{
 publicationRoute.put( '/:id' , upload.single('image') , async (req, res) => {
     try {
         let id = req.params.id;
-        let image = req?.file?.filename ;
+        let image = req?.file?.filename;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 message : "invalid publication id"

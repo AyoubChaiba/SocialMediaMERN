@@ -3,6 +3,7 @@ import Profile from '../models/Profile.js' ;
 import bcrypt from 'bcryptjs' ;
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import {auth} from '../middleware/auth.js'
 import upload from '../middleware/upload.js';
 
@@ -29,6 +30,7 @@ profileRoute.get('/user', auth , async (req ,res) => {
                     username : User.username ,
                     email : User.email ,
                     created : User.createdAt ,
+                    update : User.updatedAt ,
                     avatar : `http://localhost:3000/images/${User.avatar}` ,
                 }
             })
@@ -36,6 +38,39 @@ profileRoute.get('/user', auth , async (req ,res) => {
     } catch (e) {
         return res.status(500).json({
             message : e.message
+        })
+    }
+} )
+
+profileRoute.put( '/:id' , auth , upload.single('avatar') , async (req ,res) => {
+    try {
+        let id = req.params.id;
+        let avatar = req?.file?.filename;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({
+                message : "User not found"
+            })
+        }
+        let {username, email} = req.body;
+        const data = avatar ? {username, email , avatar} : {username, email}
+        let User = await Profile.findByIdAndUpdate(id,data, {new : true, runValidators: true});
+        if (!User) {
+            return res.status(404).json({ message: 'update profile not working' });
+        };
+        return res.status(200).json({
+            message : "updated successfully profile",
+            profile : {
+                id : User._id ,
+                username : User.username ,
+                email : User.email ,
+                created : User.createdAt ,
+                update : User.updatedAt ,
+                avatar : `http://localhost:3000/images/${User.avatar}` ,
+            }
+        })
+    } catch (e) {
+        return res.status(500).json({
+            messagex : e.message
         })
     }
 } )

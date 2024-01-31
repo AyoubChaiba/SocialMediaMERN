@@ -1,28 +1,55 @@
-import { useState } from 'react';
-import { UserProfileForm , UserProfileDetails } from '../../components/';
+import { useEffect, useState } from 'react';
+import UserProfileForm from './userProfileForm';
+import { AXIOS_CLIENT } from '../../api/axios';
 
-const EditProfilePage = () => {
-    const [userData, setUserData] = useState({
-        username: 'exampleUser',
-        email: 'example@example.com',
-        image: 'url-to-image',
-        password: '',
-        description: 'This is a sample description.',
-    });
+const UserProfile = () => {
+    const [userData, setUserData] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const handleFormSubmit = (updatedData) => {
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await AXIOS_CLIENT.get('profile/user');
+                const user = response.data.profile;
+                setUserData({
+                    id : user.id,
+                    email: user.email,
+                    username: user.username,
+                    avatar_Url: user.avatar,
+                });
+            } catch (err) {
+                console.error(err);
+                setError('Error fetching user data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getData();
+    }, []);
+
+    const handleFormSubmit = async (updatedData) => {
         setUserData(updatedData);
+        console.log(updatedData);
+        try {
+            const response = await AXIOS_CLIENT.put(`profile/${userData.id}`, updatedData);
+            console.log(response);
+        } catch(error) {
+            console.log(error)
+        }
     };
 
     return (
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* <UserProfileDetails userData={userData} /> */}
-                    <UserProfileForm onSubmit={handleFormSubmit} userData={userData} />
-                </div>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && (
+                <UserProfileForm onSubmit={handleFormSubmit} UserData={userData} />
+            )}
         </div>
     );
 };
 
-export default EditProfilePage;
+export default UserProfile;
