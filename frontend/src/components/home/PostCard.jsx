@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { AXIOS_CLIENT } from '../../api/axios';
 
-const PostCard = ({ id , title , description , date_create ,image , author  }) => {
+
+const PostCard = ({ id , title , description , date_create ,image , author , likes  }) => {
     const [BtnActive ,setbtnActive] = useState(false);
     const [showMore , setShowMore] = useState(false);
     const currentDate = new Date();
-    const api_URL = import.meta.env.VITE_APP_URL_API
 
     const time = () => {
         const timeDifference = currentDate - new Date(date_create);
@@ -29,11 +29,21 @@ const PostCard = ({ id , title , description , date_create ,image , author  }) =
         }
     };
 
+    const Likes = async (postID) => {
+        try {
+            await AXIOS_CLIENT.post('/publication/likes', {
+            postID: postID,
+            });
+            } catch (error) {
+            console.error(error);
+            }
+    };
 
-    const DeletePublication = () => { 
+
+    const DeletePublication = () => {
         if (confirm('delete publication')) {
             try {
-                const res = axios.delete(`${api_URL}/publication/${id}`)
+                const res = AXIOS_CLIENT.delete(`publication/${id}`)
                 toast.success(res.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 })
@@ -63,7 +73,7 @@ const PostCard = ({ id , title , description , date_create ,image , author  }) =
             </div>
 
                 <div className="flex justify-end relative">
-                    <button className="text-gray-500 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg text-sm p-1.5" 
+                    <button className="text-gray-500 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg text-sm p-1.5"
                     type="button"
                     onClick={()=> setbtnActive(!BtnActive)}
                     >
@@ -76,8 +86,8 @@ const PostCard = ({ id , title , description , date_create ,image , author  }) =
                             <ul className="py-2" aria-labelledby="dropdownButton">
                                 <li><Link to={`/edit/${id}`} className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 transition duration-300">Edit</Link></li>
                                 <li>
-                                <button 
-                                className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 transition duration-300 cursor-pointer" 
+                                <button
+                                className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 transition duration-300 cursor-pointer"
                                 onClick={DeletePublication}>
                                     delete
                                 </button>
@@ -103,11 +113,10 @@ const PostCard = ({ id , title , description , date_create ,image , author  }) =
                     </span>
                 )}
                 </p>
-                
                 </div>
 
             <div className="flex items-center">
-                <button className="text-blue-500 mr-4">Like</button>
+                <button className="text-blue-500 mr-4" onClick={() => Likes(id) }>Like {likes}</button>
                 <button className="text-gray-500">Comment</button>
             </div>
         </div>
@@ -120,6 +129,7 @@ PostCard.propTypes = {
     description: PropTypes.string.isRequired,
     date_create: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
     author: PropTypes.shape({
         username: PropTypes.string.isRequired,
         avatar: PropTypes.string.isRequired,

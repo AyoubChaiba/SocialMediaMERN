@@ -59,6 +59,9 @@ publicationRoute.get('/', async (req,res)=>{
                 description : publicatin.description,
                 date_create : publicatin.createdAt,
                 date_update : publicatin.updatedAt,
+                likes : publicatin.likes,
+                views : publicatin.views,
+                comments: publicatin.comments,
                 author : {
                     id : publicatin.author._id ,
                     username : publicatin.author.username ,
@@ -158,6 +161,25 @@ publicationRoute.put( '/:id' , upload.single('image') , async (req, res) => {
         })
     }
 });
+
+
+publicationRoute.post('/likes' , async (req, res) => {
+    const { postID } = req.body;
+    console.log(req.body);
+    try {
+        let like = await Publication.findById(postID);
+        if (!like) {
+            like = new Publication({ id, likes: 1 });
+        } else {
+            like.likes += 1;
+        }
+        await like.save();
+        res.json({ success: true, likes: like.likes });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 
 
 export default publicationRoute ;
