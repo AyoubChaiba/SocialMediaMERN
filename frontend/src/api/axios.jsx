@@ -7,7 +7,7 @@ const AXIOS_CLIENT = axios.create({
 AXIOS_CLIENT.interceptors.request.use((config) => {
     let token = JSON.parse(sessionStorage.getItem('currentToken'));
     if (token) {
-        config.headers['Content-Type'] = 'application/json';  // Fix this line
+        config.headers['Content-Type'] = 'application/json';
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

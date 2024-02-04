@@ -15,6 +15,7 @@ let ProfileSchema = mongoose.Schema({
     },
     avatar : {
         type : String ,
+        default: 'default-avatar-image.jpg'
     },
     viewProfile :{
         type : Number,

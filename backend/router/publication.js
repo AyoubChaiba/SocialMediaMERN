@@ -47,7 +47,6 @@ publicationRoute.post('/', auth, upload.single('image'), async (req ,res)=>{
     }
 })
 
-
 publicationRoute.get('/', async (req,res)=>{
     try {
         const populatedPublication = await Publication.find().sort({ createdAt: -1 }).limit(50).populate('author');
@@ -161,7 +160,6 @@ publicationRoute.put( '/:id' , upload.single('image') , async (req, res) => {
         })
     }
 });
-
 
 publicationRoute.post('/likes' , async (req, res) => {
     const { postID } = req.body;
