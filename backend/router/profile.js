@@ -1,5 +1,6 @@
 import express from 'express' ;
 import Profile from '../models/Profile.js' ;
+import Publication from '../models/publication.js';
 import bcrypt from 'bcryptjs' ;
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -12,7 +13,6 @@ dotenv.config()
 let profileRoute = express.Router();
 
 let {JWT_SECRET} = process.env;
-
 
 profileRoute.get('/user', auth , async (req ,res) => {
     try {
@@ -41,6 +41,46 @@ profileRoute.get('/user', auth , async (req ,res) => {
         })
     }
 } )
+
+profileRoute.get('/:username', auth, async (req, res) => {
+    try {
+        let username = req.params.username;
+        let user = await Profile.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        } else {
+            let publications = await Publication.find({ author: user._id });
+            console.log(publications);
+
+            return res.status(200).json({
+                message: "User found",
+                profile: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    created: user.createdAt,
+                    updated: user.updatedAt,
+                    avatar: `http://localhost:3000/images/${user.avatar}`,
+                    publication: publications.map(publication => ({
+                        id: publication._id,
+                        title: publication.title,
+                        image: publication.image ? `http://localhost:3000/images/${publication.image}` : null,
+                        description: publication.description,
+                        date_create: publication.createdAt,
+                        date_update: publication.updatedAt,
+                    }))
+                }
+            });
+        }
+    } catch (e) {
+        return res.status(500).json({
+            message: e.message
+        });
+    }
+});
+
 
 profileRoute.put( '/:id' , auth , upload.single('avatar') , async (req ,res) => {
     try {

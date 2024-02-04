@@ -30,7 +30,7 @@ const ProfileNav = (props) => {
             <h3 className="py-3 text-lg text-center text-black-700">
                 {props.profile?.username}
             </h3>
-            <CustomLink to={"/profile"}>Your Profile</CustomLink>
+            <CustomLink to={`/profile/${props.profile?.username}`}>Your Profile</CustomLink>
             <CustomLink to={"/EditProfile"}>Settings</CustomLink>
             <button
                 className="block px-4 py-2 text-sm text-gray-700"

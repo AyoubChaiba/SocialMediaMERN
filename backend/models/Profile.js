@@ -16,6 +16,18 @@ let ProfileSchema = mongoose.Schema({
     avatar : {
         type : String ,
     },
+    viewProfile :{
+        type : Number,
+        default : 0,
+    },
+    followers : {
+        type : Array,
+        default : [],
+    },
+    following : {
+        type : Array,
+        default : [],
+    }
 },{
     timestamps : true
 }) ;
