@@ -1,8 +1,11 @@
 import Profile from '../models/Profile.js' ;
 import bcrypt from 'bcryptjs' ;
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-let {JWT_SECRET} = process.env;
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET
 
 export const User = async (req,res) => {
     console.log(req.profile)

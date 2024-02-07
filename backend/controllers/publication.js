@@ -35,32 +35,28 @@ export const getPublications = async (req,res)=> {
 
 export const getPublication = async (req,res)=> {
     try {
-        const populatedPublication = await Publication.find().sort({ createdAt: -1 }).limit(50).populate('author');
-        let formatPublication = populatedPublication.map( publicatin => {
-            return {
-                id : publicatin._id ,
-                title : publicatin.title ,
-                image : publicatin.image ? `http://localhost:3000/images/${publicatin.image}` : null ,
-                description : publicatin.description,
-                date_create : publicatin.createdAt,
-                date_update : publicatin.updatedAt,
-                likes : publicatin.likes,
-                views : publicatin.views,
-                comments: publicatin.comments,
-                author : {
-                    id : publicatin.author._id ,
-                    username : publicatin.author.username ,
-                    avatar : `http://localhost:3000/images/${publicatin.author.avatar}` ,
+        let id = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json(
+                {
+                    message : "invalid publicatin id"
                 }
-            }
-        })
+            )
+        }
+        let publication = await Publication.findById(id);
+        if (!publication) {
+            return res.status(404).json({ message: 'publication not found'})
+        } ;
         return res.status(200).json({
-            data : formatPublication
+            id : publication.id ,
+            title : publication.title ,
+            description : publication.description ,
+            image : `http://localhost:3000/images/${publication.image}`
         });
-    } catch (err) {
-        console.error("An error occurred" ,err);
+    } catch (error) {
+        console.error("An error occurred" , error);
         return res.status(500).json({
-            message : err.message
+            message : error.message
         })
     }
 }
@@ -158,6 +154,23 @@ export const deletePublication = async (req,res)=> {
         return res.status(500).json({
             message : error.message
         })
+    }
+}
+
+export const likePublication = async (req,res)=> {
+    const { postID } = req.body;
+    console.log(req.body);
+    try {
+        let like = await Publication.findById(postID);
+        if (!like) {
+            like = new Publication({ id, likes: 1 });
+        } else {
+            like.likes += 1;
+        }
+        await like.save();
+        res.json({ success: true, likes: like.likes });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
 }
 

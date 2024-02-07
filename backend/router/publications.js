@@ -1,17 +1,18 @@
 import express from 'express';
 import { auth } from '../middleware/auth.js';
 import upload from '../middleware/upload.js' ;
-import { getPublications , getPublication , CreatePublication , deletePublication , editPublication } from '../controllers/publication.js';
+import { getPublications , getPublication , CreatePublication , deletePublication , editPublication, likePublication } from '../controllers/publication.js';
 
 
-let publicationsRoute = express.Router();
+const publicationRoutes = express.Router();
 
 
-publicationsRoute.get('/', auth, getPublications)
-publicationsRoute.get('/:id', auth, getPublication)
-publicationsRoute.post('/', auth, CreatePublication)
-publicationsRoute.put('/:id', auth, upload.single('image') , editPublication)
-publicationsRoute.delete('/:id', auth, deletePublication)
+publicationRoutes.get('/', auth, getPublications)
+publicationRoutes.get('/:id', auth, getPublication)
+publicationRoutes.post('/', auth, upload.single('image'), CreatePublication)
+publicationRoutes.put('/:id', auth, upload.single('image'), editPublication)
+publicationRoutes.delete('/:id', auth, deletePublication)
+publicationRoutes.post('/likes', auth, likePublication)
 
 
-export default publicationsRoute ;
+export default publicationRoutes ;

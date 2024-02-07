@@ -6,36 +6,37 @@ import Register from "../auth/register"
 import EditProfilePage from '../pages/profile/EditProfilePage';
 
 
-export let Router = createBrowserRouter([
+export const Router = createBrowserRouter([
     {
-        element: <Layout />,
-        children: [
-            {
-                path: '/',
-                element: <Home />
-            },{
-                path: '/*' ,
-                element : 'not found this page'
-            },
-            {
-                path: '/login',
-                element : <Login />
-            },
-            {
-                path: '/register',
-                element : <Register />
-            },
-            {
-                path: '/edit/:id',
-                element: <Home edit={true} />
-            },
-            {
-                path: '/EditProfile',
-                element: <EditProfilePage />
-            },{
-                path: '/profile/:username',
-                element : <Profile />
-            }
-        ]
+    element: <Layout />,
+    children: [
+        {
+            path: '/',
+            element: <Home />
+        },
+        {
+            path: '/*' ,
+            element : 'not found this page'
+        },
+        {
+            path: '/login',
+            element : <Login />
+        },
+        {
+            path: '/register',
+            element : <Register />
+        },
+        {
+            path: '/edit/:id',
+            element: <Home edit={true} />
+        },
+        {
+            path: '/EditProfile',
+            element: <EditProfilePage />
+        },{
+            path: '/profile/:username',
+            element : <Profile />
+        }
+    ]
     }
 ]);

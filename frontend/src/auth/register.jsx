@@ -31,7 +31,7 @@ const Register = () => {
 
     let submitForm = async (data) => {
         try {
-            let response = await AXIOS_CLIENT.post(`/profile/register`, data);
+            let response = await AXIOS_CLIENT.post(`/auth/register`, data);
             const  USER_DATA = response.data;
             sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
             toast.success(USER_DATA.message, {

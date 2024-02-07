@@ -4,11 +4,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 // router
-import profileRoute from './router/profile.js';
-import publicationRoute from './router/publication.js';
 import authRoutes from './router/auth.js';
 import usersRoutes from './router/users.js';
-import publicationsRoute from './router/publications.js';
+import publicationRoutes from './router/publications.js';
 
 process.noDeprecation = true;
 
@@ -23,10 +21,8 @@ app.use('/images' , express.static('uploads/images'));
 
 app.use('/api/auth' , authRoutes);
 app.use('/api/users' , usersRoutes);
-app.use('/api/publication' , publicationsRoute);
+app.use('/api/publication' , publicationRoutes);
 
-app.use('/profile' , profileRoute);
-app.use('/publication', publicationRoute);
 
 let { PORT, MONGODB_URI } = process.env;
 

@@ -10,7 +10,7 @@ const UserProfile = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const response = await AXIOS_CLIENT.get('profile/user');
+                const response = await AXIOS_CLIENT.get('/auth/user');
                 const user = response.data.profile;
                 setUserData({
                     id : user.id,
@@ -25,15 +25,13 @@ const UserProfile = () => {
                 setLoading(false);
             }
         };
-
         getData();
     }, []);
-
     const handleFormSubmit = async (updatedData) => {
         setUserData(updatedData);
         console.log(updatedData);
         try {
-            const response = await AXIOS_CLIENT.put(`profile/${userData.id}`, updatedData);
+            const response = await AXIOS_CLIENT.put(`users/${updatedData.id}`, updatedData);
             console.log(response);
         } catch(error) {
             console.log(error)

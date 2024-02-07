@@ -33,7 +33,7 @@ const Login = () => {
 
     let loginProfile = async (data) => {
         try {
-            let response = await AXIOS_CLIENT.post('/profile/login', data)
+            let response = await AXIOS_CLIENT.post('/auth/login', data)
             const  USER_DATA = response.data;
             sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
             dispatch(setLoginOut(true));

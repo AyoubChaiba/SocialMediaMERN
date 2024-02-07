@@ -19,7 +19,7 @@ let Header = () => {
         const getdata = async () => {
             try {
                 if (!token) return;
-                const response = await AXIOS_CLIENT.get('/profile/user');
+                const response = await AXIOS_CLIENT.get('/auth/user');
                 disPatch(setCurrentProfile(response.data.profile));
             } catch (error) {
                 if (error?.response?.status === 401) {
@@ -48,6 +48,7 @@ let Header = () => {
     }
 
     return (
+
         <nav className="bg-gray-800 sticky top-0">
             <div className="container mx-auto px-4">
             <div className="relative flex h-16 items-center justify-between">

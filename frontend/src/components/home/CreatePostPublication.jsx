@@ -1,14 +1,11 @@
-import axios from 'axios';
 import  { useState } from 'react';
-import {useSelector} from 'react-redux'
 import {toast} from 'react-toastify'
 import { FaSpinner } from "react-icons/fa6";
+import { AXIOS_CLIENT } from '../../api/axios';
 
 
 const CreatePostPublication = () => {
-    const apiUrl = import.meta.env.VITE_APP_URL_API;
     const [Loading , setLoading] = useState(false)
-    const {token} = useSelector(state => state.profile)
 
       const [formData, setFormData] = useState({
         title: '',
@@ -39,14 +36,11 @@ const CreatePostPublication = () => {
       setLoading(true)
       e.preventDefault();
       try {
-        const res = await axios.post(`${apiUrl}/publication`,{
-          ...formData
-        }, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        const formdata = new FormData();
+        formdata.append('image',formData.image)
+        formdata.append('title',formData.title)
+        formdata.append('description',formData.description)
+        const res = await AXIOS_CLIENT.post(`/publication`,formdata)
         toast.success(res.data.message, {
           position: toast.POSITION.BOTTOM_RIGHT
         })

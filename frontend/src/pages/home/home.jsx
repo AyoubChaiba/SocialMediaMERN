@@ -1,36 +1,35 @@
 import { PostCard , ActiveUsers , ProfileCard , CreatePostPublication , EditPostPublication , Followers  } from '../../components';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { AXIOS_CLIENT } from '../../api/axios';
+
+import Button from '@mui/material/Button';
 
 const Home = ({edit}) => {
-
-    const api_Url = import.meta.env.VITE_APP_URL_API
     const [publication , setPublication] = useState([]);
 
     useEffect(()=> {
+        const Publication = async ()=> {
+            try {
+                const response = await AXIOS_CLIENT.get(`/publication`);
+                setPublication(response.data.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
         Publication()
     },[])
 
-    const Publication = async ()=> {
-        try {
-            const response = await axios.get(`${api_Url}/publication`);
-            setPublication(response.data.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
-    // console.log(publication)
 
 const sampleFollowers = Array.from({ length: 20 }, (_, index) => ({
-id: index + 1,
-name: `Follower ${index + 1}`,
+    id: index + 1,
+    name: `Follower ${index + 1}`,
 }));
 
 const sampleActiveUsers = Array.from({ length: 1 }, (_, index) => ({
-id: index + 1,
-name: `Active User ${index + 1}`,
+    id: index + 1,
+    name: `Active User ${index + 1}`,
 }));
 
 return (

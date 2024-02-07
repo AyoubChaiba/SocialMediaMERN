@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AXIOS_CLIENT } from '../../api/axios';
 
-
 const PostCard = ({ id , title , description , date_create ,image , author , likes  }) => {
     const [BtnActive ,setbtnActive] = useState(false);
     const [showMore , setShowMore] = useState(false);
@@ -31,27 +30,27 @@ const PostCard = ({ id , title , description , date_create ,image , author , lik
 
     const Likes = async (postID) => {
         try {
-            await AXIOS_CLIENT.post('/publication/likes', {
-            postID: postID,
-            });
-            } catch (error) {
+            const form = new FormData();
+            form.append('postID', postID);
+            await AXIOS_CLIENT.post('/publication/likes', form);
+        } catch (error) {
             console.error(error);
-            }
+        }
     };
 
 
-    const DeletePublication = () => {
+    const DeletePublication = async () => {
         if (confirm('delete publication')) {
             try {
-                const res = AXIOS_CLIENT.delete(`publication/${id}`)
-                toast.success(res.message, {
+                const res = await AXIOS_CLIENT.delete(`/publication/${id}`);
+                toast.success(res.data.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
-                })
+                });
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
-    }
+    };
 
     return (
         <div className="bg-white p-4 mb-4 rounded shadow">

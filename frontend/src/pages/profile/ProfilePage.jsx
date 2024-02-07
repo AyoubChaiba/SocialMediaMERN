@@ -11,7 +11,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await AXIOS_CLIENT.get(`profile/${username}`);
+        const response = await AXIOS_CLIENT.get(`users/${username}`);
         console.log(response.data.profile.publication)
         setUser(response.data.profile);
       } catch (error) {

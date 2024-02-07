@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 const UserProfileForm = ({ onSubmit, UserData }) => {
     const [formUser , setFormUser] = useState({
+        ...UserData,
         username : UserData?.username || '',
         email : UserData?.email || '',
         avatar : null,

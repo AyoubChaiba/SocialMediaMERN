@@ -1,15 +1,12 @@
-import axios from 'axios';
-import  { useEffect, useState } from 'react';
-import {useSelector} from 'react-redux'
-import {toast} from 'react-toastify'
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { FaSpinner } from "react-icons/fa6";
 import { useParams, useNavigate } from 'react-router-dom';
+import { AXIOS_CLIENT } from '../../api/axios';
 
 
 const EditPostPublication = () => {
-    const apiUrl = import.meta.env.VITE_APP_URL_API;
     const {id} = useParams();
-    const {token , profile , isLogin} = useSelector(state => state.profile);
     const [Loading , setLoading] = useState(false);
     const navigate = useNavigate()
 
@@ -23,7 +20,7 @@ const EditPostPublication = () => {
     useEffect(()=>{
       const getData = async ()=> {
         try {
-          const response = await axios.get(`${apiUrl}/publication/${id}`)
+          const response = await AXIOS_CLIENT.get(`/publication/${id}`)
           console.log(response.data)
           setFormData({
             ...formData ,
@@ -45,7 +42,7 @@ const EditPostPublication = () => {
         [name]: value,
       }));
     };
-  
+
     const handleImageChange = (e) => {
       const imageFile = e.target.files[0];
       const imageUrl = URL.createObjectURL(imageFile);
@@ -60,15 +57,7 @@ const EditPostPublication = () => {
       setLoading(true)
       e.preventDefault();
       try {
-        const res = await axios.put(`${apiUrl}/publication/${id}`, {
-          ...formData ,
-          method: 'PUT' ,
-        } , {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        const res = await AXIOS_CLIENT.put(`/publication/${id}`, formData)
         toast.success(res.data.message, {
           position: toast.POSITION.BOTTOM_RIGHT
         })
