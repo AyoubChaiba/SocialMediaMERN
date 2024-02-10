@@ -1,0 +1,134 @@
+@import '../../scss/style.scss';
+
+.navbar {
+    @include themify($themes) {
+        background-color: themed("bg");
+        border-bottom: 1px solid themed("border");
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            height: 60px;
+            .left {
+                display: flex;
+                gap: 5px;
+                h1 {
+                    color: themed("textColor");
+                }
+                .btn_menu {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    margin-left: 25px;
+                    svg {
+                        margin: 0 5px;
+                        font-size: 25px;
+                        color: themed('textColorSoft');
+                    }
+                    button {
+                        svg {
+                            font-size: 24px;
+                            color: themed('dark-mode');
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            .search {
+                input {
+                    background-color: themed("bgSoft");
+                    border: 1px solid themed("border");
+                    color: themed("textColorSoft");
+                }
+            }
+            .right  {
+                .UserNav {
+                    position: relative;
+                    .avatar {
+                        overflow: hidden;
+                        border-radius: 50%;
+                        width: 40px;
+                        height: 40px;
+                        border:  2px solid themed('border');
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                    .user_menu {
+                        position: absolute;
+                        top: 100%;
+                        right: 0;
+                        width: 200px;
+                        background-color: themed("bgSoft");
+                        border: 2px solid themed("border");
+                        z-index: 1000;
+                        border-radius: 15px;
+                        color: themed("textColor");
+                        overflow: hidden;
+                        h2 {
+                            text-align: center;
+                            padding: 2px;
+                            margin: 10px 0;
+                            font-size: 17px;
+                            font-weight: 700;
+                        }
+                        li {
+                            display:  block;
+                            padding: 10px 20px;
+                            cursor: pointer;
+                            a,button {
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            }
+                            svg {
+                                font-size: 17px;
+                                color: themed('textColor');
+                            }
+                            &:hover {
+                                background-color: themed("primary");
+                                color: themed("text");
+                                svg {
+                                    color: themed('text');
+                                }
+                            }
+                        }
+                        .active {
+                            background-color: themed("primary");
+                            font-weight: 500;
+                            color: themed('text');
+                            svg {
+                                color: themed('text');
+                            }
+                        }
+                    }
+                }
+            }
+            .btn-connect {
+                display: flex;
+                gap: 10px;
+                color: themed('textColor');
+                a {
+                    padding: 5px 19px;
+                    border-radius: 9px;
+                }
+                .register {
+                    background-color: themed('primary');
+                    color: themed('text');
+                    &:hover {
+                        background-color: themed('secondary');
+                        color: themed('textColor');
+                    }
+                }
+                .login {
+                    border: 2px solid themed('textColor');
+                }
+            }
+        }
+    }
+}
+
+

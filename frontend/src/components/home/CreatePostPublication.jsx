@@ -1,16 +1,16 @@
 import  { useState } from 'react';
 import {toast} from 'react-toastify'
-import { FaSpinner } from "react-icons/fa6";
+import { FaSpinner , FaImage , FaShare  } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../api/axios';
+import { PropTypes } from 'prop-types';
 
 
-const CreatePostPublication = () => {
+const CreatePostPublication = ({profile , updatePublication , publication}) => {
     const [Loading , setLoading] = useState(false)
 
       const [formData, setFormData] = useState({
-        title: '',
         description: '',
-        image: null,
+        image: undefined,
         imageUrl: '',
       });
 
@@ -33,88 +33,79 @@ const CreatePostPublication = () => {
     };
 
     const handleFormSubmit = async (e) => {
-      setLoading(true)
       e.preventDefault();
+      setLoading(true);
       try {
         const formdata = new FormData();
-        formdata.append('image',formData.image)
-        formdata.append('title',formData.title)
-        formdata.append('description',formData.description)
-        const res = await AXIOS_CLIENT.post(`/publication`,formdata)
+        formdata.append('image', formData.image);
+        formdata.append('description', formData.description);
+        const res = await AXIOS_CLIENT.post(`/publication`, formdata);
+        updatePublication([ res.data.publication , ...publication]);
         toast.success(res.data.message, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        })
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        setFormData({ description: '', image: undefined });
       } catch (error) {
-          if (error.response.status == 401) {
-            toast.error(error.response.data.message, {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-          }
+        if (error.response?.status === 401) {
+          toast.error(error.response.data.message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        } else {
+          toast.error('An error occurred. Please try again later.', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        }
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
 return (
-    <div className="">
-        <form onSubmit={handleFormSubmit} className="bg-white p-6 rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Create Post Publication</h2>
-
-        <label htmlFor="title" className="block text-sm font-semibold mb-2">
-            Title
-        </label>
-        <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-            required
-        />
-
-        <label htmlFor="content" className="block text-sm font-semibold mt-3 mb-2">
-          description
-        </label>
-        <textarea
-            id="content"
+    <div className="create shadow-md">
+      <form onSubmit={handleFormSubmit} className="">
+        <div className='top'>
+            <img src={profile?.avatar} alt="" />
+          <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+            placeholder="What's on your mind John Doe?"
             required
-        />
-
-<label htmlFor="image" className="block text-sm font-semibold mt-3 mb-2">
-          Image
-        </label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-        />
+          />
+        </div>
+        <hr />
         {formData.imageUrl && (
           <img
             src={formData.imageUrl}
             alt="Selected Image"
-            className="mt-2 max-w-full h-auto rounded w-20"
+            className='img_preview'
           />
         )}
-
-        <button
-          type="submit"
-          className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
-          disabled={Loading}
-        >
-          {Loading && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
-          {Loading ? 'Loding...' : 'Create Post Publication' }
-        </button>
-        </form>
+        <div className='bottom'>
+            <label className="custom-button">
+              <FaImage  />
+              <input
+                type="file"
+                className="file-input"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+            <button type="submit" className="share_btn" disabled={Loading} >
+              {Loading ? <FaSpinner/> : <FaShare />}
+              {Loading ? 'Loding...' : 'Share'}
+            </button>
+        </div>
+      </form>
     </div>
 );
+};
+
+CreatePostPublication.propTypes = {
+  profile: PropTypes.object.isRequired,
+  updatePublication: PropTypes.func.isRequired,
+  publication: PropTypes.array,
 };
 
 export default CreatePostPublication;

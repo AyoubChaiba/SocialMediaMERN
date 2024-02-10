@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
+import "./main.scss"
 
 const Container = ({children}) => {
     return (
-        <main className="bg-gray-100 min-h-screen">
-            {children}
-        </main>
+        <main>{children}</main>
     )
 }
 

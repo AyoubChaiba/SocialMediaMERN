@@ -10,7 +10,6 @@ export let auth = (req, res , next) => {
         let token = req.headers.authorization.split(" ")[1];
         let decodedToken = jwt.verify(token, JWT_SECRET);
         req.profile = decodedToken;
-        // console.error("verifying token");
         next();
     } catch (err) {
         res.status(401).json({
@@ -19,3 +18,15 @@ export let auth = (req, res , next) => {
         });
     }
 }
+
+
+export let checkAuthorized = (req, res, next) => {
+    if (req.profile.userId === req.query.userId) {
+        next();
+    } else {
+        res.status(403).json({
+            message: "Forbidden",
+            error: "User is not authorized to access this resource.",
+        });
+    }
+};

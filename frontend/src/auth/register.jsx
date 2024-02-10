@@ -33,7 +33,6 @@ const Register = () => {
         try {
             let response = await AXIOS_CLIENT.post(`/auth/register`, data);
             const  USER_DATA = response.data;
-            sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
             toast.success(USER_DATA.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })

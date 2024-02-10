@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 let PublicationSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
+        // required: true
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,8 +19,8 @@ let PublicationSchema = mongoose.Schema({
         required: false
     },
     likes: {
-        type: Number,
-        default: 0
+        type: Array,
+        default: [],
     },
     views : {
         type : Number,

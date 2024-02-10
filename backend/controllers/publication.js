@@ -7,14 +7,11 @@ export const getPublications = async (req,res)=> {
         let formatPublication = populatedPublication.map( publicatin => {
             return {
                 id : publicatin._id ,
-                title : publicatin.title ,
-                image : publicatin.image ? `http://localhost:3000/images/${publicatin.image}` : null ,
+                image : publicatin.image ? `http://localhost:3000/images/${publicatin.image}` : undefined ,
                 description : publicatin.description,
                 date_create : publicatin.createdAt,
                 date_update : publicatin.updatedAt,
                 likes : publicatin.likes,
-                views : publicatin.views,
-                comments: publicatin.comments,
                 author : {
                     id : publicatin.author._id ,
                     username : publicatin.author.username ,
@@ -83,11 +80,16 @@ export const CreatePublication = async (req,res)=> {
                 message : 'Publication created successfully.' ,
                 publication : {
                     id : populatedPublication._id ,
-                    title : populatedPublication.title ,
                     description : populatedPublication.description ,
-                    image : populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : null ,
-                    author_name : populatedPublication.author.username ,
-                    author_image : `http://localhost:3000/images/${populatedPublication.author.avatar}` ,
+                    image : populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : undefined ,
+                    date_create : populatedPublication.createdAt,
+                    date_update : populatedPublication.updatedAt,
+                    likes : populatedPublication.likes,
+                    author : {
+                        id : populatedPublication.author._id ,
+                        username : populatedPublication.author.username ,
+                        avatar : `http://localhost:3000/images/${populatedPublication.author.avatar}` ,
+                    }
                 }
             });
         }else {
@@ -157,18 +159,24 @@ export const deletePublication = async (req,res)=> {
     }
 }
 
-export const likePublication = async (req,res)=> {
-    const { postID } = req.body;
-    console.log(req.body);
+export const likePublication = async (req, res) => {
+    const { postID, userID } = req.query;
     try {
-        let like = await Publication.findById(postID);
-        if (!like) {
-            like = new Publication({ id, likes: 1 });
-        } else {
-            like.likes += 1;
+        let publication = await Publication.findById(postID);
+        if (!publication) {
+            return res.status(404).json({
+                success: false,
+                message: "Publication not found"
+            });
         }
-        await like.save();
-        res.json({ success: true, likes: like.likes });
+        const userLiked = publication.likes.some(like => like === userID);
+        if (userLiked) {
+            publication.likes = publication.likes.filter(like => like !== userID);
+        }else {
+            publication.likes.push(userID);
+        }
+        await publication.save();
+        res.json({ success: true, likes: publication.likes });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }

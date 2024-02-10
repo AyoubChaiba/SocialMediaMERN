@@ -1,42 +1,50 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/layout';
-import { Home , Profile } from "../pages/index"
-import Login from "../auth/login"
-import Register from "../auth/register"
+import { Home, Profile } from "../pages/index";
+import Login from "../auth/login";
+import Register from "../auth/register";
 import EditProfilePage from '../pages/profile/EditProfilePage';
+import { useSelector } from 'react-redux';
 
+export const Router = () => {
+    const isLogin = useSelector(state => state.profile.isLogin);
 
-export const Router = createBrowserRouter([
-    {
-    element: <Layout />,
-    children: [
+    const routes = [
         {
             path: '/',
-            element: <Home />
-        },
-        {
-            path: '/*' ,
-            element : 'not found this page'
+            element: isLogin ? <Home /> : <Login />
         },
         {
             path: '/login',
-            element : <Login />
+            element: isLogin ? <Home /> : <Login />
         },
         {
             path: '/register',
-            element : <Register />
+            element: isLogin ? <Home /> : <Register />
         },
         {
             path: '/edit/:id',
-            element: <Home edit={true} />
+            element: isLogin ? <Home /> : <Login />
         },
         {
             path: '/EditProfile',
-            element: <EditProfilePage />
-        },{
+            element: isLogin ? <EditProfilePage /> : <Login />
+        },
+        {
             path: '/profile/:username',
-            element : <Profile />
+            element: isLogin ? <Profile /> : <Login />
+        },
+        {
+            path: '/*',
+            element: 'not found this page'
         }
-    ]
-    }
-]);
+    ];
+
+    return createBrowserRouter([
+        {
+            element: <Layout />,
+            children: routes
+        }
+    ]);
+};
+

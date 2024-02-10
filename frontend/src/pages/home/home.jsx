@@ -1,12 +1,13 @@
-import { PostCard , ActiveUsers , ProfileCard , CreatePostPublication , EditPostPublication , Followers  } from '../../components';
+import { PostCard , ActiveUsers , ProfileCard , Followers , CreatePostPublication  } from '../../components';
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { AXIOS_CLIENT } from '../../api/axios';
+import "./home.scss"
 
-import Button from '@mui/material/Button';
+const Home = () => {
+    const [ publication , setPublication ] = useState([]);
+    const { profile } = useSelector(state => state.profile) ;
 
-const Home = ({edit}) => {
-    const [publication , setPublication] = useState([]);
 
     useEffect(()=> {
         const Publication = async ()=> {
@@ -20,6 +21,9 @@ const Home = ({edit}) => {
         Publication()
     },[])
 
+    const updatePublication = (newPublication) => {
+        setPublication(newPublication);
+    };
 
 
 const sampleFollowers = Array.from({ length: 20 }, (_, index) => ({
@@ -33,39 +37,32 @@ const sampleActiveUsers = Array.from({ length: 1 }, (_, index) => ({
 }));
 
 return (
-    <div className="container mx-auto py-6 px-5 grid grid-cols-1 lg:grid-cols-7 gap-7">
-        <div className="col-span-2">
-            <div className="sticky top-20">
-                <ProfileCard />
-            </div>
+    <div className="home container mx-auto">
+        <div className="left">
+            <ProfileCard profile={profile} />
         </div>
-        <div className="col-span-3">
-            {
-                !edit ?
-                <>
-                    <CreatePostPublication />
-                    <div className='grid grid-cols-1 lg:grid-cols-1 my-4'>
-                        {publication.map((post, i) => (
-                            <PostCard key={i} {...post} />
-                        ))}
-                    </div>
-                </> :
-                <EditPostPublication />
-            }
+        <div className="center">
+                <h1>Create Post</h1>
+                {profile && <CreatePostPublication
+                profile={profile}
+                updatePublication={updatePublication}
+                publication={publication} />}
+                <h1>Home Feed</h1>
+                {publication.map((post, i) => (
+                    <PostCard
+                    key={i}
+                    post={post}
+                    profile={profile}
+                    updatePublication={updatePublication}
+                    publication={publication} />
+                ))}
         </div>
-
-        <div className="col-span-2">
-            {/* <div className="sticky top-20"> */}
-                <Followers followers={sampleFollowers} />
-                <ActiveUsers activeUsers={sampleActiveUsers} />
-            {/* </div> */}
+        <div className="right">
+            <Followers followers={sampleFollowers} />
+            <ActiveUsers activeUsers={sampleActiveUsers} />
         </div>
     </div>
 );
-};
-
-Home.propTypes = {
-    edit: PropTypes.bool.isRequired,
 };
 
 export default Home;

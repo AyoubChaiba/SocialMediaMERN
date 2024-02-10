@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FaBars } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart  } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../api/axios';
 
-const PostCard = ({ id , title , description , date_create ,image , author , likes  }) => {
-    const [BtnActive ,setbtnActive] = useState(false);
+
+const PostCard = ({ post, profile, updatePublication, publication }) => {
+
     const [showMore , setShowMore] = useState(false);
     const currentDate = new Date();
 
     const time = () => {
-        const timeDifference = currentDate - new Date(date_create);
+        const timeDifference = currentDate - new Date(post.date_create);
         const seconds = Math.floor(timeDifference / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
@@ -28,11 +29,20 @@ const PostCard = ({ id , title , description , date_create ,image , author , lik
         }
     };
 
-    const Likes = async (postID) => {
+    const Likes = async () => {
         try {
-            const form = new FormData();
-            form.append('postID', postID);
-            await AXIOS_CLIENT.post('/publication/likes', form);
+            await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${profile.id}`);
+            const updatedPublication = [...publication];
+            const index = updatedPublication.findIndex(p => p.id === post.id);
+            if (index !== -1) {
+                const userLiked = updatedPublication[index].likes.includes(profile.id);
+                if (userLiked) {
+                    updatedPublication[index].likes = updatedPublication[index].likes.filter(userId => userId !== profile.id);
+                } else {
+                    updatedPublication[index].likes.push(profile.id);
+                }
+                updatePublication(updatedPublication);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -42,7 +52,13 @@ const PostCard = ({ id , title , description , date_create ,image , author , lik
     const DeletePublication = async () => {
         if (confirm('delete publication')) {
             try {
-                const res = await AXIOS_CLIENT.delete(`/publication/${id}`);
+                const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userId=${profile.id}`);
+                const deletePublication = [...publication];
+                const index = deletePublication.findIndex(p => p.id === post.id);
+                if (index!== -1) {
+                    deletePublication.splice(index, 1);
+                }
+                updatePublication(deletePublication);
                 toast.success(res.data.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
@@ -53,86 +69,55 @@ const PostCard = ({ id , title , description , date_create ,image , author , lik
     };
 
     return (
-        <div className="bg-white p-4 mb-4 rounded shadow">
-            <div className="flex justify-between items-start">
-            <div className="flex items-center mb-4">
-                {author && (
-                    <>
-                        <img
-                            src={author.avatar}
-                            alt={author.username}
-                            className="w-8 h-8 rounded-full object-cover mr-2"
-                        />
+        <div className="feed shadow">
+            <div className="top">
+                {post.author && (
+                    <div className="user">
+                        <img src={post.author.avatar} alt={post.author.username}/>
                         <div>
-                            <p className="font-semibold">{author.username}</p>
-                            <p className="text-gray-500">{time()}</p>
+                            <h2 className="">{post.author.username}</h2>
+                            <span className="">{time()}</span>
                         </div>
-                    </>
+                    </div>
                 )}
-            </div>
-
-                <div className="flex justify-end relative">
-                    <button className="text-gray-500 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg text-sm p-1.5"
-                    type="button"
-                    onClick={()=> setbtnActive(!BtnActive)}
-                    >
-                        <span className="sr-only">Open dropdown</span>
-                        <FaBars className="h-6 w-6" />
-                    </button>
-                    {
-                        BtnActive &&
-                        <div id="dropdown" className="absolute top-7 z-10 text-base bg-white divide-y divide-gray-100 rounded-lg shadow w-44 right-0 mt-2">
-                            <ul className="py-2" aria-labelledby="dropdownButton">
-                                <li><Link to={`/edit/${id}`} className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 transition duration-300">Edit</Link></li>
-                                <li>
-                                <button
-                                className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 transition duration-300 cursor-pointer"
-                                onClick={DeletePublication}>
-                                    delete
-                                </button>
-                                </li>
-                            </ul>
-                        </div>
+                <div className="menu">
+                    <FaBookmark className='save'/>
+                    {profile.id === post.author.id &&
+                        <>
+                        <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
+                        <FaTrash className="remove" type="button" onClick={DeletePublication}/>
+                        </>
                     }
                 </div>
             </div>
-            <h1 className="font-semibold mb-4">{title}</h1>
-                {
-                    image && <img
-                    src={image ? image : 'default-image-url'}
-                    alt="Post Image"
-                    className="w-full h-auto mb-4 object-center rounded"/>
-                }
-                <div>
-                <p className={`mb-4 break-all`}>
-                    {showMore ? description : `${description.slice(0,50)} `}
-                    {description.length > 50 && (
-                    <span className="text-blue-500 cursor-pointer" onClick={() => setShowMore(!showMore)}>
-                    {showMore ? ' less' : ' more'}
+            <div className='center'>
+                <p className="description">
+                    {showMore ? post.description : `${post.description.slice(0,50)} `}
+                    {post.description.length > 50 && (
+                    <span className="" onClick={() => setShowMore(!showMore)}>
+                    {showMore ? ' less' : ' ...more'}
                     </span>
                 )}
                 </p>
-                </div>
-
-            <div className="flex items-center">
-                <button className="text-blue-500 mr-4" onClick={() => Likes(id) }>Like {likes}</button>
-                <button className="text-gray-500">Comment</button>
+                { post.image && <img src={post.image} alt="Post Image"/>}
+            </div>
+            <div className="btn_react">
+                <button className="like" onClick={Likes}>
+                    { post.likes.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
+                    Like {post.likes.length>0 && post.likes.length }
+                </button>
+                <button className="">Comment</button>
             </div>
         </div>
-    );
-};
+        );
+    };
 
 PostCard.propTypes = {
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    date_create: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    author: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        avatar: PropTypes.string.isRequired,
-    }).isRequired,
+    post: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
+    updatePublication: PropTypes.func.isRequired,
+    chackIsAuthorized: PropTypes.func.isRequired,
+    publication: PropTypes.array.isRequired
 };
 
 export default PostCard;

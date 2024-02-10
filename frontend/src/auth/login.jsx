@@ -1,25 +1,15 @@
-import  { useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
-import {useSelector, useDispatch} from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { setLoginOut , setCurrentProfile , setToken } from '../toolkit/profileSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../lib/validation';
 import { AXIOS_CLIENT } from '../api/axios';
 const Login = () => {
-
     const dispatch = useDispatch()
     let navigate = useNavigate();
-
-    const {isLogin } = useSelector(state => state.profile);
-
-    useEffect(()=> {
-        isLogin && navigate('/')
-    },[isLogin])
-
-
 
     const { register , handleSubmit , formState : { errors , isValid , isSubmitting , submitCount  } } = useForm({
         mode : 'onBlur' ,
@@ -30,15 +20,14 @@ const Login = () => {
         }
     })
 
-
     let loginProfile = async (data) => {
         try {
             let response = await AXIOS_CLIENT.post('/auth/login', data)
-            const  USER_DATA = response.data;
-            sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token) );
-            dispatch(setLoginOut(true));
-            dispatch(setCurrentProfile(USER_DATA.profile));
+            const USER_DATA = response.data;
             dispatch(setToken(USER_DATA.token))
+            sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token));
+            dispatch(setCurrentProfile(USER_DATA.profile));
+            dispatch(setLoginOut(true));
             toast.success(USER_DATA.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
@@ -47,6 +36,7 @@ const Login = () => {
             toast.error(error.response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
+            console.log(error)
         }
     };
 
