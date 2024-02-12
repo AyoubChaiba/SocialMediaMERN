@@ -8,7 +8,6 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET
 
 export const User = async (req,res) => {
-    console.log(req.profile)
     try {
         let id = req.profile.userId
         let User = await Profile.findOne({_id : id});

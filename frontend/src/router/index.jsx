@@ -4,47 +4,35 @@ import { Home, Profile } from "../pages/index";
 import Login from "../auth/login";
 import Register from "../auth/register";
 import EditProfilePage from '../pages/profile/EditProfilePage';
-import { useSelector } from 'react-redux';
 
-export const Router = () => {
-    const isLogin = useSelector(state => state.profile.isLogin);
-
-    const routes = [
-        {
-            path: '/',
-            element: isLogin ? <Home /> : <Login />
-        },
-        {
-            path: '/login',
-            element: isLogin ? <Home /> : <Login />
-        },
-        {
-            path: '/register',
-            element: isLogin ? <Home /> : <Register />
-        },
-        {
-            path: '/edit/:id',
-            element: isLogin ? <Home /> : <Login />
-        },
-        {
-            path: '/EditProfile',
-            element: isLogin ? <EditProfilePage /> : <Login />
-        },
-        {
-            path: '/profile/:username',
-            element: isLogin ? <Profile /> : <Login />
-        },
-        {
-            path: '/*',
-            element: 'not found this page'
-        }
-    ];
-
-    return createBrowserRouter([
-        {
-            element: <Layout />,
-            children: routes
-        }
-    ]);
-};
-
+export const Router = createBrowserRouter([
+    {
+        element: <Layout />,
+        children: [
+            {
+                path: '/*',
+                element: <Home />
+            },
+            {
+                path: '/login',
+                element: <Login />
+            },
+            {
+                path: '/register',
+                element: <Register />
+            },
+            {
+                path: '/EditProfile',
+                element: <EditProfilePage />
+            },
+            {
+                path: '/profile/:username',
+                element: <Profile />
+            },
+            {
+                path: '/*',
+                element: 'not found this page'
+            }
+        ]
+    }
+]);

@@ -10,7 +10,7 @@ const App = () => {
     return (
         <div className={`theme-${mode ? "dark" : "light"}`}>
             <ToastContainer />
-            <RouterProvider router={Router()} />
+            <RouterProvider router={Router} />
         </div>
     );
 }

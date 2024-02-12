@@ -1,15 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-let tokenString = sessionStorage.getItem('currentToken');
-let token = tokenString ? JSON.parse(tokenString) : null;
-
 let initialState = {
-    isLogin: tokenString ? true : false,
-    token: token,
-    profile: null,
-};
-
-console.log(sessionStorage.getItem('currentToken'))
+    isLogin  : JSON.parse(sessionStorage.getItem('currentToken')) ? true : false ,
+    token : JSON.parse(sessionStorage.getItem('currentToken')) ,
+    profile : null ,
+}
 
 export const profileSlice = createSlice({
     name : 'profile',

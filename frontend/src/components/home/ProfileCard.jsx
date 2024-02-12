@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { PropTypes } from 'prop-types';
+import { useSelector } from 'react-redux';
 
-const ProfileCard = ({ profile }) => {
+
+const ProfileCard = () => {
+    const { profile } = useSelector(state => state.profile) ;
 
     return (
         <div className="profile">

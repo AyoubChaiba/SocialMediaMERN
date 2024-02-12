@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart  } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../api/axios';
+import { useDispatch } from 'react-redux';
+import { deletePost, toggleLike } from '../../toolkit/postSlice';
 
 
-const PostCard = ({ post, profile, updatePublication, publication }) => {
-
+const PostCard = ({ post, profile }) => {
     const [showMore , setShowMore] = useState(false);
+    const dispatch = useDispatch();
     const currentDate = new Date();
 
     const time = () => {
@@ -32,33 +34,17 @@ const PostCard = ({ post, profile, updatePublication, publication }) => {
     const Likes = async () => {
         try {
             await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${profile.id}`);
-            const updatedPublication = [...publication];
-            const index = updatedPublication.findIndex(p => p.id === post.id);
-            if (index !== -1) {
-                const userLiked = updatedPublication[index].likes.includes(profile.id);
-                if (userLiked) {
-                    updatedPublication[index].likes = updatedPublication[index].likes.filter(userId => userId !== profile.id);
-                } else {
-                    updatedPublication[index].likes.push(profile.id);
-                }
-                updatePublication(updatedPublication);
-            }
+            dispatch(toggleLike({ postId: post.id, userId: profile.id }));
         } catch (error) {
             console.error(error);
         }
     };
 
-
     const DeletePublication = async () => {
         if (confirm('delete publication')) {
             try {
-                const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userId=${profile.id}`);
-                const deletePublication = [...publication];
-                const index = deletePublication.findIndex(p => p.id === post.id);
-                if (index!== -1) {
-                    deletePublication.splice(index, 1);
-                }
-                updatePublication(deletePublication);
+                const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userID=${profile.id}`);
+                dispatch(deletePost({ postId: post.id }));
                 toast.success(res.data.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
@@ -115,9 +101,6 @@ const PostCard = ({ post, profile, updatePublication, publication }) => {
 PostCard.propTypes = {
     post: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
-    updatePublication: PropTypes.func.isRequired,
-    chackIsAuthorized: PropTypes.func.isRequired,
-    publication: PropTypes.array.isRequired
 };
 
 export default PostCard;
