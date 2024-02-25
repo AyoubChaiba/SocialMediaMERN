@@ -3,7 +3,6 @@ import Publication from '../models/publication.js';
 import mongoose from 'mongoose';
 
 
-
 export const getUser = async (req, res) => {
     try {
         let username = req.params.username;
@@ -72,4 +71,68 @@ export const uodateUser = async (req, res) => {
             messagex : e.message
         })
     }
+}
+
+export const savedPublication = async (req,res) => {
+    const { postID } = req.query;
+    console.log(req.query)
+    const { userId } = req.profile;
+    const user = await Profile.findById(userId)
+    const publication = await Publication.findById(postID)
+    if (!user || !publication) {
+        return res.status(404).json({
+            message: "User or publication not found"
+        });
+    }
+
+    const isAlreadySaved = user.saved.includes(postID);
+
+    if (isAlreadySaved) {
+        return res.status(401).json({
+            message: "Publication already saved"
+        });
+    }
+
+    user.saved.push(postID);
+    await user.save();
+
+    return res.status(200).json({
+        message: "Publication added to saved"
+    });
+
+}
+
+export const getSaved = async (req,res) => {
+    const { userId } = req.profile;
+
+    const user = await Profile.findById(userId).populate("saved").sort({ createdAt: -1 })
+
+    if (!user) return res.status(404).json({
+            message: "User or publication not found"
+        });
+
+    return res.status(200).json({
+        user: {
+            id : user.id,
+            username : user.username,
+            avatar : `http://localhost:3000/images/${user.avatar}`,
+        },
+        savedPublication : user.saved.map( post => {
+            return {
+                id: post._id,
+                description: post.description,
+                image: post.image ? `http://localhost:3000/images/${post.image}` : undefined ,
+                date_create : post.createdAt,
+                date_update : post.updatedAt,
+                likesUser : post.likesUser,
+                likes : post.likes,
+                author: {
+                    id: post.author._id,
+                    username: post.author.username,
+                    avatar: `http://localhost:3000/images/${post.author.avatar}`,
+                },
+            }
+        })
+    });
+
 }

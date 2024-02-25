@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Profile , Post} from '../../components/index';
 import { useParams } from 'react-router-dom';
-import { AXIOS_CLIENT } from '../../api/axios';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 
 const ProfilePage = () => {
   const [user, setUser] = useState({});

@@ -6,7 +6,7 @@ import { setLoginOut , setCurrentProfile , setToken } from '../toolkit/profileSl
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../lib/validation';
-import { AXIOS_CLIENT } from '../api/axios';
+import { AXIOS_CLIENT } from '../lib/api/axios';
 
 const Login = () => {
     const dispatch = useDispatch()

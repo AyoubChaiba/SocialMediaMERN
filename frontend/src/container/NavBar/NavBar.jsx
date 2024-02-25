@@ -8,7 +8,7 @@ import { useDispatch , useSelector } from "react-redux";
 import { setLoginOut , setCurrentProfile , setToken } from "../../toolkit/profileSlice";
 import { toast } from 'react-toastify'
 import { useNavigate , Link } from "react-router-dom";
-import { AXIOS_CLIENT } from "../../api/axios";
+import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { FaMoon , FaSun , FaHouse } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";

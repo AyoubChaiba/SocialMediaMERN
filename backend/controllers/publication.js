@@ -1,34 +1,55 @@
 import Publication from '../models/publication.js';
 import mongoose from 'mongoose';
 
-export const getPublications = async (req,res)=> {
+export const getPublications = async (req, res) => {
     try {
-        const populatedPublication = await Publication.find().sort({ createdAt: -1 }).limit(50).populate('author');
-        let formatPublication = populatedPublication.map( publicatin => {
-            return {
-                id : publicatin._id ,
-                image : publicatin.image ? `http://localhost:3000/images/${publicatin.image}` : undefined ,
-                description : publicatin.description,
-                date_create : publicatin.createdAt,
-                date_update : publicatin.updatedAt,
-                likes : publicatin.likes,
-                author : {
-                    id : publicatin.author._id ,
-                    username : publicatin.author.username ,
-                    avatar : `http://localhost:3000/images/${publicatin.author.avatar}` ,
-                }
-            }
-        })
-        return res.status(200).json({
-            data : formatPublication
-        });
+        const { filter, page, limit } = req.query;
+        let query = {};
+        let sort = { createdAt: -1 };
+        let skip = (page - 1) * limit;
+
+        if (filter === 'Relevant') {
+            query = { likes: { $gte: 5 } };
+        } else if (filter === 'Latest') {
+            query = { createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } };
+            sort = { createdAt: -1 };
+        } else if (filter === 'Top') {
+            sort = { likes: -1 }
+        }
+
+    const populatedPublication = await Publication.find(query)
+        .sort(sort)
+        .limit(limit)
+        .skip(skip)
+        .populate('author');
+
+    let formatPublication = populatedPublication.map(publication => {
+        return {
+            id: publication._id,
+            image: publication.image ? `http://localhost:3000/images/${publication.image}` : undefined,
+            description: publication.description,
+            date_create : publication.createdAt,
+            date_update : publication.updatedAt,
+            likesUser : publication.likesUser,
+            likes : publication.likes,
+            author: {
+                id: publication.author._id,
+                username: publication.author.username,
+                avatar: `http://localhost:3000/images/${publication.author.avatar}`,
+            },
+        };
+    });
+    return res.status(200).json({
+        formatPublication,
+    });
     } catch (err) {
-        console.error("An error occurred" ,err);
-        return res.status(500).json({
-            message : err.message
-        })
+    console.error('An error occurred', err);
+    return res.status(500).json({
+        message: err.message,
+    });
     }
-}
+};
+
 
 export const getPublication = async (req,res)=> {
     try {
@@ -60,13 +81,12 @@ export const getPublication = async (req,res)=> {
 
 export const CreatePublication = async (req,res)=> {
     try {
-        let { title , description  } = req.body;
+        let { description } = req.body;
         let author = req.profile
         let image = req?.file?.filename ;
 
         let publication = new Publication({
-            title,
-            description ,
+            description,
             author : author.userId ,
         })
 
@@ -84,6 +104,7 @@ export const CreatePublication = async (req,res)=> {
                     image : populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : undefined ,
                     date_create : populatedPublication.createdAt,
                     date_update : populatedPublication.updatedAt,
+                    likesUser : populatedPublication.likesUser,
                     likes : populatedPublication.likes,
                     author : {
                         id : populatedPublication.author._id ,
@@ -169,16 +190,17 @@ export const likePublication = async (req, res) => {
                 message: "Publication not found"
             });
         }
-        const userLiked = publication.likes.some(like => like === userID);
+        const userLiked = publication.likesUser.some(like => like === userID);
         if (userLiked) {
-            publication.likes = publication.likes.filter(like => like !== userID);
+            publication.likesUser = publication.likesUser.filter(like => like !== userID);
+            publication.likes -= 1;
         }else {
-            publication.likes.push(userID);
+            publication.likesUser.push(userID);
+            publication.likes += 1;
         }
         await publication.save();
-        res.json({ success: true, likes: publication.likes });
+        res.json({ success: true, likes: publication.likes, likesUser: publication.likesUser });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
 }
-

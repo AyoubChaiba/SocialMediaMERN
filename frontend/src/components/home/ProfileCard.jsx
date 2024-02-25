@@ -10,7 +10,7 @@ const ProfileCard = () => {
         <div className="profile">
             <img src={profile?.avatar} alt={profile?.username} />
             <div>
-                <h2>Ayoub Chiba</h2>
+                <h2>full name</h2>
                 <Link to={`/profile/${profile?.username}`}>@{profile?.username}</Link>
             </div>
         </div>

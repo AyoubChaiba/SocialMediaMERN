@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify'
 import { FaSpinner , FaImage , FaShare  } from "react-icons/fa6";
-import { AXIOS_CLIENT } from '../../api/axios';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../../toolkit/postSlice';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import UserProfileForm from './userProfileForm';
-import { AXIOS_CLIENT } from '../../api/axios';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({});

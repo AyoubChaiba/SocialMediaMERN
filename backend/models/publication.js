@@ -1,28 +1,24 @@
 import mongoose from 'mongoose';
 
 let PublicationSchema = mongoose.Schema({
-    title: {
+    description: {
         type: String,
-        // required: true
+        required: true
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',
         required: true
     },
-    description: {
-        type: String,
-        required: true
-    },
     image : {
         type: String,
         required: false
     },
-    likes: {
+    likesUser: {
         type: Array,
         default: [],
     },
-    views : {
+    likes : {
         type : Number,
         default: 0
     },

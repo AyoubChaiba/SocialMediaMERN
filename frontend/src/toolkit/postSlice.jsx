@@ -9,17 +9,34 @@ const postSlice = createSlice({
     initialState,
     reducers: {
         setPosts(state, action) {
-            state.posts = action.payload;
+            const existingPosts = state.posts.filter(post => action.payload.some(newPost => newPost.id === post.id));
+            const newPosts = action.payload.filter(post => !existingPosts.some(existingPost => existingPost.id === post.id));
+            state.posts = [...state.posts, ...newPosts];
+        },
+        addPost(state, action) {
+            const existingPost = state.posts.find(post => post.id === action.payload.id);
+            if (!existingPost) {
+                state.posts.unshift(action.payload);
+            }
+        },
+        updatePost(state, action) {
+            const { newPost } = action.payload;
+            const postIndex = state.posts.findIndex(post => post.id === newPost.id);
+            if (postIndex !== -1) {
+                state.posts[postIndex] = newPost;
+            }
         },
         toggleLike(state, action) {
             const { postId, userId } = action.payload;
             const postIndex = state.posts.findIndex(post => post.id === postId);
             if (postIndex !== -1) {
                 const post = state.posts[postIndex];
-                if (post.likes.includes(userId)) {
-                post.likes = post.likes.filter(id => id !== userId);
+                if (post.likesUser.includes(userId)) {
+                    post.likesUser = post.likesUser.filter(id => id !== userId);
+                    post.likes -= 1;
                 } else {
-                post.likes.push(userId);
+                    post.likesUser.push(userId);
+                    post.likes += 1;
                 }
             }
         },
@@ -30,18 +47,11 @@ const postSlice = createSlice({
                 state.posts.splice(postIndex, 1);
             }
         },
-        updatePost(state, action) {
-            const { newPost } = action.payload;
-            const postIndex = state.posts.findIndex(post => post.id === newPost.id);
-            if (postIndex!== -1) {
-                state.posts[postIndex] = newPost;
-            }
-        },
-        addPost(state, action) {
-            state.posts = [ action.payload, ...state.posts ];
+        Filter(state, action) {
+            state.posts = action.payload
         }
     },
 });
 
-export const { setPosts, toggleLike, deletePost, addPost } = postSlice.actions;
+export const { setPosts, toggleLike, deletePost, addPost, Filter } = postSlice.actions;
 export default postSlice.reducer;

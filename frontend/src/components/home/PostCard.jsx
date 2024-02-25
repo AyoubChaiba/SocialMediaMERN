@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart  } from "react-icons/fa6";
-import { AXIOS_CLIENT } from '../../api/axios';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
 import { deletePost, toggleLike } from '../../toolkit/postSlice';
 
@@ -31,7 +31,7 @@ const PostCard = ({ post, profile }) => {
         }
     };
 
-    const Likes = async () => {
+    const LikesPublication = async () => {
         try {
             await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${profile.id}`);
             dispatch(toggleLike({ postId: post.id, userId: profile.id }));
@@ -54,6 +54,22 @@ const PostCard = ({ post, profile }) => {
         }
     };
 
+    const SavedPublication = async () => {
+        try {
+            const response = await AXIOS_CLIENT.post(`/users/${profile.username}/save?postID=${post.id}`);
+            toast.success(response.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            // dispatch(toggleLike({ postId: post.id, userId: profile.id }));
+        } catch (error) {
+            if (error.response?.status === 401) {
+                toast.error(error.response.data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+        }
+    }
+
     return (
         <div className="feed shadow">
             <div className="top">
@@ -67,7 +83,7 @@ const PostCard = ({ post, profile }) => {
                     </div>
                 )}
                 <div className="menu">
-                    <FaBookmark className='save'/>
+                    <FaBookmark onClick={SavedPublication} className='save'/>
                     {profile.id === post.author.id &&
                         <>
                         <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
@@ -80,7 +96,7 @@ const PostCard = ({ post, profile }) => {
                 <p className="description">
                     {showMore ? post.description : `${post.description.slice(0,50)} `}
                     {post.description.length > 50 && (
-                    <span className="" onClick={() => setShowMore(!showMore)}>
+                        <span className="" onClick={() => setShowMore(!showMore)}>
                     {showMore ? ' less' : ' ...more'}
                     </span>
                 )}
@@ -88,9 +104,9 @@ const PostCard = ({ post, profile }) => {
                 { post.image && <img src={post.image} alt="Post Image"/>}
             </div>
             <div className="btn_react">
-                <button className="like" onClick={Likes}>
-                    { post.likes.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
-                    Like {post.likes.length>0 && post.likes.length }
+                <button className="like" onClick={LikesPublication}>
+                    { post.likesUser.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
+                    Like {post.likes> 0 && post.likes}
                 </button>
                 <button className="">Comment</button>
             </div>

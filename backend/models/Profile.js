@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 let ProfileSchema = mongoose.Schema({
+    fullName : {
+        type : String,
+        required : false,
+    },
     username : {
         type : String ,
         required : true ,
@@ -21,6 +25,10 @@ let ProfileSchema = mongoose.Schema({
         type : Number,
         default : 0,
     },
+    saved : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'publication'
+    }],
     followers : {
         type : Array,
         default : [],

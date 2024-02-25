@@ -41,6 +41,41 @@
                     border: 2px solid themed('border');
                 }
             }
+            hr {
+                border: 1px solid themed('border');
+                margin: 15px 0;
+            }
+            .link {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                background-color: themed("bgSoftTwo");
+                padding: 12px;
+                border-radius: 25px;
+                li {
+                    // background-color: themed('secondary');
+                    a {
+                        color: themed('textColor');
+                        font-size: 15px;
+                        font-weight: 600;
+                        display: flex;
+                        gap: 15px;
+                        border-radius: 15px;
+                        padding: 15px;
+                        transition: all .3s ease-in-out;
+                    }
+                    svg {
+                        font-size: 25px;
+                    }
+                    .active {
+                        background-color: themed("secondary");
+                        color: themed("text");
+                        svg {
+                            color: themed('text');
+                        }
+                    }
+                }
+            }
         }
         .center {
             flex: 6;
@@ -58,19 +93,49 @@
                     color: themed('textColor');
                 }
             }
-            >h1 {
+            h1 {
                 color: themed("textColor");
                 font-weight: 700;
                 font-size: 30px;
                 margin-left: 15px;
                 margin-bottom: 9px;
             }
+            .topFeed {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 9px 0;
+                .btnFeed {
+                    display: flex;
+                    gap: 15px;
+                    color: themed('textColor');
+                    button {
+                        background-color: themed('bgSoftTwo');
+                        padding: 8.5px 14px;
+                        border-radius: 15px;
+                        transition: background-color .5s ease-out;
+                    }
+                    .active {
+                        background-color: themed("primary");
+                        color: themed('text');
+                        svg {
+                            color: themed('text');
+                        }
+                    }
+
+                }
+            }
+            // #parentScrolldiv {
+            //     height: calc(100vh - 60px - 15px);
+            //     overflow: auto;
+            // }
             .feed {
                 padding: 15px;
                 background-color: themed('bgSoft');
                 color: themed('textColor');
                 border-radius: 25px;
                 padding: 25px 30px;
+                margin-top: 15px;
                 .top {
                     position: relative;
                     display: flex;
