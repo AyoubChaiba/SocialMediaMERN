@@ -25,6 +25,7 @@ export const User = async (req,res) => {
                     created : User.createdAt ,
                     update : User.updatedAt ,
                     avatar : `http://localhost:3000/images/${User.avatar}` ,
+                    favorite : User.saved
                 }
             })
         }

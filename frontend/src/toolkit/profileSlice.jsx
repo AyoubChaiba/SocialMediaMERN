@@ -18,6 +18,15 @@ export const profileSlice = createSlice({
         },
         setToken(state,action) {
             state.token = action.payload
+        },
+        profileFavorite(state, action) {
+            const { postId } = action.payload;
+            const indix = state.profile.favorite.indexOf(postId);
+            if (indix !== -1) {
+                state.profile.favorite = state.profile.favorite.filter(id => id !== postId)
+            }else {
+                state.profile.favorite.push(postId)
+            }
         }
     }
 })
@@ -25,6 +34,6 @@ export const profileSlice = createSlice({
 
 const profileReducer = profileSlice.reducer
 
-export const {setCurrentProfile , setLoginOut , setToken} = profileSlice.actions
+export const { setCurrentProfile, setLoginOut, setToken, profileFavorite  } = profileSlice.actions
 
 export default profileReducer

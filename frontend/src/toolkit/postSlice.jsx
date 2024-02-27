@@ -19,13 +19,6 @@ const postSlice = createSlice({
                 state.posts.unshift(action.payload);
             }
         },
-        updatePost(state, action) {
-            const { newPost } = action.payload;
-            const postIndex = state.posts.findIndex(post => post.id === newPost.id);
-            if (postIndex !== -1) {
-                state.posts[postIndex] = newPost;
-            }
-        },
         toggleLike(state, action) {
             const { postId, userId } = action.payload;
             const postIndex = state.posts.findIndex(post => post.id === postId);

@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart  } from "react-icons/fa6";
+import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart, FaRegBookmark  } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
-import { deletePost, toggleLike } from '../../toolkit/postSlice';
+import { deletePost, toggleLike, } from '../../toolkit/postSlice';
+import { toggleFavorite } from '../../toolkit/favoriteSlice';
+import { profileFavorite } from '../../toolkit/profileSlice';
 
 
 const PostCard = ({ post, profile }) => {
@@ -54,13 +56,14 @@ const PostCard = ({ post, profile }) => {
         }
     };
 
-    const SavedPublication = async () => {
+    const FavoriteSave = async () => {
         try {
             const response = await AXIOS_CLIENT.post(`/users/${profile.username}/save?postID=${post.id}`);
             toast.success(response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            // dispatch(toggleLike({ postId: post.id, userId: profile.id }));
+            dispatch(toggleFavorite({ postId: post.id, userId: profile.id }));
+            dispatch(profileFavorite({ postId: post.id }))
         } catch (error) {
             if (error.response?.status === 401) {
                 toast.error(error.response.data.message, {
@@ -83,13 +86,20 @@ const PostCard = ({ post, profile }) => {
                     </div>
                 )}
                 <div className="menu">
-                    <FaBookmark onClick={SavedPublication} className='save'/>
-                    {profile.id === post.author.id &&
-                        <>
-                        <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
-                        <FaTrash className="remove" type="button" onClick={DeletePublication}/>
-                        </>
+                    {
+                        profile.id === post.author.id  &&
+                            <div className='btn_remove_edit'>
+                                <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
+                                <FaTrash className="remove" type="button" onClick={DeletePublication}/>
+                            </div>
                     }
+                    <div className='btn_favorite'>
+                        {
+                            profile.favorite.includes(post.id)  ?
+                            <FaBookmark onClick={FavoriteSave} className='save'/> :
+                            <FaRegBookmark onClick={FavoriteSave} className='save' />
+                        }
+                    </div>
                 </div>
             </div>
             <div className='center'>
@@ -103,13 +113,15 @@ const PostCard = ({ post, profile }) => {
                 </p>
                 { post.image && <img src={post.image} alt="Post Image"/>}
             </div>
-            <div className="btn_react">
-                <button className="like" onClick={LikesPublication}>
-                    { post.likesUser.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
-                    Like {post.likes> 0 && post.likes}
-                </button>
-                <button className="">Comment</button>
-            </div>
+            {post?.likesUser &&
+                <div className="btn_react">
+                    <button className="like" onClick={LikesPublication}>
+                        { post?.likesUser.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
+                        Like {post.likes> 0 && post.likes}
+                    </button>
+                    <button className="">Comment</button>
+                </div>
+            }
         </div>
         );
     };

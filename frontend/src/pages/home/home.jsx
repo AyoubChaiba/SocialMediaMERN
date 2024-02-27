@@ -2,7 +2,7 @@ import { Routes, Route, Link, useMatch, useResolvedPath } from "react-router-dom
 import { ProfileCard } from '../../components';
 import FeedHome from '../../components/widgets/FeedHome';
 import EditPost from "../../components/widgets/editPost";
-import SavePost from "../../components/widgets/savePost";
+import FavoritePost from "../../components/widgets/favoritePost";
 import './home.scss';
 import { FaHouse, FaPanorama, FaBookmark, FaUsers } from "react-icons/fa6";
 import PropTypes from "prop-types";
@@ -32,7 +32,7 @@ const Home = () => {
                 <Routes>
                     <Route path="/" element={<FeedHome />} />
                     <Route path="/edit/:id" element={<EditPost />} />
-                    <Route path="/saved" element={<SavePost />} />
+                    <Route path="/saved" element={<FavoritePost />} />
                 </Routes>
             </div>
             <div className="right"></div>
