@@ -6,6 +6,7 @@ import FavoritePost from "../../components/widgets/favoritePost";
 import './home.scss';
 import { FaHouse, FaPanorama, FaBookmark, FaUsers } from "react-icons/fa6";
 import PropTypes from "prop-types";
+import Profile from "../../components/widgets/profile";
 
 const Home = () => {
     return (
@@ -33,6 +34,7 @@ const Home = () => {
                     <Route path="/" element={<FeedHome />} />
                     <Route path="/edit/:id" element={<EditPost />} />
                     <Route path="/saved" element={<FavoritePost />} />
+                    <Route path="/:username" element={<Profile />} />
                 </Routes>
             </div>
             <div className="right"></div>

@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { useSelector, useDispatch } from 'react-redux';
-import { setFavorite } from "../../toolkit/favoriteSlice";
 import PostCard from "../home/PostCard";
 import { FaCircleNotch } from "react-icons/fa";
 // import InfiniteScroll from 'react-infinite-scroll-component';
+import ProfileInfo from "../profiles/profileInfo";
+import { useParams } from 'react-router-dom';
+import { setProfile, setPostProfile } from "../../toolkit/profilesSlice";
 
-const FavoritePost = () => {
-    const { favorite, isValid } = useSelector(state => state.favorite);
+const Profile = () => {
+    const { posts, profile } = useSelector(state => state.profile);
     const { user } = useSelector(state => state.user);
     const dispatch = useDispatch();
-
+    const { username } = useParams("username")
 
     const [loading, setLoading] = useState(true);
+    // const [filter, setFilter] = useState("All");
     // const [page, setPage] = useState(1);
     // const [hasMore, setHasMore] = useState(true);
-
 
     useEffect(() => {
         const fetchPublications = async () => {
             try {
-                const response = await AXIOS_CLIENT.get(`/users/${user?.username}/save`);
-                const newPosts = response.data.favorite;
-                    dispatch(setFavorite(newPosts));
-                    // setHasMore(newPosts.length > 0);
+                const response = await AXIOS_CLIENT.get(`/users/${username}`);
+                const newPosts = response.data.profile;
+                dispatch(setProfile(newPosts.user));
+                dispatch(setPostProfile(newPosts.publication));
+                // setTimeout(() => {
+                //     setHasMore(newPosts.length > 0);
+                //     newPosts.length > 0 && dispatch(setPosts(newPosts));
+                // }, 2000);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -31,7 +37,7 @@ const FavoritePost = () => {
             }
         };
         fetchPublications();
-    }, [dispatch, user]);
+    }, [dispatch, username]);
 
     // const onLoadMore = () => {
     //     setPage(prevPage => prevPage + 1);
@@ -40,19 +46,23 @@ const FavoritePost = () => {
 
     return (
         <>
-            <h1>Favorite Post</h1>
+            <h1>Profile</h1>
             {loading ? (
                 <div className="loading">
                     <FaCircleNotch />
                 </div>
             ) : (
                 <>
-                    {favorite.map(favorite => (
-                        <PostCard key={favorite.id} post={favorite} user={user} isValid={isValid} />
-                    ))}
+                <ProfileInfo profile={profile} user={user}/>
+                <hr />
+                {
+                    posts.map(post => (
+                        <PostCard key={post.id} post={post} profile={profile} user={user} />
+                    ))
+                }
                 </>
                 // <InfiniteScroll
-                //         dataLength={favorite.length}
+                //         dataLength={posts.length}
                 //         next={onLoadMore}
                 //         hasMore={hasMore}
                 //         loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
@@ -62,8 +72,8 @@ const FavoritePost = () => {
                 //             </p>
                 //         }
                 //     >
-                //     {favorite.map(favorite => (
-                //         <PostCard key={favorite.id} post={favorite} profile={profile} />
+                //     {posts.map(post => (
+                //         <PostCard key={post.id} post={post} profile={profile} />
                 //     ))}
                 // </InfiniteScroll>
             )}
@@ -71,4 +81,4 @@ const FavoritePost = () => {
     );
 };
 
-export default FavoritePost;
+export default Profile;

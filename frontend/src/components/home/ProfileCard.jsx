@@ -4,20 +4,20 @@ import { useSelector } from 'react-redux';
 
 
 const ProfileCard = () => {
-    const { profile } = useSelector(state => state.profile) ;
+    const { user } = useSelector(state => state.user) ;
 
     return (
         <div className="profile">
-            <img src={profile?.avatar} alt={profile?.username} />
+            <img src={user?.avatar} alt={user?.username} />
             <div>
                 <h2>full name</h2>
-                <Link to={`/profile/${profile?.username}`}>@{profile?.username}</Link>
+                <Link to={`/${user?.username}`}>@{user?.username}</Link>
             </div>
         </div>
     );
 };
 
 ProfileCard.propTypes = {
-    profile: PropTypes.object,
+    user: PropTypes.object,
 }
 export default ProfileCard;

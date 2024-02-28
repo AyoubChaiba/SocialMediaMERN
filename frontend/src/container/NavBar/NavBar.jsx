@@ -5,16 +5,16 @@ import ProfileNav from "../../components/navbar/profileNav";
 import BtnConnect from "../../components/navbar/btnConnect";
 import { useEffect } from "react";
 import { useDispatch , useSelector } from "react-redux";
-import { setLoginOut , setCurrentProfile , setToken } from "../../toolkit/profileSlice";
+import { setLoginOut , setCurrentUser , setToken } from "../../toolkit/userSlice";
 import { toast } from 'react-toastify'
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
-import { FaMoon , FaSun , FaHouse } from "react-icons/fa6";
+import { FaMoon , FaSun } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";
 
 let NavBar = () => {
-    const { token , isLogin , profile } = useSelector(state => state.profile);
+    const { token , isLogin , user } = useSelector(state => state.user);
     const { mode } = useSelector(state => state.darkMode);
     const disPatch = useDispatch();
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ let NavBar = () => {
             try {
                 if (!token) return;
                 const response = await AXIOS_CLIENT.get('/auth/user');
-                disPatch(setCurrentProfile(response.data.profile));
+                disPatch(setCurrentUser(response.data.profile));
             } catch (error) {
                 if (error?.response?.status === 401) {
                     sessionStorage.removeItem('currentToken');
@@ -37,14 +37,14 @@ let NavBar = () => {
             }
         };
         getdata();
-    }, [token]);
+    }, [token, disPatch]);
 
 
     const loginOut = () => {
         sessionStorage.removeItem('currentToken');
         disPatch(setToken(''));
         disPatch(setLoginOut(false));
-        disPatch(setCurrentProfile(null));
+        disPatch(setCurrentUser(null));
         toast.success('Logged out successfully', {
             position: toast.POSITION.BOTTOM_RIGHT
         })
@@ -64,9 +64,9 @@ let NavBar = () => {
                         <h1>Logo</h1>
                     </div>
                     <div className="btn_menu">
-                        <Link to={'/'}>
+                        {/* <Link to={'/'}>
                             { <FaHouse />}
-                        </Link>
+                        </Link> */}
                         <button onClick={darkMode}>
                             { mode ? <FaSun />  : <FaMoon />}
                         </button>
@@ -76,7 +76,7 @@ let NavBar = () => {
                     <input type="search" />
                 </div>
                 <div className="right">
-                    { isLogin ? <ProfileNav profile={profile} loginOut={loginOut} /> :<BtnConnect />}
+                    { isLogin ? <ProfileNav user={user} loginOut={loginOut} /> :<BtnConnect />}
                 </div>
             </div>
         </nav>

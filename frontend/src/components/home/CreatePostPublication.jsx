@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { addPost } from '../../toolkit/postSlice';
 
-const CreatePostPublication = ({ profile }) => {
+const CreatePostPublication = ({ user }) => {
     const [Loading , setLoading] = useState(false);
     const dispatch = useDispatch()
 
@@ -41,7 +41,7 @@ const CreatePostPublication = ({ profile }) => {
       const formdata = new FormData();
       formdata.append('image', formData.image);
       formdata.append('description', formData.description);
-      const res = await AXIOS_CLIENT.post(`/publication/?userID=${profile.id}`, formdata);
+      const res = await AXIOS_CLIENT.post(`/publication/?userID=${user.id}`, formdata);
       dispatch(addPost(res.data.publication))
       toast.success(res.data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -66,7 +66,7 @@ return (
     <div className="create shadow-md">
       <form onSubmit={handleFormSubmit}>
         <div className='top'>
-            <img src={profile?.avatar} alt="" />
+            <img src={user?.avatar} alt="" />
           <textarea
             name="description"
             value={formData.description}
@@ -107,7 +107,7 @@ return (
 };
 
 CreatePostPublication.propTypes = {
-  profile: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default CreatePostPublication;

@@ -82,6 +82,10 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            hr {
+                border: 1px solid themed('border');
+                margin: 15px 0;
+            }
             .loading {
                 display: flex;
                 justify-content: center;
@@ -135,7 +139,7 @@
                 color: themed('textColor');
                 border-radius: 25px;
                 padding: 25px 30px;
-                margin-top: 15px;
+                margin-bottom: 15px;
                 .top {
                     position: relative;
                     display: flex;

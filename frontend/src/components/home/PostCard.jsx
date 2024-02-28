@@ -7,10 +7,10 @@ import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
 import { deletePost, toggleLike, } from '../../toolkit/postSlice';
 import { toggleFavorite } from '../../toolkit/favoriteSlice';
-import { profileFavorite } from '../../toolkit/profileSlice';
+import { userFavorite } from '../../toolkit/userSlice';
 
 
-const PostCard = ({ post, profile }) => {
+const PostCard = ({ post, user, profile }) => {
     const [showMore , setShowMore] = useState(false);
     const dispatch = useDispatch();
     const currentDate = new Date();
@@ -58,12 +58,12 @@ const PostCard = ({ post, profile }) => {
 
     const FavoriteSave = async () => {
         try {
-            const response = await AXIOS_CLIENT.post(`/users/${profile.username}/save?postID=${post.id}`);
+            const response = await AXIOS_CLIENT.post(`/users/${user.username}/save?postID=${post.id}`);
             toast.success(response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            dispatch(toggleFavorite({ postId: post.id, userId: profile.id }));
-            dispatch(profileFavorite({ postId: post.id }))
+            dispatch(toggleFavorite({ postId: post.id, userId: user.id }));
+            dispatch(userFavorite({ postId: post.id }))
         } catch (error) {
             if (error.response?.status === 401) {
                 toast.error(error.response.data.message, {
@@ -80,26 +80,28 @@ const PostCard = ({ post, profile }) => {
                     <div className="user">
                         <img src={post.author.avatar} alt={post.author.username}/>
                         <div>
-                            <h2 className="">{post.author.username}</h2>
-                            <span className="">{time()}</span>
+                            <Link to={`/${post.author.username}`}><h2>{post.author.username}</h2></Link>
+                            <span>{time()}</span>
                         </div>
                     </div>
                 )}
                 <div className="menu">
                     {
-                        profile.id === post.author.id  &&
+                        user.id === post.author.id  &&
                             <div className='btn_remove_edit'>
                                 <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
                                 <FaTrash className="remove" type="button" onClick={DeletePublication}/>
                             </div>
                     }
-                    <div className='btn_favorite'>
-                        {
-                            profile.favorite.includes(post.id)  ?
-                            <FaBookmark onClick={FavoriteSave} className='save'/> :
-                            <FaRegBookmark onClick={FavoriteSave} className='save' />
-                        }
-                    </div>
+                    {
+                    user.favorite &&
+                        <div className='btn_favorite'>{
+                            user.favorite.includes(post.id)  ?
+                                <FaBookmark onClick={FavoriteSave} className='save'/> :
+                                <FaRegBookmark onClick={FavoriteSave} className='save' />
+                            }
+                        </div>
+                    }
                 </div>
             </div>
             <div className='center'>
@@ -116,7 +118,7 @@ const PostCard = ({ post, profile }) => {
             {post?.likesUser &&
                 <div className="btn_react">
                     <button className="like" onClick={LikesPublication}>
-                        { post?.likesUser.includes(profile.id) ? <FaHeart className='active' /> : <FaRegHeart />}
+                        { post?.likesUser.includes(user.id) ? <FaHeart className='active' /> : <FaRegHeart />}
                         Like {post.likes> 0 && post.likes}
                     </button>
                     <button className="">Comment</button>
@@ -128,6 +130,7 @@ const PostCard = ({ post, profile }) => {
 
 PostCard.propTypes = {
     post: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
 };
 

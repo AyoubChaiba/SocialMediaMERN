@@ -9,5 +9,5 @@ export {default as CreatePostPublication} from './home/CreatePostPublication.jsx
 // profile components
 // export {default as UserProfileForm} from './profile/UserProfileForm.jsx';
 // export {default as UserProfileDetails} from './profile/UserProfileDetails';
-export {default as Post} from './profile/Post';
-export {default as Profile} from './profile/Profile';
+// export {default as Post} from './profile/Post';
+// export {default as Profile} from './profile/Profile';

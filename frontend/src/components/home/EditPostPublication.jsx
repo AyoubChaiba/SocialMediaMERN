@@ -34,7 +34,7 @@ const EditPostPublication = () => {
         }
       }
       getData()
-    },[id])
+    },[id, formData])
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;

@@ -1,15 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import profileReducer from "./toolkit/profileSlice";
+import userReducer from "./toolkit/userSlice";
 import darkModeReducer from "./toolkit/darkModeSlice";
 import postReducer from "./toolkit/postSlice";
 import favoriteReducer from "./toolkit/favoriteSlice";
+import profileReducer from "./toolkit/profilesSlice";
 
 const store = configureStore({
     reducer : {
-        profile : profileReducer ,
+        user : userReducer ,
         darkMode : darkModeReducer,
         posts : postReducer,
-        favorite : favoriteReducer
+        favorite : favoriteReducer,
+        profile : profileReducer,
     }
 })
 

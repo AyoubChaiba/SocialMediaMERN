@@ -9,7 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const FeedHome = () => {
     const { posts } = useSelector(state => state.posts);
-    const { profile } = useSelector(state => state.profile);
+    const { user } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(true);
@@ -72,7 +72,7 @@ const FeedHome = () => {
     return (
         <>
             <h1>Create Post</h1>
-            <CreatePostPublication profile={profile} />
+            <CreatePostPublication user={user} />
             <div className="topFeed">
                 <h1>Home Feed</h1>
                 <div className="btnFeed">
@@ -98,7 +98,7 @@ const FeedHome = () => {
                         }
                     >
                     {posts.map(post => (
-                        <PostCard key={post.id} post={post} profile={profile} />
+                        <PostCard key={post.id} post={post} user={user} />
                     ))}
                 </InfiniteScroll>
             )}

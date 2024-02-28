@@ -16,19 +16,27 @@ export const getUser = async (req, res) => {
             return res.status(200).json({
                 message: "User found",
                 profile: {
-                    id: user._id,
-                    username: user.username,
-                    email: user.email,
-                    created: user.createdAt,
-                    updated: user.updatedAt,
-                    avatar: `http://localhost:3000/images/${user.avatar}`,
+                    user : {
+                        id: user._id,
+                        username: user.username,
+                        email: user.email,
+                        created: user.createdAt,
+                        updated: user.updatedAt,
+                        avatar: `http://localhost:3000/images/${user.avatar}`,
+                    },
                     publication: publications.map(publication => ({
                         id: publication._id,
-                        title: publication.title,
                         image: publication.image ? `http://localhost:3000/images/${publication.image}` : undefined,
                         description: publication.description,
-                        date_create: publication.createdAt,
-                        date_update: publication.updatedAt,
+                        date_create : publication.createdAt,
+                        date_update : publication.updatedAt,
+                        likesUser : publication.likesUser,
+                        likes : publication.likes,
+                        author: {
+                            id: user._id,
+                            username: user.username,
+                            avatar: `http://localhost:3000/images/${user.avatar}`,
+                        },
                     }))
                 }
             });
