@@ -53,11 +53,11 @@ const Profile = () => {
                 </div>
             ) : (
                 <>
-                <ProfileInfo profile={profile} user={user}/>
+                <ProfileInfo profile={profile} user={user} postLength={posts.length}/>
                 <hr />
                 {
                     posts.map(post => (
-                        <PostCard key={post.id} post={post} profile={profile} user={user} />
+                        <PostCard key={post.id} post={post} user={user} />
                     ))
                 }
                 </>

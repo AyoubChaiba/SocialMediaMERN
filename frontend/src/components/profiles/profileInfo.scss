@@ -36,31 +36,55 @@
                     font-size: 15px;
                     color: themed('textColorSoft');
                 }
+                p {
+                    color: themed('textColorSoft');
+                    margin: 7px 0;
+                }
             }
-        }
-        .profile-stats {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            li {
+            .profile-stats {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    color: themed('textColorSoft');
+                    span {
+                        font-weight: 700;
+                        color: themed('primary');
+                    }
+                    // svg {
+                    //     margin: 0 5px;
+                    //     font-size: 25px;
+                    //     color: themed('textColorSoft');
+                    // }
+                    // button {
+                    //     svg {
+                    //         font-size: 24px;
+                    //         color: themed('dark-mode');
+                    //         cursor: pointer;
+                    //     }
+                    // }
+                }
+            }
+            .profile-btn {
+                margin-top: 20px ;
                 display: flex;
                 align-items: center;
                 gap: 15px;
-                color: themed('textColorSoft');
-                svg {
-                    margin: 0 5px;
-                    font-size: 25px;
-                    color: themed('textColorSoft');
-                }
                 button {
-                    svg {
-                        font-size: 24px;
-                        color: themed('dark-mode');
-                        cursor: pointer;
-                    }
+                    display: flex;
+                    gap: 10px;
+                    background-color: themed('primary');
+                    padding:  5px 15px;
+                    border-radius: 5px;
+                    color: themed('text');
+                    cursor: pointer;
                 }
             }
         }
+
     }
 }

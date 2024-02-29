@@ -1,7 +1,7 @@
 import './profileInfo.scss'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const ProfileInfo = ({ profile }) => {
+const ProfileInfo = ({ profile, postLength, user }) => {
     return (
         <div className="post-list">
             <div className="profile-avatar">
@@ -13,11 +13,19 @@ const ProfileInfo = ({ profile }) => {
                 <div className="profile-name">
                     <h2>full name</h2>
                     <span>@{profile?.username}</span>
+                    <p>{profile?.email}</p>
                 </div>
                 <ul className="profile-stats">
-                    <li>post 5</li>
-                    <li>followers 1000</li>
-                    <li>following 5000</li>
+                    <li>post<span>{postLength}</span></li>
+                    <li>followers <span>1555</span></li>
+                    <li>following <span>800</span></li>
+                </ul>
+                <ul className='profile-btn'>
+                    {
+                        profile.id === user.id  ?
+                        <li><button>Edit Profile</button></li>:
+                        <li><button>Follow</button></li>
+                    }
                 </ul>
             </div>
         </div>
@@ -25,7 +33,9 @@ const ProfileInfo = ({ profile }) => {
 }
 
 ProfileInfo.propTypes = {
-    profile : PropTypes.object.isRequired
+    profile : PropTypes.object.isRequired,
+    postLength : PropTypes.number.isRequired,
+    user : PropTypes.object.isRequired,
 }
 
 export default ProfileInfo

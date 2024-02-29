@@ -14,7 +14,7 @@ export const profileSlice = createSlice({
         },
         setPostProfile(state, action) {
             state.posts = action.payload
-        }
+        },
     }
 })
 

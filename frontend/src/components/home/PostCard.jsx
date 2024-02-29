@@ -10,7 +10,7 @@ import { toggleFavorite } from '../../toolkit/favoriteSlice';
 import { userFavorite } from '../../toolkit/userSlice';
 
 
-const PostCard = ({ post, user, profile }) => {
+const PostCard = ({ post, user }) => {
     const [showMore , setShowMore] = useState(false);
     const dispatch = useDispatch();
     const currentDate = new Date();
@@ -35,8 +35,8 @@ const PostCard = ({ post, user, profile }) => {
 
     const LikesPublication = async () => {
         try {
-            await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${profile.id}`);
-            dispatch(toggleLike({ postId: post.id, userId: profile.id }));
+            await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${user.id}`);
+            dispatch(toggleLike({ postId: post.id, userId: user.id }));
         } catch (error) {
             console.error(error);
         }
@@ -45,7 +45,7 @@ const PostCard = ({ post, user, profile }) => {
     const DeletePublication = async () => {
         if (confirm('delete publication')) {
             try {
-                const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userID=${profile.id}`);
+                const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userID=${user.id}`);
                 dispatch(deletePost({ postId: post.id }));
                 toast.success(res.data.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
@@ -131,7 +131,6 @@ const PostCard = ({ post, user, profile }) => {
 PostCard.propTypes = {
     post: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired,
 };
 
 export default PostCard;
