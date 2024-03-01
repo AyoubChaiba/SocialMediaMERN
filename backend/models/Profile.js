@@ -29,14 +29,8 @@ let ProfileSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'publication'
     }],
-    // followers : {
-    //     type : Array,
-    //     default : [],
-    // },
-    // following : {
-    //     type : Array,
-    //     default : [],
-    // }
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
 },{
     timestamps : true
 }) ;

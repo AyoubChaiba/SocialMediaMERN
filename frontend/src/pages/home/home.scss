@@ -15,13 +15,17 @@
             top: calc(60px + 15px);
             height: calc(100vh - 60px - 30px);
             padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            >div {
+                background-color: themed("bgSoftTwo");
+                padding: 12px;
+                border-radius: 25px;
+            }
             .profile {
                 display: flex;
                 align-items: center;
                 // margin: 5px 9px;
-                background-color: themed("bgSoftTwo");
-                padding: 12px;
-                border-radius: 25px;
                 gap: 15px;
                 h2 {
                     font-size: 19px;
@@ -49,9 +53,6 @@
                 display: flex;
                 flex-direction: column;
                 gap: 15px;
-                background-color: themed("bgSoftTwo");
-                padding: 12px;
-                border-radius: 25px;
                 li {
                     // background-color: themed('secondary');
                     a {
@@ -73,6 +74,44 @@
                         svg {
                             color: themed('text');
                         }
+                    }
+                }
+            }
+            .following {
+                height: 100%;
+                overflow-y: auto;
+                >ul {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    padding: 9px 10px;
+                    li {
+                        background-color: themed('bgSoftTwo');
+                        display: flex;
+                        gap: 15px;
+                        align-items: center;
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+                        h2 {
+                            font-size: 15px;
+                            font-weight: 400;
+                            color: themed('textColor');
+                            margin-top: -5px;
+                        }
+                        // a {
+                        //     color: themed('textColor');
+                        //     font-size: 15px;
+                        //     font-weight: 600;
+                        //     display: flex;
+                        //     gap: 15px;
+                        //     border-radius: 15px;
+                        //     padding: 15px;
+                        //     transition: all.3s ease-in-out;
+                        // }
                     }
                 }
             }
@@ -156,12 +195,21 @@
                             object-fit: cover;
                             border: 2px solid themed('border');
                         }
-                        h2 {
-                            font-size: 17px;
-                            font-weight: 700;
-                            margin-bottom: -5px;
+                        >div>div {
+                            display: flex;
+                            gap: 15px;
+                            h2 {
+                                font-size: 17px;
+                                font-weight: 700;
+                                margin-bottom: -5px;
+                            }
+                            button {
+                                color: themed('primary');
+                                font-weight: 500;
+                            }
                         }
                         span {
+                            display: block;
                             font-size: 12px;
                             font-weight: 500;
                             color: themed('textColorSoft');
@@ -185,7 +233,7 @@
                             font-size: 18px;
                             cursor: pointer;
                         }
-                        .save {
+                        .save-Active {
                             color: themed("primary");
                         }
                         .remove {

@@ -6,6 +6,7 @@ import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart, FaRegBookm
 import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
 import { deletePost, toggleLike, } from '../../toolkit/postSlice';
+import { deleteProfilePost, postProfileLike, } from '../../toolkit/profilesSlice';
 import { toggleFavorite } from '../../toolkit/favoriteSlice';
 import { userFavorite } from '../../toolkit/userSlice';
 
@@ -37,6 +38,7 @@ const PostCard = ({ post, user }) => {
         try {
             await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${user.id}`);
             dispatch(toggleLike({ postId: post.id, userId: user.id }));
+            dispatch(postProfileLike({ postId: post.id, userId: user.id }));
         } catch (error) {
             console.error(error);
         }
@@ -47,6 +49,7 @@ const PostCard = ({ post, user }) => {
             try {
                 const res = await AXIOS_CLIENT.delete(`/publication/${post.id}?userID=${user.id}`);
                 dispatch(deletePost({ postId: post.id }));
+                dispatch(deleteProfilePost({ postId: post.id }));
                 toast.success(res.data.message, {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
@@ -73,17 +76,47 @@ const PostCard = ({ post, user }) => {
         }
     }
 
+    const FollowUser = async () => {
+        try {
+            const response = await AXIOS_CLIENT.post(`/users/follow/${post.author.id}`);
+            toast.success(response.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            // dispatch(toggleFavorite({ postId: post.id, userId: user.id }));
+            // dispatch(userFavorite({ postId: post.id }))
+        } catch (error) {
+            if (error.response?.status === 401) {
+                toast.error(error.response.data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+        }
+    }
+
     return (
         <div className="feed shadow">
             <div className="top">
                 {post.author && (
                     <div className="user">
-                        <img src={post.author.avatar} alt={post.author.username}/>
+                        <img src={post.author.avatar} alt={post.author.username} />
+                    <div>
                         <div>
-                            <Link to={`/${post.author.username}`}><h2>{post.author.username}</h2></Link>
-                            <span>{time()}</span>
+                        {user && (
+                            <Link to={`/${post.author.username}`}>
+                            <h2>{post.author.username}</h2>
+                            </Link>
+                        )}
+                        {user &&
+                            post.author.id !== user.id  && (
+                                user.following.filter(e => e.id === post.author.id).length === 0 ?
+                                <button key={post.author.id} onClick={FollowUser}>Follow</button> :
+                                <button key={post.author.id} onClick={FollowUser}>unFollow</button>
+                            )
+                            }
                         </div>
+                        <span>{time()}</span>
                     </div>
+                </div>
                 )}
                 <div className="menu">
                     {
@@ -97,7 +130,7 @@ const PostCard = ({ post, user }) => {
                     user.favorite &&
                         <div className='btn_favorite'>{
                             user.favorite.includes(post.id)  ?
-                                <FaBookmark onClick={FavoriteSave} className='save'/> :
+                                <FaBookmark onClick={FavoriteSave} className='save-Active'/> :
                                 <FaRegBookmark onClick={FavoriteSave} className='save' />
                             }
                         </div>
@@ -106,10 +139,10 @@ const PostCard = ({ post, user }) => {
             </div>
             <div className='center'>
                 <p className="description">
-                    {showMore ? post.description : `${post.description.slice(0,50)} `}
-                    {post.description.length > 50 && (
-                        <span className="" onClick={() => setShowMore(!showMore)}>
-                    {showMore ? ' less' : ' ...more'}
+                    {showMore ? post.description : `${post.description.slice(0,200)} `}
+                    {post.description.length > 200 && (
+                    <span className="" onClick={() => setShowMore(!showMore)}>
+                        {showMore ? ' less' : ' ...more'}
                     </span>
                 )}
                 </p>

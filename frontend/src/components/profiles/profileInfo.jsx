@@ -17,8 +17,8 @@ const ProfileInfo = ({ profile, postLength, user }) => {
                 </div>
                 <ul className="profile-stats">
                     <li>post<span>{postLength}</span></li>
-                    <li>followers <span>1555</span></li>
-                    <li>following <span>800</span></li>
+                    <li>followers <span>{profile.followers.length}</span></li>
+                    <li>following <span>{profile.following.length}</span></li>
                 </ul>
                 <ul className='profile-btn'>
                     {

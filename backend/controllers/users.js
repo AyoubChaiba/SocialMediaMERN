@@ -23,6 +23,8 @@ export const getUser = async (req, res) => {
                         created: user.createdAt,
                         updated: user.updatedAt,
                         avatar: `http://localhost:3000/images/${user.avatar}`,
+                        followers: user.followers,
+                        following: user.following,
                     },
                     publication: publications.map(publication => ({
                         id: publication._id,
@@ -48,7 +50,7 @@ export const getUser = async (req, res) => {
     }
 }
 
-export const uodateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
     try {
         let id = req.params.id;
         let avatar = req?.file?.filename;
@@ -132,3 +134,74 @@ export const getFavorite = async (req, res) => {
         }),
     });
 };
+
+
+export const follow = async (req, res) => {
+    const { userId } = req.profile;
+    const { id } = req.params;
+    try {
+        const user = await Profile.findById(id);
+        if (!user) {
+            return res.status(404).json({
+            message: "User not found",
+            });
+        }
+        user.followers.addToSet(userId);
+        await user.save();
+        const profile = await Profile.findById(userId);
+        profile.following.addToSet(id);
+        await profile.save();
+        res.json({
+            message: "Followed user successfully"
+        });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+export const unfollow = async (req, res) => {
+    const { userId } = req.profile;
+    const { id } = req.params;
+    try {
+        const user = await Profile.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.followers.pull(userId);
+        await user.save();
+        const profile = await Profile.findById(userId);
+        profile.following.pull(id);
+        await profile.save();
+            res.json({ message: 'Unfollowed user successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+};
+
+
+
+// router.post('/unfollow/:id', (req, res) => {
+//   User.findById(req.params.id, (err, user) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       user.followers = user.followers.filter((follower) => follower._id != req.user._id);
+//       user.save((err) => {
+//         if (err) {
+//           res.send(err);
+//         } else {
+//           req.user.following = req.user.following.filter((following) => following._id != req.params.id);
+//           req.user.save((err) => {
+//             if (err) {
+//               res.send(err);
+//             } else {
+//               res.json({ message: 'Unfollowed user successfully' });
+//             }
+//           });
+//         }
+//       });
+//     }
+//   });
+// });
+
