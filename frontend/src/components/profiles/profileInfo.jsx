@@ -16,7 +16,7 @@ const ProfileInfo = ({ profile, postLength, user }) => {
                     <p>{profile?.email}</p>
                 </div>
                 <ul className="profile-stats">
-                    <li>post<span>{postLength}</span></li>
+                    <li>post <span>{postLength}</span></li>
                     <li>followers <span>{profile.followers.length}</span></li>
                     <li>following <span>{profile.following.length}</span></li>
                 </ul>
@@ -24,7 +24,11 @@ const ProfileInfo = ({ profile, postLength, user }) => {
                     {
                         profile.id === user.id  ?
                         <li><button>Edit Profile</button></li>:
-                        <li><button>Follow</button></li>
+                        (
+                            user.following.filter(e => e.id === profile.id).length === 0 ?
+                            <button key={profile.id} >Follow</button> :
+                            <button key={profile.id} >unFollow</button>
+                        )
                     }
                 </ul>
             </div>

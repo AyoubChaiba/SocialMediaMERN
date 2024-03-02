@@ -357,6 +357,53 @@
             position: sticky;
             top: calc(60px + 15px);
             height: calc(100vh - 60px - 30px);
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            >div {
+                background-color: themed("bgSoftTwo");
+                padding: 12px;
+                border-radius: 25px;
+            }
+            .list-people {
+                height: calc(100% / 2);
+                overflow-y: auto;
+                .list-group {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    li {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        background-color: themed('bgSoft');
+                        padding: 15px 5px;
+                        width: calc((100% - 10px) / 2);
+                        border-radius: 15px;
+                        -webkit-border-radius: 15px;
+                        -moz-border-radius: 15px;
+                        -ms-border-radius: 15px;
+                        -o-border-radius: 15px;
+                        h2 {
+                            font-size: 13px;
+                            margin: 9px 0;
+                            color: themed("textColor");
+                        }
+                        button {
+                            color: themed("primary");
+                            font-size: 13px;
+                            font-weight: 500;
+                        }
+                        img{
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            border: 2px solid themed("border");
+                        }
+                    }
+                }
+            }
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }

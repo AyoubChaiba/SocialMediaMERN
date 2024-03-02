@@ -159,7 +159,7 @@ export const follow = async (req, res) => {
     }
 }
 
-export const unfollow = async (req, res) => {
+export const unFollow = async (req, res) => {
     const { userId } = req.profile;
     const { id } = req.params;
     try {
@@ -172,36 +172,36 @@ export const unfollow = async (req, res) => {
         const profile = await Profile.findById(userId);
         profile.following.pull(id);
         await profile.save();
-            res.json({ message: 'Unfollowed user successfully' });
+        res.json({ message: 'UnFollowed user successfully' });
         } catch (err) {
             console.error(err);
             res.status(500).send(err);
         }
 };
 
+export const getPeople = async (req, res) => {
+    const { userId } = req.profile;
+    try {
+        const user = await Profile.findById(userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        const followingIds = user.following.map((follower) => follower._id);
+        followingIds.push(userId)
+        console.log(followingIds)
+        const people = await Profile.find({ _id: { $nin: followingIds } }, 'username avatar');
+    return  res.json({
+        people : people.map((person) => {
+            return {
+                id : person.id,
+                username : person.username,
+                avatar : `http://localhost:3000/images/${person.avatar}`,
+            }
+        })
+    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+};
 
 
-// router.post('/unfollow/:id', (req, res) => {
-//   User.findById(req.params.id, (err, user) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       user.followers = user.followers.filter((follower) => follower._id != req.user._id);
-//       user.save((err) => {
-//         if (err) {
-//           res.send(err);
-//         } else {
-//           req.user.following = req.user.following.filter((following) => following._id != req.params.id);
-//           req.user.save((err) => {
-//             if (err) {
-//               res.send(err);
-//             } else {
-//               res.json({ message: 'Unfollowed user successfully' });
-//             }
-//           });
-//         }
-//       });
-//     }
-//   });
-// });
 

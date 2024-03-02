@@ -1,6 +1,7 @@
-import { FaHouse, FaPanorama, FaBookmark, FaUsers } from "react-icons/fa6";
+import { FaHouse, FaBookmark, FaUsers, FaHashtag } from "react-icons/fa6";
 import PropTypes from 'prop-types'
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
+
 
 const SideBarLink = () => {
     return (
@@ -13,7 +14,7 @@ const SideBarLink = () => {
                     <CustomLink to={'/saved'}><FaBookmark />Saved</CustomLink>
                 </li>
                 <li>
-                    <CustomLink to={'/explore'}><FaPanorama />Explore</CustomLink>
+                    <CustomLink to={'/explore'}><FaHashtag />Tags</CustomLink>
                 </li>
                 <li>
                     <CustomLink to={'/people'}><FaUsers />People</CustomLink>

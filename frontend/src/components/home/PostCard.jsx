@@ -120,14 +120,11 @@ const PostCard = ({ post, user }) => {
                 )}
                 <div className="menu">
                     {
-                        user.id === post.author.id  &&
+                        user.id === post.author.id  ?
                             <div className='btn_remove_edit'>
                                 <Link to={`/edit/${post.id}`}><FaPenToSquare className="edit" /></Link>
                                 <FaTrash className="remove" type="button" onClick={DeletePublication}/>
-                            </div>
-                    }
-                    {
-                    user.favorite &&
+                            </div> : user.favorite &&
                         <div className='btn_favorite'>{
                             user.favorite.includes(post.id)  ?
                                 <FaBookmark onClick={FavoriteSave} className='save-Active'/> :

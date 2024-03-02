@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-const Frindes = () => {
+const Friends = () => {
     const { user } = useSelector(state => state.user);
     return (
         <div className="following">
@@ -20,4 +20,4 @@ const Frindes = () => {
     )
 }
 
-export default Frindes
+export default Friends

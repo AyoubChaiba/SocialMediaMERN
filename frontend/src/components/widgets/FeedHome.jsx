@@ -45,7 +45,7 @@ const FeedHome = () => {
         setPage(prevPage => prevPage + 1);
     };
 
-    const hendleChangeFilter = async (e) => {
+    const handleChangeFilter = async (e) => {
         const newFilter = e.target.value;
         if (filter === newFilter) return;
         try {
@@ -76,9 +76,9 @@ const FeedHome = () => {
             <div className="topFeed">
                 <h1>Home Feed</h1>
                 <div className="btnFeed">
-                    <button onClick={hendleChangeFilter} value={"All"} className={`${filter === "All" ? "active" : ""}`}>All</button>
-                    <button onClick={hendleChangeFilter} value={"Relevant"} className={`${filter === "Relevant" ? "active" : ""}`}>Relevant</button>
-                    <button onClick={hendleChangeFilter} value={"Top"} className={`${filter === "Top" ? "active" : ""}`}>Top</button>
+                    <button onClick={handleChangeFilter} value={"All"} className={`${filter === "All" ? "active" : ""}`}>All</button>
+                    <button onClick={handleChangeFilter} value={"Relevant"} className={`${filter === "Relevant" ? "active" : ""}`}>Relevant</button>
+                    <button onClick={handleChangeFilter} value={"Top"} className={`${filter === "Top" ? "active" : ""}`}>Top</button>
                 </div>
             </div>
             {loading ? (

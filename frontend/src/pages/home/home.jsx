@@ -6,7 +6,8 @@ import FavoritePost from "../../components/widgets/favoritePost";
 import './home.scss';
 import Profile from "../../components/widgets/profile";
 import SideBarLink from "../../components/widgets/sideBarLink";
-import Frindes from "../../components/widgets/frindes";
+import Friends from "../../components/widgets/friends";
+import People from "../../components/widgets/people";
 
 const Home = () => {
     return (
@@ -15,8 +16,8 @@ const Home = () => {
                 <ProfileCard />
                     <hr />
                 <SideBarLink />
-                <hr />
-                <Frindes />
+                    <hr />
+                <Friends />
             </div>
             <div className="center">
                 <Routes>
@@ -26,7 +27,9 @@ const Home = () => {
                     <Route path="/:username" element={<Profile />} />
                 </Routes>
             </div>
-            <div className="right"></div>
+            <div className="right">
+                <People />
+            </div>
         </div>
     );
 };

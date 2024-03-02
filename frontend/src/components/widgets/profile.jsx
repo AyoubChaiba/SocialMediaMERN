@@ -46,7 +46,6 @@ const Profile = () => {
 
     return (
         <>
-            <h1>Profile</h1>
             {loading ? (
                 <div className="loading">
                     <FaCircleNotch />

@@ -1,6 +1,6 @@
 import express from 'express' ;
 import { auth } from '../middleware/auth.js';
-import { getUser, updateUser, favoritePost, getFavorite, follow, unfollow } from '../controllers/users.js';
+import { getUser, updateUser, favoritePost, getFavorite, follow, unFollow, getPeople } from '../controllers/users.js';
 import upload from '../middleware/upload.js';
 
 
@@ -12,7 +12,9 @@ usersRoutes.put('/:id', auth , upload.single('avatar') , updateUser );
 usersRoutes.post('/:username/save', auth, favoritePost)
 usersRoutes.get('/:username/save', auth, getFavorite)
 usersRoutes.post('/follow/:id', auth, follow)
-usersRoutes.post('/unfollow/:id', auth, unfollow)
+usersRoutes.post('/unFollow/:id', auth, unFollow)
+usersRoutes.get('/people/follow', auth, getPeople)
+
 
 
 
