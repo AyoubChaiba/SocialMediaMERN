@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { deletePost, toggleLike, } from '../../toolkit/postSlice';
 import { deleteProfilePost, postProfileLike, } from '../../toolkit/profilesSlice';
 import { toggleFavorite } from '../../toolkit/favoriteSlice';
-import { userFavorite } from '../../toolkit/userSlice';
+import { userFavorite, removefollow, addfollow } from '../../toolkit/userSlice';
 
 
 const PostCard = ({ post, user }) => {
@@ -82,8 +82,27 @@ const PostCard = ({ post, user }) => {
             toast.success(response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
             });
-            // dispatch(toggleFavorite({ postId: post.id, userId: user.id }));
-            // dispatch(userFavorite({ postId: post.id }))
+            dispatch(addfollow({
+                id : post.author.id,
+                username : post.author.username,
+                avatar : post.author.avatar
+            }));
+        } catch (error) {
+            if (error.response?.status === 401) {
+                toast.error(error.response.data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+        }
+    }
+
+    const UnFollowUser = async () => {
+        try {
+            const response = await AXIOS_CLIENT.post(`/users/unFollow/${post.author.id}`);
+            toast.success(response.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            dispatch(removefollow(post.author.id));
         } catch (error) {
             if (error.response?.status === 401) {
                 toast.error(error.response.data.message, {
@@ -102,15 +121,13 @@ const PostCard = ({ post, user }) => {
                     <div>
                         <div>
                         {user && (
-                            <Link to={`/${post.author.username}`}>
-                            <h2>{post.author.username}</h2>
-                            </Link>
+                            <Link to={`/${post.author.username}`}><h2>{post.author.username}</h2></Link>
                         )}
                         {user &&
                             post.author.id !== user.id  && (
                                 user.following.filter(e => e.id === post.author.id).length === 0 ?
                                 <button key={post.author.id} onClick={FollowUser}>Follow</button> :
-                                <button key={post.author.id} onClick={FollowUser}>unFollow</button>
+                                <button key={post.author.id} onClick={UnFollowUser}>unFollow</button>
                             )
                             }
                         </div>

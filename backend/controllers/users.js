@@ -172,7 +172,7 @@ export const unFollow = async (req, res) => {
         const profile = await Profile.findById(userId);
         profile.following.pull(id);
         await profile.save();
-        res.json({ message: 'UnFollowed user successfully' });
+        return res.json({ message: 'UnFollowed user successfully' });
         } catch (err) {
             console.error(err);
             res.status(500).send(err);
@@ -186,17 +186,17 @@ export const getPeople = async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
         const followingIds = user.following.map((follower) => follower._id);
         followingIds.push(userId)
-        console.log(followingIds)
+        // console.log(followingIds)
         const people = await Profile.find({ _id: { $nin: followingIds } }, 'username avatar');
-    return  res.json({
-        people : people.map((person) => {
-            return {
-                id : person.id,
-                username : person.username,
-                avatar : `http://localhost:3000/images/${person.avatar}`,
-            }
-        })
-    });
+        return  res.json({
+            people : people.map((person) => {
+                return {
+                    id : person.id,
+                    username : person.username,
+                    avatar : `http://localhost:3000/images/${person.avatar}`,
+                }
+            })
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send(err);

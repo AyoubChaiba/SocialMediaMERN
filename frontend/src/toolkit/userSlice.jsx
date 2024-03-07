@@ -27,6 +27,12 @@ export const userSlice = createSlice({
             }else {
                 state.user.favorite.push(postId)
             }
+        },
+        removefollow(state, action) {
+            state.user.following = state.user.following.filter(item => item.id !== action.payload);
+        },
+        addfollow(state, action) {
+            state.user.following = [ ...state.user.following, action.payload];
         }
     }
 })
@@ -34,6 +40,6 @@ export const userSlice = createSlice({
 
 const userReducer = userSlice.reducer
 
-export const { setCurrentUser, setLoginOut, setToken, userFavorite  } = userSlice.actions
+export const { setCurrentUser, setLoginOut, setToken, userFavorite, removefollow, addfollow  } = userSlice.actions
 
 export default userReducer

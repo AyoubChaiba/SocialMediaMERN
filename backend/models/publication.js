@@ -23,7 +23,7 @@ let PublicationSchema = mongoose.Schema({
         default: 0
     },
     // comments : {
-    //     type : Array,
+    //     type : mongoose.Schema.Types.ObjectId,
     //     default: []
     // }
 },{
