@@ -160,6 +160,13 @@ const PostCard = ({ post, user }) => {
                     </span>
                 )}
                 </p>
+                <div className='tags'>
+                    { post.tags &&
+                        post.tags.map(e => {
+                            return <span key={e.id}>{e.name}</span>
+                        })
+                    }
+                </div>
                 { post.image && <img src={post.image} alt="Post Image"/>}
             </div>
             {post?.likesUser &&

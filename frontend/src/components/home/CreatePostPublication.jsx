@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify'
-import { FaSpinner , FaImage , FaShare  } from "react-icons/fa6";
+import { FaSpinner , FaImage , FaShare, FaHashtag  } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -8,19 +8,22 @@ import { addPost } from '../../toolkit/postSlice';
 
 const CreatePostPublication = ({ user }) => {
     const [Loading , setLoading] = useState(false);
+    const [ btnActive , setActive] = useState(false);
     const dispatch = useDispatch()
 
     const [formData, setFormData] = useState({
       description: '',
       image: undefined,
       imageUrl: '',
+      tags: '',
     });
+
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
+        [name]: value || '',
       }));
     };
 
@@ -38,15 +41,16 @@ const CreatePostPublication = ({ user }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const formdata = new FormData();
-      formdata.append('image', formData.image);
-      formdata.append('description', formData.description);
-      const res = await AXIOS_CLIENT.post(`/publication/?userID=${user.id}`, formdata);
+      const res = await AXIOS_CLIENT.post(`/publication/?userID=${user.id}`, {
+        description: formData.description,
+        image: formData.image,
+        tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()) : [],
+      });
       dispatch(addPost(res.data.publication))
       toast.success(res.data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      setFormData({ description: '', image: undefined });
+      setFormData({ description: '', image: undefined, tags: '' });
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error(error.response.data.message, {
@@ -66,12 +70,12 @@ return (
     <div className="create shadow-md">
       <form onSubmit={handleFormSubmit}>
         <div className='top'>
-            <img src={user?.avatar} alt="" />
+          <img src={user?.avatar} alt="" />
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            placeholder="What's on your mind John Doe?"
+            placeholder={`What's on your mind ${user ? user?.username : ''}`}
             required
           />
         </div>
@@ -84,16 +88,30 @@ return (
           />
         )}
         <div className='bottom'>
-            <label className="custom-button">
-              <FaImage  />
-              <input
-                type="file"
-                className="file-input"
-                name="image"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </label>
+            <div>
+              <label className="custom-button">
+                <FaImage  />
+                <input
+                  type="file"
+                  className="file-input"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </label>
+              <label className="custom-button" onClick={()=> setActive(!btnActive) }>
+                <FaHashtag />
+              </label>
+            </div>
+              {
+                btnActive &&
+                  <input type="text"
+                    name="tags"
+                    placeholder="tags, ..."
+                    value={formData.tags}
+                    onChange={handleInputChange}
+                />
+              }
             <button type="submit" className="share_btn" disabled={Loading}>
               {
                 Loading ? (<><FaSpinner className='loading' />Loading...</>)

@@ -9,6 +9,6 @@ const tagsSchema = mongoose.Schema({
     timestamps: true
 })
 
-let Tags = mongoose.model('publication',tagsSchema) ;
+let Tags = mongoose.model('Tags',tagsSchema) ;
 
 export default Tags ;

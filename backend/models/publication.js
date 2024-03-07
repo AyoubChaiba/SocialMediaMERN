@@ -22,6 +22,11 @@ let PublicationSchema = mongoose.Schema({
         type : Number,
         default: 0
     },
+    tags : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref: 'Tags',
+        default: []
+    }]
     // comments : {
     //     type : mongoose.Schema.Types.ObjectId,
     //     default: []
