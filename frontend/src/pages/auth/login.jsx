@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import { useDispatch} from 'react-redux';
-import { setLoginOut , setCurrentUser , setToken } from '../toolkit/userSlice';
+import { setLoginOut , setCurrentUser , setToken } from '../../toolkit/userSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginSchema } from '../lib/validation';
-import { AXIOS_CLIENT } from '../lib/api/axios';
+import { LoginSchema } from '../../lib/validation';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 
 const Login = () => {
     const dispatch = useDispatch()

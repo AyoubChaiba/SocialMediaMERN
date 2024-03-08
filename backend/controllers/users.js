@@ -54,14 +54,15 @@ export const updateUser = async (req, res) => {
     try {
         let id = req.params.id;
         let avatar = req?.file?.filename;
+        console.log(req?.file)
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({
                 message : "User not found"
             })
         }
-        let {username, email} = req.body;
+        let { username, email } = req.body;
         const data = avatar ? {username, email , avatar} : {username, email}
-        let User = await Profile.findByIdAndUpdate(id,data, {new : true, runValidators: true});
+        let User = await Profile.findByIdAndUpdate(id, data, {new : true, runValidators: true});
         if (!User) {
             return res.status(404).json({ message: 'update profile not working' });
         };

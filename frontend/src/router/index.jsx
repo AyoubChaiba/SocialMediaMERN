@@ -1,9 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/layout';
-import { Home } from "../pages/index";
-import Login from "../auth/login";
-import Register from "../auth/register";
-// import EditProfilePage from '../pages/profile/EditProfilePage';
+import { Home, Settings, Login, Register } from "../pages/index";
 
 export const Router = createBrowserRouter([
     {
@@ -21,14 +18,10 @@ export const Router = createBrowserRouter([
                 path: '/register',
                 element: <Register />
             },
-            // {
-            //     path: '/EditProfile',
-            //     element: <EditProfilePage />
-            // },
-            // {
-            //     path: '/profile/:username',
-            //     element: <Profile />
-            // },
+            {
+                path: '/settings',
+                element: <Settings />
+            },
             {
                 path: '/*',
                 element: 'not found this page'

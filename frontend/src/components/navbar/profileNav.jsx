@@ -15,8 +15,8 @@ const ProfileNav = props => {
             {isBtnActive && (
                 <div className="user_menu">
                     <h2>{props.user?.username}</h2>
-                    <CustomLink to={`/profile/${props.user?.username}`}><FaUser  />profile</CustomLink>
-                    <CustomLink to={"/EditProfile"}><FaGear/>Settings</CustomLink>
+                    <CustomLink to={`/${props.user?.username}`}><FaUser  />profile</CustomLink>
+                    <CustomLink to={"/settings"}><FaGear/>Settings</CustomLink>
                     <li>
                         <button className='link' onClick={props.loginOut}><FaRightToBracket />Sign out</button>
                     </li>

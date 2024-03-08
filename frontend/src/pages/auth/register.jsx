@@ -5,8 +5,8 @@ import { FaSpinner } from "react-icons/fa6";
 // import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RegisterSchema } from '../lib/validation'
-import { AXIOS_CLIENT } from '../lib/api/axios';
+import { RegisterSchema } from '../../lib/validation';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
 
 
 const Register = () => {

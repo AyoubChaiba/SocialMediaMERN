@@ -26,18 +26,18 @@ $themes: (
 );
 
 @mixin themify($themes) {
-@each $theme, $map in $themes {
-    .theme-#{$theme} & {
-        $theme-map: () !global;
-            @each $key, $submap in $map {
-                $value: map-get(map-get($themes, $theme), "#{$key}");
-                $theme-map: map-merge($theme-map,($key: $value,)) !global;
-            }
-        @content;
-        transition: color .5s, background-color .5s;
-        $theme-map: null !global;
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+                @each $key, $submap in $map {
+                    $value: map-get(map-get($themes, $theme), "#{$key}");
+                    $theme-map: map-merge($theme-map,($key: $value,)) !global;
+                }
+            @content;
+            transition: color .5s, background-color .5s;
+            $theme-map: null !global;
+        }
     }
-}
 }
 
 @function themed($key) {

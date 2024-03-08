@@ -1,0 +1,255 @@
+@import "../../scss/style.scss";
+
+.settings {
+    @include themify($themes) {
+        display: flex;
+        gap: 30px;
+        padding: 15px 0 ;
+        &>div {
+            border-radius: 25px;
+        }
+        .left {
+            background-color: themed("bgSoft");
+            flex: 2.2;
+            position: sticky;
+            top: calc(60px + 15px);
+            height: calc(100vh - 60px - 30px);
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            >div {
+                background-color: themed("bgSoftTwo");
+                padding: 12px;
+                border-radius: 25px;
+            }
+            .profile {
+                display: flex;
+                align-items: center;
+                // margin: 5px 9px;
+                gap: 15px;
+                h2 {
+                    font-size: 19px;
+                    color: themed("textColor");
+                    font-weight: 500;
+                }
+                a {
+                    color: themed('textColorSoft');
+                    font-size: 13px;
+                }
+                img {
+                    overflow: hidden;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    width: 55px;
+                    height: 55px;
+                    border: 2px solid themed('border');
+                }
+            }
+            hr {
+                border: 1px solid themed('border');
+                margin: 15px 0;
+            }
+            .link {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                li {
+                    // background-color: themed('secondary');
+                    a {
+                        color: themed('textColor');
+                        font-size: 15px;
+                        font-weight: 600;
+                        display: flex;
+                        gap: 15px;
+                        border-radius: 15px;
+                        padding: 15px;
+                        transition: all .3s ease-in-out;
+                    }
+                    svg {
+                        font-size: 25px;
+                    }
+                    .active {
+                        background-color: themed("secondary");
+                        color: themed("text");
+                        svg {
+                            color: themed('text');
+                        }
+                    }
+                }
+            }
+
+        }
+        .center {
+            flex: 9;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            hr {
+                border: 1px solid themed('border');
+                margin: 15px 0;
+            }
+            .loading {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                svg {
+                    font-size: 50px;
+                    animation: spin 1s linear infinite;
+                    color: themed('textColor');
+                }
+            }
+            h1 {
+                color: themed("textColor");
+                font-weight: 700;
+                font-size: 30px;
+                margin-left: 15px;
+                margin-bottom: 9px;
+            }
+            .editProfile {
+                .post-list {
+                    background-color: themed('bgSoft');
+                    padding: 15px;
+                    color: themed('textColor');
+                    border-radius: 25px;
+                    padding: 25px 30px;
+                    margin-bottom: 15px;
+                }
+                .editForm {
+                    background-color: themed('bgSoft');
+                    padding: 15px;
+                    color: themed('textColor');
+                    border-radius: 25px;
+                    padding: 25px 30px;
+                    margin-bottom: 15px;
+                    form {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1px;
+                        padding: 15px 30px;
+                        >div {
+                            label {
+                                display: inline-block;
+                                width: 150px;
+                                color: themed('textColor');
+                                font-size: 15px;
+                                font-weight: 600;
+                            }
+                            input {
+                                border: none;
+                                outline: none;
+                                background-color: themed("bgSoftTwo");
+                                color: themed("textColor");
+                                padding: 8px 25px;
+                                border-radius: 25px;
+                                -webkit-border-radius: 25px;
+                                -moz-border-radius: 25px;
+                                -ms-border-radius: 25px;
+                                -o-border-radius: 25px;
+                            }
+                        }
+                    }
+                }
+
+            }
+            .create {
+                background-color: themed("bgSoft");
+                color: themed("textColor");
+                padding: 25px;
+                margin-bottom: 15px ;
+                border-radius: 25px;
+                hr {
+                    margin: 15px 0;
+                    border: 1px solid themed("border");
+                }
+                .top {
+                    display: flex;
+                    align-items: start;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    img {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        border: 2px solid themed("border");
+                    }
+                }
+                .img_preview {
+                    border-radius: 25px;
+                    margin: 15px auto;
+                    object-fit: cover;
+                    width: 100%;
+                    height: 250px;
+                }
+                textarea {
+                    border: none;
+                    outline: none;
+                    background-color: transparent;
+                    color: themed("textColor");
+                    width: 100%;
+                    height: 70px;
+                }
+                .bottom {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    >div {
+                        display: flex;
+                        gap: 15px;
+                    }
+                    gap: 15px;
+                    .file-input {
+                        display: none;
+                    }
+                    .custom-button {
+                        background-color: themed("secondary");
+                        color: themed("textColor");
+                        padding: 12px ;
+                        border-radius: 26px;
+                        cursor: pointer;
+                    }
+                    input {
+                        border: none;
+                        outline: none;
+                        background-color: themed("bgSoftTwo");
+                        color: themed("textColor");
+                        width: 100%;
+                        padding: 8px 25px;
+                        border-radius: 25px;
+                        -webkit-border-radius: 25px;
+                        -moz-border-radius: 25px;
+                        -ms-border-radius: 25px;
+                        -o-border-radius: 25px;
+                    }
+                    .share_btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 9px;
+                        background-color: themed("secondary");
+                        color: themed("textColor");
+                        border-radius: 26px;
+                        cursor: pointer;
+                        padding: 8px 16px;
+                        transition: background-color 0.3s ease;
+                        &:hover {
+                            background-color: #0056b3;
+                        }
+                        &:disabled {
+                            opacity: 0.7;
+                            cursor: not-allowed;
+                        }
+                        .loading {
+                            animation: spin 1s linear infinite;
+                        }
+
+                    }
+                }
+            }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    }
+}
