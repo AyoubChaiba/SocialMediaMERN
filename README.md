@@ -17,13 +17,14 @@ To run this project locally, follow these steps:
 
 ```bash
 # Clone the repository
-git clone https://github.com/AyoubChaiba/Socia-Media-Mern.git
+git clone https://github.com/AyoubChaiba/SociaMediaMern.git
 
 # Navigate to the project directory
-cd Socia-Media-Mern
+cd SociaMediaMern
 
-# Install dependencies
+# Install dependencies in both backend and frontend directories
 npm install
 
 # Start the development server
 npm run dev
+```
