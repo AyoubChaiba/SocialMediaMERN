@@ -2,11 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import { useDispatch} from 'react-redux';
-import { setLoginOut , setCurrentProfile , setToken } from '../toolkit/profileSlice';
+import { setLoginOut , setCurrentUser , setToken } from '../toolkit/userSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../lib/validation';
-import { AXIOS_CLIENT } from '../api/axios';
+import { AXIOS_CLIENT } from '../lib/api/axios';
+
 const Login = () => {
     const dispatch = useDispatch()
     let navigate = useNavigate();
@@ -26,7 +27,7 @@ const Login = () => {
             const USER_DATA = response.data;
             dispatch(setToken(USER_DATA.token))
             sessionStorage.setItem('currentToken', JSON.stringify(USER_DATA.token));
-            dispatch(setCurrentProfile(USER_DATA.profile));
+            dispatch(setCurrentUser(USER_DATA.profile));
             dispatch(setLoginOut(true));
             toast.success(USER_DATA.message, {
                 position: toast.POSITION.BOTTOM_RIGHT

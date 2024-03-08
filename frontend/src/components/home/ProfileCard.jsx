@@ -1,20 +1,23 @@
 import { Link } from "react-router-dom";
 import { PropTypes } from 'prop-types';
+import { useSelector } from 'react-redux';
 
-const ProfileCard = ({ profile }) => {
+
+const ProfileCard = () => {
+    const { user } = useSelector(state => state.user) ;
 
     return (
         <div className="profile">
-            <img src={profile?.avatar} alt={profile?.username} />
+            <img src={user?.avatar} alt={user?.username} />
             <div>
-                <h2>Ayoub Chiba</h2>
-                <Link to={`/profile/${profile?.username}`}>@{profile?.username}</Link>
+                <h2>full name</h2>
+                <Link to={`/${user?.username}`}>@{user?.username}</Link>
             </div>
         </div>
     );
 };
 
 ProfileCard.propTypes = {
-    profile: PropTypes.object,
+    user: PropTypes.object,
 }
 export default ProfileCard;

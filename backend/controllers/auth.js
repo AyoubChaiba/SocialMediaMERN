@@ -8,10 +8,9 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET
 
 export const User = async (req,res) => {
-    console.log(req.profile)
     try {
         let id = req.profile.userId
-        let User = await Profile.findOne({_id : id});
+        let User = await Profile.findOne({_id : id}).populate('followers').populate('following');
         if (!User) {
             return res.status(404).json({
                 message : "User not found"
@@ -26,6 +25,21 @@ export const User = async (req,res) => {
                     created : User.createdAt ,
                     update : User.updatedAt ,
                     avatar : `http://localhost:3000/images/${User.avatar}` ,
+                    favorite : User.saved,
+                    followers: User.followers.map(e => {
+                        return {
+                            id: e._id,
+                            username: e.username,
+                            avatar: `http://localhost:3000/images/${e.avatar}`,
+                        }
+                    }),
+                    following: User.following.map(e => {
+                        return {
+                            id: e._id,
+                            username: e.username,
+                            avatar: `http://localhost:3000/images/${e.avatar}`,
+                        }
+                    }),
                 }
             })
         }

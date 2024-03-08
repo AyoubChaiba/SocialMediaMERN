@@ -1,34 +1,64 @@
 import Publication from '../models/publication.js';
+import Tags from '../models/tags.js';
 import mongoose from 'mongoose';
+import fs from 'fs';
 
-export const getPublications = async (req,res)=> {
+export const getPublications = async (req, res) => {
     try {
-        const populatedPublication = await Publication.find().sort({ createdAt: -1 }).limit(50).populate('author');
-        let formatPublication = populatedPublication.map( publicatin => {
-            return {
-                id : publicatin._id ,
-                image : publicatin.image ? `http://localhost:3000/images/${publicatin.image}` : undefined ,
-                description : publicatin.description,
-                date_create : publicatin.createdAt,
-                date_update : publicatin.updatedAt,
-                likes : publicatin.likes,
-                author : {
-                    id : publicatin.author._id ,
-                    username : publicatin.author.username ,
-                    avatar : `http://localhost:3000/images/${publicatin.author.avatar}` ,
-                }
-            }
-        })
-        return res.status(200).json({
-            data : formatPublication
-        });
+        const { filter, page, limit } = req.query;
+        let query = {};
+        let sort = { createdAt: -1 };
+        let skip = (page - 1) * limit;
+
+        if (filter === 'Relevant') {
+            query = { likes: { $gte: 5 } };
+        } else if (filter === 'Latest') {
+            query = { createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } };
+            sort = { createdAt: -1 };
+        } else if (filter === 'Top') {
+            sort = { likes: -1 }
+        }
+
+    const populatedPublication = await Publication.find(query)
+        .sort(sort)
+        .limit(limit)
+        .skip(skip)
+        .populate('author')
+        .populate('tags');
+
+    let formatPublication = populatedPublication.map(publication => {
+        return {
+            id: publication._id,
+            image: publication.image ? `http://localhost:3000/images/${publication.image}` : undefined,
+            description: publication.description,
+            date_create : publication.createdAt,
+            date_update : publication.updatedAt,
+            likesUser : publication.likesUser,
+            likes : publication.likes,
+            tags : publication.tags.map(e => {
+                return {
+                    id: e._id,
+                    name: e.name,
+                };
+            }),
+            author: {
+                id: publication.author._id,
+                username: publication.author.username,
+                avatar: `http://localhost:3000/images/${publication.author.avatar}`,
+            },
+        };
+    });
+    return res.status(200).json({
+        formatPublication,
+    });
     } catch (err) {
-        console.error("An error occurred" ,err);
-        return res.status(500).json({
-            message : err.message
-        })
+    console.error('An error occurred', err);
+    return res.status(500).json({
+        message: err.message,
+    });
     }
-}
+};
+
 
 export const getPublication = async (req,res)=> {
     try {
@@ -58,52 +88,72 @@ export const getPublication = async (req,res)=> {
     }
 }
 
-export const CreatePublication = async (req,res)=> {
+export const CreatePublication = async (req, res) => {
     try {
-        let { title , description  } = req.body;
-        let author = req.profile
-        let image = req?.file?.filename ;
+        let { description, tags } = req.body;
+        let author = req.profile;
+        let image = req?.file?.filename;
+
+        const tagIds = tags && await Promise.all(tags.map(async tagName => {
+            let foundTag = await Tags.findOne({ name: tagName });
+
+            if (!foundTag) foundTag = await new Tags({ name: tagName }).save();
+
+            return foundTag._id;
+        }));
 
         let publication = new Publication({
-            title,
-            description ,
-            author : author.userId ,
-        })
+            description,
+            author: author.userId,
+            tags: tagIds,
+        });
 
-        if (image) publication.image = image ;
+        if (image) {
+            publication.image = image;
+        }
 
         const savePublication = await publication.save();
 
         if (savePublication) {
-            const populatedPublication = await Publication.findById(publication._id).populate('author');
+            const populatedPublication = await Publication.findById(publication._id)
+            .populate('author')
+            .populate('tags');
             return res.status(200).json({
-                message : 'Publication created successfully.' ,
-                publication : {
-                    id : populatedPublication._id ,
-                    description : populatedPublication.description ,
-                    image : populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : undefined ,
-                    date_create : populatedPublication.createdAt,
-                    date_update : populatedPublication.updatedAt,
-                    likes : populatedPublication.likes,
-                    author : {
-                        id : populatedPublication.author._id ,
-                        username : populatedPublication.author.username ,
-                        avatar : `http://localhost:3000/images/${populatedPublication.author.avatar}` ,
-                    }
-                }
+                message: 'Publication created successfully.',
+                publication: {
+                    id: populatedPublication._id,
+                    description: populatedPublication.description,
+                    image: populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : undefined,
+                    date_create: populatedPublication.createdAt,
+                    date_update: populatedPublication.updatedAt,
+                    likesUser: populatedPublication.likesUser,
+                    likes: populatedPublication.likes,
+                    tags: populatedPublication.tags.map(e => {
+                        return {
+                            id: e._id,
+                            name: e.name,
+                        };
+                    }),
+                    author: {
+                        id: populatedPublication.author._id,
+                        username: populatedPublication.author.username,
+                        avatar: `http://localhost:3000/images/${populatedPublication.author.avatar}`,
+                    },
+                },
             });
-        }else {
+        } else {
             return res.status(401).json({
-                message : 'Failed Creating Publication' ,
+                message: 'Failed Creating Publication',
             });
         }
-
     } catch (err) {
         return res.status(500).json({
-            message : err.message
-        })
+            message: err.message,
+        });
     }
-}
+};
+
+
 
 export const editPublication = async (req,res)=> {
     try {
@@ -134,30 +184,37 @@ export const editPublication = async (req,res)=> {
     }
 }
 
-export const deletePublication = async (req,res)=> {
+export const deletePublication = async (req, res) => {
     try {
-        let id = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({
-                message : "invalid publication id"
-            })
-        }
-        let publication = await Publication.findByIdAndDelete(id);
-        if (!publication) {
-            return res.status(404).json({ message: 'id not found'})
-        } ;
-        return res.status(200).json({
-            title : publication.title,
-            id : publication.id ,
-            message : "this publication is deleted successfully"
+    let { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+        message: "invalid publication id",
         });
-    } catch (error) {
-        console.error("An error occurred" , error);
-        return res.status(500).json({
-            message : error.message
-        })
     }
-}
+    let publication = await Publication.findById(id);
+    if (!publication) {
+        return res.status(404).json({ message: 'id not found' });
+    }
+
+    if (publication.image && fs.existsSync(`uploads/images/${publication.image}`)) {
+        fs.unlinkSync(`uploads/images/${publication.image}`);
+    }
+
+    await Publication.findByIdAndDelete(id);
+    return res.status(200).json({
+        title: publication.title,
+        id: publication.id,
+        message: "this publication is deleted successfully",
+    });
+    } catch (error) {
+    console.error("An error occurred", error);
+    return res.status(500).json({
+        message: error.message,
+    });
+    }
+};
+
 
 export const likePublication = async (req, res) => {
     const { postID, userID } = req.query;
@@ -169,16 +226,17 @@ export const likePublication = async (req, res) => {
                 message: "Publication not found"
             });
         }
-        const userLiked = publication.likes.some(like => like === userID);
+        const userLiked = publication.likesUser.some(like => like === userID);
         if (userLiked) {
-            publication.likes = publication.likes.filter(like => like !== userID);
+            publication.likesUser = publication.likesUser.filter(like => like !== userID);
+            publication.likes -= 1;
         }else {
-            publication.likes.push(userID);
+            publication.likesUser.push(userID);
+            publication.likes += 1;
         }
         await publication.save();
-        res.json({ success: true, likes: publication.likes });
+        res.json({ success: true, likes: publication.likes, likesUser: publication.likesUser });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
 }
-

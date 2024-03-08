@@ -2,14 +2,19 @@
 
 .navbar {
     @include themify($themes) {
+        position: sticky;
+        top: 0;
         background-color: themed("bg");
         border-bottom: 1px solid themed("border");
+        height: 60px;
+        padding: 0 15px;
+        z-index: 999;
         .container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-            height: 60px;
+            height: 100%;
             .left {
                 display: flex;
                 gap: 5px;

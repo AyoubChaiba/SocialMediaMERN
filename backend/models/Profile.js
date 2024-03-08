@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 let ProfileSchema = mongoose.Schema({
+    // fullName : {
+    //     type : String,
+    //     required : false,
+    // },
     username : {
         type : String ,
         required : true ,
@@ -17,18 +21,16 @@ let ProfileSchema = mongoose.Schema({
         type : String ,
         default: 'default-avatar-image.jpg'
     },
-    viewProfile :{
-        type : Number,
-        default : 0,
-    },
-    followers : {
-        type : Array,
-        default : [],
-    },
-    following : {
-        type : Array,
-        default : [],
-    }
+    // viewProfile :{
+    //     type : Number,
+    //     default : 0,
+    // },
+    saved : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'publication'
+    }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
 },{
     timestamps : true
 }) ;

@@ -1,22 +1,16 @@
-import {  useEffect } from 'react';
+// import {  useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaSpinner } from "react-icons/fa6";
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterSchema } from '../lib/validation'
-import { AXIOS_CLIENT } from '../api/axios';
+import { AXIOS_CLIENT } from '../lib/api/axios';
 
 
 const Register = () => {
     let navigate = useNavigate()
-    const { isLogin } = useSelector(state => state.profile)
-
-    useEffect(()=> {
-        isLogin && navigate('/')
-    },[isLogin])
-
 
     const { register , handleSubmit , formState: { errors , isValid , isSubmitting } } = useForm({
         mode : 'onBlur' ,

@@ -1,0 +1,90 @@
+@import "../../scss/style.scss";
+
+.post-list {
+    @include themify($themes) {
+        background-color: themed('bgSoft');
+        border-radius: 25px;
+        padding: 25px 30px;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        .profile-avatar {
+            flex: 1;
+            figure {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+        .profile-info {
+            flex: 2;
+            .profile-name {
+                h2 {
+                    color: themed('textColor');
+                    font-size: 25px;
+                    font-weight: 700;
+                    margin-bottom: -5px;
+                }
+                margin-bottom: 10px;
+                span {
+                    font-size: 15px;
+                    color: themed('textColorSoft');
+                }
+                p {
+                    color: themed('textColorSoft');
+                    margin: 7px 0;
+                }
+            }
+            .profile-stats {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    color: themed('textColorSoft');
+                    span {
+                        font-weight: 700;
+                        color: themed('primary');
+                    }
+                    // svg {
+                    //     margin: 0 5px;
+                    //     font-size: 25px;
+                    //     color: themed('textColorSoft');
+                    // }
+                    // button {
+                    //     svg {
+                    //         font-size: 24px;
+                    //         color: themed('dark-mode');
+                    //         cursor: pointer;
+                    //     }
+                    // }
+                }
+            }
+            .profile-btn {
+                margin-top: 20px ;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                button {
+                    display: flex;
+                    gap: 10px;
+                    background-color: themed('primary');
+                    padding:  5px 15px;
+                    border-radius: 5px;
+                    color: themed('text');
+                    cursor: pointer;
+                }
+            }
+        }
+
+    }
+}

@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { FaSpinner } from "react-icons/fa6";
+import { FaSpinner , FaImage , FaShare  } from "react-icons/fa6";
 import { useParams, useNavigate } from 'react-router-dom';
-import { AXIOS_CLIENT } from '../../api/axios';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
+import { useSelector } from 'react-redux';
 
 
 const EditPostPublication = () => {
     const {id} = useParams();
     const [Loading , setLoading] = useState(false);
     const navigate = useNavigate()
+    const { profile } = useSelector( state => state.profile)
 
     const [formData, setFormData] = useState({
-      title: '',
       description: '',
       image: null,
       imageUrl: '',
@@ -33,7 +34,7 @@ const EditPostPublication = () => {
         }
       }
       getData()
-    },[id])
+    },[id, formData])
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -57,7 +58,7 @@ const EditPostPublication = () => {
       setLoading(true)
       e.preventDefault();
       try {
-        const res = await AXIOS_CLIENT.put(`/publication/${id}`, formData)
+        const res = await AXIOS_CLIENT.put(`/publication/${id}?userID=${profile.id}`, formData)
         toast.success(res.data.message, {
           position: toast.POSITION.BOTTOM_RIGHT
         })
@@ -73,64 +74,47 @@ const EditPostPublication = () => {
         setLoading(false)
       }
     };
+
 return (
-    <div className="">
-        <form onSubmit={handleFormSubmit} className="bg-white p-6 rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Edit Post Publication</h2>
-
-        <label htmlFor="title" className="block text-sm font-semibold mb-2">
-            Title
-        </label>
-        <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-            required
-        />
-
-        <label htmlFor="content" className="block text-sm font-semibold mt-3 mb-2">
-          description
-        </label>
-        <textarea
-            id="content"
+    <div className="create shadow-md">
+      <form onSubmit={handleFormSubmit}>
+        <div className='top'>
+            <img src={profile?.avatar} alt="" />
+          <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+            placeholder="What's on your mind John Doe?"
             required
-        />
-
-        <label htmlFor="image" className="block text-sm font-semibold mt-3 mb-2">
-          Image
-        </label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-        />
+          />
+        </div>
+        <hr />
         {formData.imageUrl && (
           <img
             src={formData.imageUrl}
             alt="Selected Image"
-            className="mt-2 max-w-full h-auto rounded w-20"
+            className='img_preview'
           />
         )}
-
-        <button
-          type="submit"
-          className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
-          disabled={Loading}
-        >
-          {Loading && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}
-          {Loading ? 'Loding...' : 'Update Post Publication' }
-        </button>
-        </form>
+        <div className='bottom'>
+            <label className="custom-button">
+              <FaImage  />
+              <input
+                type="file"
+                className="file-input"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+            <button type="submit" className="share_btn" disabled={Loading}>
+              {
+                Loading ? (<><FaSpinner className='loading' />Loading...</>)
+                : ( <><FaShare /> Share</>)
+              }
+          </button>
+        </div>
+      </form>
     </div>
 );
 };

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config()
 
-let {JWT_SECRET} = process.env;
+let { JWT_SECRET } = process.env;
 
 export let auth = (req, res , next) => {
     try {
@@ -19,9 +19,8 @@ export let auth = (req, res , next) => {
     }
 }
 
-
 export let checkAuthorized = (req, res, next) => {
-    if (req.profile.userId === req.query.userId) {
+    if (req.profile.userId === req.query.userID) {
         next();
     } else {
         res.status(403).json({
