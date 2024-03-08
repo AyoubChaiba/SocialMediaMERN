@@ -1,6 +1,7 @@
 import Publication from '../models/publication.js';
 import Tags from '../models/tags.js';
 import mongoose from 'mongoose';
+import fs from 'fs';
 
 export const getPublications = async (req, res) => {
     try {
@@ -25,8 +26,6 @@ export const getPublications = async (req, res) => {
         .populate('author')
         .populate('tags');
 
-        console.log(populatedPublication)
-    
     let formatPublication = populatedPublication.map(publication => {
         return {
             id: publication._id,
@@ -185,30 +184,37 @@ export const editPublication = async (req,res)=> {
     }
 }
 
-export const deletePublication = async (req,res)=> {
+export const deletePublication = async (req, res) => {
     try {
-        let id = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({
-                message : "invalid publication id"
-            })
-        }
-        let publication = await Publication.findByIdAndDelete(id);
-        if (!publication) {
-            return res.status(404).json({ message: 'id not found'})
-        } ;
-        return res.status(200).json({
-            title : publication.title,
-            id : publication.id ,
-            message : "this publication is deleted successfully"
+    let { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({
+        message: "invalid publication id",
         });
-    } catch (error) {
-        console.error("An error occurred" , error);
-        return res.status(500).json({
-            message : error.message
-        })
     }
-}
+    let publication = await Publication.findById(id);
+    if (!publication) {
+        return res.status(404).json({ message: 'id not found' });
+    }
+
+    if (publication.image && fs.existsSync(`uploads/images/${publication.image}`)) {
+        fs.unlinkSync(`uploads/images/${publication.image}`);
+    }
+
+    await Publication.findByIdAndDelete(id);
+    return res.status(200).json({
+        title: publication.title,
+        id: publication.id,
+        message: "this publication is deleted successfully",
+    });
+    } catch (error) {
+    console.error("An error occurred", error);
+    return res.status(500).json({
+        message: error.message,
+    });
+    }
+};
+
 
 export const likePublication = async (req, res) => {
     const { postID, userID } = req.query;

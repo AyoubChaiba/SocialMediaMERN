@@ -16,7 +16,7 @@ publicationRoutes.get('/', auth, getPublications)
 publicationRoutes.get('/:id', auth, getPublication)
 publicationRoutes.post('/', auth, checkAuthorized, upload.single('image'), CreatePublication)
 publicationRoutes.put('/:id', auth , checkAuthorized , upload.single('image'), editPublication)
-publicationRoutes.delete('/:id', auth, checkAuthorized, deletePublication)
+publicationRoutes.delete('/:id', auth, checkAuthorized, upload.single('image'), deletePublication)
 publicationRoutes.post('/likes', auth, checkAuthorized, likePublication)
 
 
