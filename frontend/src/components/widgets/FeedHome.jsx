@@ -87,15 +87,15 @@ const FeedHome = () => {
                 </div>
             ) : (
                 <InfiniteScroll
-                        dataLength={posts.length}
-                        next={onLoadMore}
-                        hasMore={hasMore}
-                        loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
-                        endMessage={
-                            <p style={{ textAlign: 'center' , color: "white" }}>
-                                <b>Yay! You have seen it all</b>
-                            </p>
-                        }
+                    dataLength={posts.length}
+                    next={onLoadMore}
+                    hasMore={hasMore}
+                    loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' , color: "white" }}>
+                            <b>Yay! You have seen it all</b>
+                        </p>
+                    }
                     >
                     {posts.map(post => (
                         <PostCard key={post.id} post={post} user={user} />

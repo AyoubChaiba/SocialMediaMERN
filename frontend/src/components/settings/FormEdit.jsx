@@ -13,7 +13,7 @@ const FormEdit = ({user}) => {
 
     const dispatch = useDispatch()
 
-    const { register, handleSubmit, formState : { errors , isValid , isSubmitting , submitCount  } } = useForm({
+    const { register, handleSubmit, formState : { errors , isValid , isSubmitting } } = useForm({
         mode: 'onBlur',
         resolver: yupResolver(EditProfileSchema),
         defaultValues: {

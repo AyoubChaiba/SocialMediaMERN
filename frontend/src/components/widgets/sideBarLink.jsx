@@ -1,24 +1,20 @@
-import { FaHouse, FaBookmark, FaUsers, FaHashtag } from "react-icons/fa6";
 import PropTypes from 'prop-types'
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 
 
-const SideBarLink = () => {
+const SideBarLink = ({ link }) => {
     return (
         <div>
             <ul className="link">
-                <li>
-                    <CustomLink to={'/'}><FaHouse />Home</CustomLink>
-                </li>
-                <li>
-                    <CustomLink to={'/saved'}><FaBookmark />Saved</CustomLink>
-                </li>
-                <li>
-                    <CustomLink to={'/explore'}><FaHashtag />Tags</CustomLink>
-                </li>
-                <li>
-                    <CustomLink to={'/people'}><FaUsers />People</CustomLink>
-                </li>
+                {
+                    link.map((item, index) => {
+                        return (
+                            <li key={index}>
+                                <CustomLink to={item.path}>{item.icon}{item.text}</CustomLink>
+                            </li>
+                        )
+                    })
+                }
             </ul>
         </div>
     )
@@ -32,6 +28,10 @@ const CustomLink = ({ to, children }) => {
             {children}
         </Link>
     );
+};
+
+SideBarLink.propTypes = {
+    link: PropTypes.array.isRequired,
 };
 
 CustomLink.propTypes = {

@@ -8,10 +8,6 @@ import EditPost from '../components/widgets/editPost';
 import Profile from '../components/widgets/profile';
 import EditProfile from './../components/widgets/editProfile';
 
-{/* <Routes>
-<Route path="/" element={<SettingProfile />} />
-</Routes> */}
-
 export const Router = createBrowserRouter([
     {
         element: <Layout />,
@@ -38,12 +34,15 @@ export const Router = createBrowserRouter([
                 ]
             },
             {
-                path: '/settings',
                 element: <Settings />,
                 children: [
                     {
                         path: '/settings',
-                        element: <EditProfile />
+                        element: <EditProfile active={'profile'} />,
+                    },
+                    {
+                        path: '/security',
+                        element: <EditProfile active={'security'} />,
                     }
                 ]
             },
@@ -54,10 +53,6 @@ export const Router = createBrowserRouter([
             {
                 path: '/register',
                 element: <Register />
-            },
-            {
-                path: '/settings',
-                element: <Settings />
             },
             {
                 path: '*',

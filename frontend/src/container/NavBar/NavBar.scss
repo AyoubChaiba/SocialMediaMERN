@@ -80,15 +80,13 @@
                             font-size: 17px;
                             font-weight: 700;
                         }
-                        li {
-                            display:  block;
-                            padding: 10px 20px;
+                        .btnLink {
                             cursor: pointer;
-                            a,button {
-                                display: flex;
-                                align-items: center;
-                                gap: 12px;
-                            }
+                            padding: 10px 20px;
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+                            gap: 12px;
                             svg {
                                 font-size: 17px;
                                 color: themed('textColor');

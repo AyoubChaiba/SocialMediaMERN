@@ -4,14 +4,35 @@ import './home.scss';
 import SideBarLink from "../../components/widgets/sideBarLink";
 import Friends from "../../components/widgets/friends";
 import People from "../../components/widgets/people";
-
+import { FaHouse, FaBookmark, FaUsers, FaHashtag } from "react-icons/fa6";
 const Home = () => {
     return (
         <div className="home container mx-auto">
             <div className="left">
                 <ProfileCard />
                     <hr />
-                <SideBarLink />
+                <SideBarLink link={[
+                    {
+                        path: '/',
+                        icon: <FaHouse />,
+                        text: 'Home'
+                    },
+                    {
+                        path: '/saved',
+                        icon: <FaBookmark />,
+                        text: 'Saved'
+                    },
+                    {
+                        path: '/tags',
+                        icon: <FaHashtag />,
+                        text: 'Tags'
+                    },
+                    {
+                        path: '/people',
+                        icon: <FaUsers />,
+                        text: 'People'
+                    }
+                ]} />
                     <hr />
                 <Friends />
             </div>

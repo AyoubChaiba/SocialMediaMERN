@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import { ProfileCard } from '../../components';
 import SideBarLink from "../../components/widgets/sideBarLink";
 import "./settings.scss"
+import { FaAddressCard, FaShieldHalved } from "react-icons/fa6";
+
 
 const Settings = () => {
     return (
@@ -9,7 +11,18 @@ const Settings = () => {
             <div className="left">
                 <ProfileCard />
                     <hr />
-                <SideBarLink />
+                    <SideBarLink link={[
+                    {
+                        path: '/settings',
+                        icon: <FaAddressCard />,
+                        text: 'Edit profile'
+                    },
+                    {
+                        path: '/security',
+                        icon: <FaShieldHalved />,
+                        text: 'Security'
+                    }
+                ]} />
             </div>
             <div className="center">
                 <Outlet />

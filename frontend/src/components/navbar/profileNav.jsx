@@ -17,10 +17,7 @@ const ProfileNav = props => {
                     <h2>{props.user?.username}</h2>
                     <CustomLink to={`/${props.user?.username}`}><FaUser  />profile</CustomLink>
                     <CustomLink to={"/settings"}><FaGear/>Settings</CustomLink>
-                    <li>
-                        <button className='link' onClick={props.loginOut}><FaRightToBracket />Sign out</button>
-                    </li>
-
+                    <button className='btnLink' onClick={props.loginOut}><FaRightToBracket />Sign out</button>
                 </div>
             )}
         </div>
@@ -31,9 +28,7 @@ const CustomLink = ({ to, children}) => {
     const resolvedPath = useResolvedPath(to);
     const isActive = useMatch({ path: resolvedPath.pathname, end: true });
     return (
-        <li className={`link ${ isActive ? "active" : ""}`}>
-            <Link to={to}>{children}</Link>
-        </li>
+        <Link className={`btnLink ${ isActive ? "active" : "btnLink"}`} to={to}>{children}</Link>
     );
 };
 
