@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ProfileCard } from '../../components';
 import SideBarLink from "../../components/widgets/sideBarLink";
 import "./settings.scss"
-import SettingProfile from './../../components/widgets/editProfile';
 
 const Settings = () => {
     return (
@@ -13,9 +12,7 @@ const Settings = () => {
                 <SideBarLink />
             </div>
             <div className="center">
-                <Routes>
-                    <Route path="/" element={<SettingProfile />} />
-                </Routes>
+                <Outlet />
             </div>
         </div>
     );

@@ -127,6 +127,7 @@
                         flex-direction: column;
                         gap: 1px;
                         padding: 15px 30px;
+                        align-items: center;
                         >div {
                             label {
                                 display: inline-block;
@@ -134,6 +135,7 @@
                                 color: themed('textColor');
                                 font-size: 15px;
                                 font-weight: 600;
+                                margin-bottom: 10px;
                             }
                             input {
                                 border: none;
@@ -146,6 +148,33 @@
                                 -moz-border-radius: 25px;
                                 -ms-border-radius: 25px;
                                 -o-border-radius: 25px;
+                                width: 300px;
+                            }
+                            .file-input {
+                                background-color: transparent;
+                            }
+                        }
+                        .btn-update {
+                            margin-top: 30px ;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 9px;
+                            background-color: themed("secondary");
+                            color: themed("textColor");
+                            border-radius: 26px;
+                            cursor: pointer;
+                            padding: 8px 16px;
+                            transition: background-color 0.3s ease;
+                            &:hover {
+                                background-color: #0056b3;
+                            }
+                            &:disabled {
+                                opacity: 0.7;
+                                cursor: not-allowed;
+                            }
+                            .loading {
+                                animation: spin 1s linear infinite;
                             }
                         }
                     }

@@ -14,7 +14,7 @@ const EditPost = () => {
                     <h1>Edit Post</h1>
                         <EditPostPublication profile={profile} />
                 </>) :
-                    <div className="loading">
+                    <div className="loading">/
                         <FaCircleNotch />
                     </div>
             }

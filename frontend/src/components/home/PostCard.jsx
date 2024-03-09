@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart, FaRegBookmark  } from "react-icons/fa6";
+import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart, FaRegBookmark } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
 import { deletePost, toggleLike, } from '../../toolkit/postSlice';
 import { deleteProfilePost, postProfileLike, } from '../../toolkit/profilesSlice';
 import { toggleFavorite } from '../../toolkit/favoriteSlice';
 import { userFavorite, removefollow, addfollow } from '../../toolkit/userSlice';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import Placeholder from "../../assets/placeholder.jpg"
 
 
 const PostCard = ({ post, user }) => {
@@ -167,7 +170,12 @@ const PostCard = ({ post, user }) => {
                         })
                     }
                 </div>
-                { post.image && <img src={post.image} alt="Post Image"/>}
+                { post.image && <LazyLoadImage
+                    alt="Post Image"
+                    effect="blur"
+                    src={post.image}
+                    placeholderSrc={Placeholder}
+                    />}
             </div>
             {post?.likesUser &&
                 <div className="btn_react">

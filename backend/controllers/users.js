@@ -54,7 +54,7 @@ export const updateUser = async (req, res) => {
     try {
         let id = req.params.id;
         let avatar = req?.file?.filename;
-        console.log(req?.file)
+        console.log(avatar);
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({
                 message : "User not found"
@@ -69,10 +69,8 @@ export const updateUser = async (req, res) => {
         return res.status(200).json({
             message : "updated successfully profile",
             profile : {
-                id : User._id ,
                 username : User.username ,
                 email : User.email ,
-                created : User.createdAt ,
                 update : User.updatedAt ,
                 avatar : `http://localhost:3000/images/${User.avatar}` ,
             }
