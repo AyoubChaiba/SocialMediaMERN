@@ -5,7 +5,7 @@ dotenv.config()
 
 let { JWT_SECRET } = process.env;
 
-export let auth = (req, res , next) => {
+export const auth = (req, res , next) => {
     try {
         let token = req.headers.authorization.split(" ")[1];
         let decodedToken = jwt.verify(token, JWT_SECRET);
@@ -19,7 +19,7 @@ export let auth = (req, res , next) => {
     }
 }
 
-export let checkAuthorized = (req, res, next) => {
+export const checkAuthorized = (req, res, next) => {
     if (req.profile.userId === req.query.userID) {
         next();
     } else {

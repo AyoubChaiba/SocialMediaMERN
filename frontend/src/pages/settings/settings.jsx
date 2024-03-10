@@ -12,17 +12,17 @@ const Settings = () => {
                 <ProfileCard />
                     <hr />
                     <SideBarLink link={[
-                    {
-                        path: '/settings',
-                        icon: <FaAddressCard />,
-                        text: 'Edit profile'
-                    },
-                    {
-                        path: '/security',
-                        icon: <FaShieldHalved />,
-                        text: 'Security'
-                    }
-                ]} />
+                        {
+                            path: '/settings',
+                            icon: <FaAddressCard />,
+                            text: 'Edit profile'
+                        },
+                        {
+                            path: '/security',
+                            icon: <FaShieldHalved />,
+                            text: 'Security'
+                        }
+                    ]} />
             </div>
             <div className="center">
                 <Outlet />

@@ -2,43 +2,33 @@ import { FaSpinner, FaPenToSquare  } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PropTypes } from 'prop-types';
-import { useDispatch} from 'react-redux';
-import { EditProfileSchema } from '../../lib/validation';
+import { PasswordSchema } from '../../lib/validation';
 import { AXIOS_CLIENT } from '../../lib/api/axios';
-import { setCurrentUser } from "../../toolkit/userSlice";
 
 
-const FromSecurity = ({user}) => {
+const FromSecurity = () => {
 
-    const dispatch = useDispatch()
-
-    const { register, handleSubmit, formState : { errors , isValid , isSubmitting } } = useForm({
+    const { register, handleSubmit, watch,  formState : { errors , isValid , isSubmitting } } = useForm({
         mode: 'onBlur',
-        resolver: yupResolver(EditProfileSchema),
+        resolver: yupResolver(PasswordSchema),
         defaultValues: {
-            username: user?.username,
-            email: user?.email,
-            firstName: user?.firstName,
-            lastName : user?.lastName,
-            avatar: '',
+            oldPassword: "",
+            newPassword: "",
+            confirmPassword: "",
         },
     })
 
-    const updateProfile = async data => {
-        const formData = new FormData();
-        formData.append('avatar', data.avatar[0]);
-        formData.append('username', data.username);
-        formData.append('email', data.email);
+    const NewPassword = watch('newPassword')
+    const ConfirmPAssword = watch('confirmPassword')
+
+    const updateProfile = async (data) => {
         try {
-            const { data } = await AXIOS_CLIENT.put(`users/${user.id}`, formData);
-            dispatch(setCurrentUser({
-                ...user,
-                username: data.profile.username,
-                email: data.profile.email,
-                avatar: data.profile.avatar
-            }));
-            toast.success(data.message, {
+            const response = await AXIOS_CLIENT.put(`auth`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            toast.success(response.data.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
         } catch (error) {
@@ -54,41 +44,37 @@ const FromSecurity = ({user}) => {
                     <label htmlFor="">Old Password</label>
                     <input type="password"
                         placeholder='Old Password'
-                        {...register('old_password')}
+                        {...register('oldPassword')}
                     />
-                    <p className='text-red-500'>{errors?.username?.message}</p>
+                    <p className='text-red-500'>{errors?.oldPassword?.message}</p>
                 </div>
                 <br />
                 <div >
                     <label htmlFor="">New Password</label>
                     <input type="password"
                         placeholder='New password'
-                        {...register('new_password')}
+                        {...register('newPassword')}
                     />
-                        <p className='text-red-500'>{errors?.username?.message}</p>
+                        <p className='text-red-500'>{errors?.newPassword?.message}</p>
                 </div>
                 <br />
                 <div >
                     <label htmlFor="">Confirm password</label>
                     <input type="password"
                         placeholder='Confirm password'
-                        {...register('confirm_password')}
+                        {...register('confirmPassword')}
                     />
-                    <p className='text-red-500'>{errors?.username?.message}</p>
+                    {NewPassword !== ConfirmPAssword && <p className='text-red-500'>Passwords do not match</p>}
                 </div>
                 <button className="btn-update"
                     type="submit"
                     disabled={ isSubmitting  || !isValid  }>
                     {isSubmitting ? <FaSpinner className='animate-spin h-5 w-5 mr-3'/>  : <FaPenToSquare />}
-                    {isSubmitting  ? 'Loding...' : 'Update' }
+                    {isSubmitting  ? 'Loding...' : 'Update Password' }
                 </button>
             </form>
         </div>
     )
-}
-
-FromSecurity.propTypes = {
-    user : PropTypes.object.isRequired,
 }
 
 

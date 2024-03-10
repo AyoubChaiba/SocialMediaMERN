@@ -50,6 +50,26 @@ export const User = async (req,res) => {
     }
 }
 
+export const updatePassword = async (req, res) => {
+    const { userId } = req.profile;
+    const { oldPassword, newPassword } = req.body;
+    console.log(req.body)
+    try {
+        const user = await Profile.findOne({ _id : userId });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordMatch) return res.status(401).json({ message: 'Incorrect old password' });
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+        await Profile.updateOne({ _id: userId }, { password: hashedPassword })
+        return res.status(200).json({ message: 'Password updated successfully' });
+    }catch (e) {
+        return res.status(500).json({
+            message :  e.message
+        })
+    }
+}
+
+
 export const Login = async (req,res) => {
     try {
         let {username , password} = req.body

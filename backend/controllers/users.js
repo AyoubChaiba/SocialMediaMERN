@@ -50,35 +50,37 @@ export const getUser = async (req, res) => {
     }
 }
 
+
 export const updateUser = async (req, res) => {
     try {
-        let id = req.params.id;
-        let avatar = req?.file?.filename;
-        console.log(avatar);
+        const { id } = req.params;
+        const avatar = req?.file?.filename;
+        const { username, email } = req.body;
+
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({
                 message : "User not found"
             })
         }
-        let { username, email } = req.body;
-        const data = avatar ? {username, email , avatar} : {username, email}
-        let User = await Profile.findByIdAndUpdate(id, data, {new : true, runValidators: true});
-        if (!User) {
-            return res.status(404).json({ message: 'update profile not working' });
-        };
+
+        const data = avatar ? { username, email, avatar } : { username, email };
+        const updatedUser = await Profile.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Failed to update profile' });
+        }
+
         return res.status(200).json({
-            message : "updated successfully profile",
-            profile : {
-                username : User.username ,
-                email : User.email ,
-                update : User.updatedAt ,
-                avatar : `http://localhost:3000/images/${User.avatar}` ,
+            message: "Profile updated successfully",
+            profile: {
+                username: updatedUser.username,
+                email: updatedUser.email,
+                updatedAt: updatedUser.updatedAt,
+                avatar: `http://localhost:3000/images/${updatedUser.avatar}`,
             }
-        })
-    } catch (e) {
-        return res.status(500).json({
-            messagex : e.message
-        })
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 }
 
