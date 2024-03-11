@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './profileInfo.scss'
 import PropTypes from 'prop-types';
 
@@ -20,17 +21,17 @@ const ProfileInfo = ({ profile, postLength, user }) => {
                     <li>followers <span>{profile.followers.length}</span></li>
                     <li>following <span>{profile.following.length}</span></li>
                 </ul>
-                <ul className='profile-btn'>
+                <div className='profile-btn'>
                     {
                         profile.id === user.id  ?
-                        <li><button>Edit Profile</button></li>:
+                        <Link to={'/settings'}>Edit Profile</Link>:
                         (
                             user.following.filter(e => e.id === profile.id).length === 0 ?
                             <button key={profile.id} >Follow</button> :
                             <button key={profile.id} >unFollow</button>
                         )
                     }
-                </ul>
+                </div>
             </div>
         </div>
     )

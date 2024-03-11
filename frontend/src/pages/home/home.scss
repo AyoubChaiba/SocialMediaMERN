@@ -79,22 +79,39 @@
             }
             .following {
                 height: 100%;
-                overflow-y: auto;
+                width: 100%;
+                overflow: hidden;
                 >ul {
+                    height: 100%;
+                    width: 100%;
+                    overflow-y: auto;
+                    padding-right: 15px;
+                    &::-webkit-scrollbar {
+                        width: 4px;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        background: themed("secondary");
+                        border-radius: 5px;
+                        -webkit-border-radius: 5px;
+                        -moz-border-radius: 5px;
+                        -ms-border-radius: 5px;
+                        -o-border-radius: 5px;
+                    }
                     h2 {
                         font-size: 15px;
+                        margin-left: 10px;
                         color: themed("textColor");
                         font-weight: 500;
                     }
                     display: flex;
                     flex-direction: column;
-                    gap: 15px;
-                    padding: 9px 10px;
-                    li {
+                    gap: 10px;
+                    a {
+                        cursor: pointer;
                         background-color: themed('bgSoft');
-                        padding: 5px;
+                        padding: 8px 10px 8px 15px;
                         display: flex;
-                        gap: 15px;
+                        gap: 10px;
                         align-items: center;
                         img {
                             width: 40px;
@@ -104,11 +121,15 @@
                         }
                         h2 {
                             font-size: 15px;
-                            font-weight: 400;
+                            font-weight: 600;
                             color: themed('textColor');
                             margin-top: -5px;
                         }
                         border-radius: 15px;
+                        transition: background-color .2s ease-in-out ;
+                        &:hover {
+                            background-color: themed('secondary');
+                        }
                         // a {
                         //     color: themed('textColor');
                         //     font-size: 15px;

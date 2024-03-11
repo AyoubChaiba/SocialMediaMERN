@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react"
 import { AXIOS_CLIENT } from "../../lib/api/axios";
+import CardPeople from "./CardPeople";
+import { useSelector } from 'react-redux';
 
 const People = () => {
-    let [people, setPeople] = useState([]);
+    const [people, setPeople] = useState([]);
+    const { user } = useSelector( state => state.user );
+
     useEffect(() => {
     const fetchPeople = async () => {
         try {
@@ -15,19 +19,20 @@ const People = () => {
         fetchPeople();
     }, []);
 
-return (
-    <div className="list-people">
-        <ul className="list-group">
-            {people.map((person) => (
-                <li key={person.id}>
-                    <img src={person.avatar} alt={person.username} />
-                    <h2>{person.username}</h2>
-                    <button>follow</button>
-                </li>
-            ))}
-        </ul>
-    </div>
-);
+    return (
+        <div className="list-people">
+            <ul className="list-group">
+                {people.map((person) => (
+                    <CardPeople  key={person.id}
+                        id={person.id}
+                        username={person.username}
+                        avatar={person.avatar}
+                        user={user}
+                    />
+                ))}
+            </ul>
+        </div>
+    );
 }
 
 export default People

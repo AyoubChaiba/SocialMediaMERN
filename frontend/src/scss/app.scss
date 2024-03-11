@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './style.scss';
 
 * {
     box-sizing: border-box;
@@ -17,3 +18,26 @@ li {
 }
 
 
+body {
+    --sb-track-color: #ffffff;
+    --sb-thumb-color: #dc19d6;
+    --sb-size: 4px;
+}
+
+// ::-webkit-scrollbar {
+//     width: 4px;
+//     border-radius: 5px;
+//     -webkit-border-radius: 5px;
+//     -moz-border-radius: 5px;
+//     -ms-border-radius: 5px;
+//     -o-border-radius: 5px;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//     background: var(--sb-thumb-color);
+//     border-radius: 5px;
+//     -webkit-border-radius: 5px;
+//     -moz-border-radius: 5px;
+//     -ms-border-radius: 5px;
+//     -o-border-radius: 5px;
+// }

@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Friends = () => {
     const { user } = useSelector(state => state.user);
@@ -10,8 +11,10 @@ const Friends = () => {
                     user?.following?.map(following => {
                         return (
                             <li key={following.id}>
-                                <img src={following.avatar} alt={following.username} />
-                                <h2>{following.username}</h2>
+                                <Link to={`/${following.username}`}>
+                                    <img src={following.avatar} alt={following.username} />
+                                    <h2>{following.username}</h2>
+                                </Link>
                             </li>
                         )
                     })
