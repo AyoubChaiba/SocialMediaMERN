@@ -19,12 +19,12 @@
             flex-direction: column;
             >div {
                 background-color: themed("bgSoftTwo");
-                padding: 12px;
                 border-radius: 25px;
             }
             .profile {
                 display: flex;
                 align-items: center;
+                padding: 12px;
                 // margin: 5px 9px;
                 gap: 15px;
                 h2 {
@@ -50,6 +50,7 @@
                 margin: 15px 0;
             }
             .link {
+                padding: 12px;
                 display: flex;
                 flex-direction: column;
                 gap: 15px;
@@ -78,6 +79,7 @@
                 }
             }
             .following {
+                padding: 12px 0 12px 12px;
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
@@ -85,7 +87,7 @@
                     height: 100%;
                     width: 100%;
                     overflow-y: auto;
-                    padding-right: 15px;
+                    padding-right: 10px;
                     &::-webkit-scrollbar {
                         width: 4px;
                     }
