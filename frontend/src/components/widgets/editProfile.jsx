@@ -11,7 +11,7 @@ const EditProfile = ({ active }) => {
                 {
                     user && ( active === "profile" ?
                     <FormEdit user={user} /> :
-                    <FromSecurity user={user} />
+                    <FromSecurity />
                     )
                 }
         </div>

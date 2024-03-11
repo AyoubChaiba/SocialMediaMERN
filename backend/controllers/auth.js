@@ -53,7 +53,6 @@ export const User = async (req,res) => {
 export const updatePassword = async (req, res) => {
     const { userId } = req.profile;
     const { oldPassword, newPassword } = req.body;
-    console.log(req.body)
     try {
         const user = await Profile.findOne({ _id : userId });
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -68,7 +67,6 @@ export const updatePassword = async (req, res) => {
         })
     }
 }
-
 
 export const Login = async (req,res) => {
     try {

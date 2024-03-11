@@ -81,12 +81,18 @@
                 height: 100%;
                 overflow-y: auto;
                 >ul {
+                    h2 {
+                        font-size: 15px;
+                        color: themed("textColor");
+                        font-weight: 500;
+                    }
                     display: flex;
                     flex-direction: column;
                     gap: 15px;
                     padding: 9px 10px;
                     li {
-                        background-color: themed('bgSoftTwo');
+                        background-color: themed('bgSoft');
+                        padding: 5px;
                         display: flex;
                         gap: 15px;
                         align-items: center;
@@ -102,6 +108,7 @@
                             color: themed('textColor');
                             margin-top: -5px;
                         }
+                        border-radius: 15px;
                         // a {
                         //     color: themed('textColor');
                         //     font-size: 15px;

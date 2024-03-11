@@ -40,12 +40,12 @@
                     }
                 }
             }
-            .search {
-                input {
-                    background-color: themed("bgSoft");
-                    border: 1px solid themed("border");
-                    color: themed("textColorSoft");
-                }
+            .center {
+                flex-grow : 2;
+                display: flex;
+                justify-content: center;
+                min-width: 100px;
+                max-width: 400px;
             }
             .right  {
                 .UserNav {

@@ -1,0 +1,154 @@
+@import '../../../scss/style.scss';
+
+.search-container {
+    @include themify($themes) {
+        width: 100%;
+        position: relative;
+        .search {
+            display: flex;
+            position: relative;
+            .icon-search {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 12px;
+                color: themed("textColorSoft");
+            }
+            input {
+                width: 100%;
+                padding: 5px 35px;
+                background-color: themed("bgSoftTwo");
+                border: 1px solid themed("border");
+                color: themed("textColorSoft");
+                border-radius: 25px;
+            }
+        }
+        .searchList {
+            width: 100%;
+            padding: 15px 10px 20px 10px;
+            position: absolute;
+            margin-top: 5px;
+            background-color: themed("bgSoftTwo");
+            border: 1px solid themed("border");
+            color: themed("textColorSoft");
+            border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            -ms-border-radius: 15px;
+            -o-border-radius: 15px;
+            h2 {
+                width: 150px;
+                color: themed("textColor");
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                margin-left: 5px;
+            }
+            .card-post {
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    padding: 9px;
+                    border-bottom: 1px solid themed("border");
+                    &:hover {
+                        background-color: themed("bgSoft");
+                        cursor: pointer;
+                        border-radius: 15px;
+                        -webkit-border-radius: 15px;
+                        -moz-border-radius: 15px;
+                        -ms-border-radius: 15px;
+                        -o-border-radius: 15px;
+                    }
+                    img {
+                        width: 60px;
+                        border-radius: 5px;
+                        -webkit-border-radius: 5px;
+                        -moz-border-radius: 5px;
+                        -ms-border-radius: 5px;
+                        -o-border-radius: 5px;
+                    }
+                    >div {
+                        width: 100%;
+                        p {
+                            width: 80%;
+                            font-weight: 500;
+                            font-size: 15px;
+                            margin-bottom: -5px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                        span {
+                            font-size: 12px;
+                            color: themed("textColorSoft");
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+
+            .card-people {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                a {
+                    margin: 2px 0;
+                    width: calc(100% / 2);
+                    li {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            border: solid 1px themed('border');
+                            -webkit-border-radius: 50%;
+                            -moz-border-radius: 50%;
+                            -ms-border-radius: 50%;
+                            -o-border-radius: 50%;
+                        }
+                        display: flex;
+                        align-items: center;
+                        gap: 9px;
+                        padding: 9px;
+                        &:hover {
+                            background-color: themed("bgSoft");
+                            cursor: pointer;
+                            border-radius: 15px;
+                            -webkit-border-radius: 15px;
+                            -moz-border-radius: 15px;
+                            -ms-border-radius: 15px;
+                            -o-border-radius: 15px;
+                        }
+                    }
+                }
+            }
+            .card-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                a {
+                    margin-left: 5px;
+                    background-color: themed("secondary") ;
+                    color: themed('textColor');
+                    border-radius: 15px;
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    li {
+                        padding: 4px 8px;
+                        &:hover {
+                            background-color: themed("primary");
+                            cursor: pointer;
+                            border-radius: 15px;
+                            -webkit-border-radius: 15px;
+                            -moz-border-radius: 15px;
+                            -ms-border-radius: 15px;
+                            -o-border-radius: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

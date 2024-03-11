@@ -5,6 +5,7 @@ const Friends = () => {
     return (
         <div className="following">
             <ul>
+            <h2>Contacts</h2>
                 { user &&
                     user?.following?.map(following => {
                         return (

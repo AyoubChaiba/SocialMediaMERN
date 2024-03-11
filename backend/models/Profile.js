@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 let ProfileSchema = mongoose.Schema({
     // fullName : {
     //     type : String,
-    //     required : false,
+    //     default: 'ayoubaygami'
     // },
     username : {
         type : String ,
@@ -29,13 +29,21 @@ let ProfileSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'publication'
     }],
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Profile'
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Profile'
+    }],
 },{
     timestamps : true
 }) ;
 
+
 let Profile = mongoose.model('Profile', ProfileSchema);
 
 export default Profile ;
+
 

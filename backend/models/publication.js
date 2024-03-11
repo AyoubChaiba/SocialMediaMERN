@@ -35,6 +35,8 @@ let PublicationSchema = mongoose.Schema({
     timestamps: true
 })
 
+PublicationSchema.index({ description: 'content' });
+
 let Publication = mongoose.model('publication',PublicationSchema) ;
 
 export default Publication ;

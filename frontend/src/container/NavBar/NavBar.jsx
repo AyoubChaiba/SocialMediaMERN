@@ -12,6 +12,7 @@ import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { FaMoon , FaSun } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";
+import Search from "../../components/navbar/search/search";
 
 let NavBar = () => {
     const { token , isLogin , user } = useSelector(state => state.user);
@@ -72,8 +73,8 @@ let NavBar = () => {
                         </button>
                     </div>
                 </div>
-                <div className="search">
-                    <input type="search" />
+                <div className="center">
+                    <Search />
                 </div>
                 <div className="right">
                     { isLogin ? <ProfileNav user={user} loginOut={loginOut} /> :<BtnConnect />}

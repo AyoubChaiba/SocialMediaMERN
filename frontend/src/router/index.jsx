@@ -30,6 +30,14 @@ export const Router = createBrowserRouter([
                     {
                         path: '/:username',
                         element: <Profile />
+                    },
+                    {
+                        path: '/tags',
+                        element: "<FavoritePost />"
+                    },
+                    {
+                        path: '/people',
+                        element: "<FavoritePost />"
                     }
                 ]
             },

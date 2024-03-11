@@ -8,6 +8,7 @@ import {
     deletePublication,
     editPublication,
     likePublication,
+    search
 } from '../controllers/publication.js';
 
 const publicationRoutes = express.Router();
@@ -18,6 +19,7 @@ publicationRoutes.post('/', auth, checkAuthorized, upload.single('image'), Creat
 publicationRoutes.put('/:id', auth , checkAuthorized , upload.single('image'), editPublication)
 publicationRoutes.delete('/:id', auth, checkAuthorized, upload.single('image'), deletePublication)
 publicationRoutes.post('/likes', auth, checkAuthorized, likePublication)
+publicationRoutes.get('/search/test' ,  search)
 
 
 export default publicationRoutes ;
