@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { AXIOS_CLIENT } from "../../lib/api/axios";
-import CardPeople from "./CardPeople";
 import { useSelector } from 'react-redux';
 
 const Tags = () => {
@@ -20,16 +19,16 @@ const Tags = () => {
     }, []);
 
     return (
-        <div className="list-people">
+        <div className="list-tags">
             <ul className="list-group">
-                {people.map((person) => (
+                {/* {people.map((person) => (
                     <CardPeople  key={person.id}
                         id={person.id}
                         username={person.username}
                         avatar={person.avatar}
                         user={user}
                     />
-                ))}
+                ))} */}
             </ul>
         </div>
     );

@@ -5,10 +5,6 @@ const tagsSchema = mongoose.Schema({
         type : String,
         required : true,
         unique: true
-    },
-    numPost : {
-        type: Number,
-        default: 0
     }
 },{
     timestamps: true
