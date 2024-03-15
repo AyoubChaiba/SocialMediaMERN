@@ -493,6 +493,47 @@
                     -ms-border-radius: 5px;
                     -o-border-radius: 5px;
                 }
+                h2 {
+                    font-size: 18px;
+                    margin: 9px 0;
+                    font-weight: 500;
+                    color: themed("textColor");
+                }
+                .list-group {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    .tags {
+                        display: flex;
+                        gap: 5px;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: themed("secondary");
+                        color: themed("textColor");
+                        padding: 5px 8px;
+                        border-radius: 15px;
+                        -webkit-border-radius: 15px;
+                        -moz-border-radius: 15px;
+                        -ms-border-radius: 15px;
+                        -o-border-radius: 15px;
+                        font-size: 15px;
+                        span {
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 20px;
+                            height: 20px;
+                            font-size: 11px;
+                            font-weight: 500;
+                            background: themed("bgSoftTwo");
+                            border-radius: 50%;
+                            -webkit-border-radius: 50%;
+                            -moz-border-radius: 50%;
+                            -ms-border-radius: 50%;
+                            -o-border-radius: 50%;
+                        }
+                    }
+                }
             }
         }
         @keyframes spin {

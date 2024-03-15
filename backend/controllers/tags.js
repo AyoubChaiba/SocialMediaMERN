@@ -10,13 +10,13 @@ export const getTags = async (req, res) => {
             tagPublicationsCounts[tag.name] = publications.length;
         }
 
-        return res.status(200).json({
-            tags: tags.map(tag => ({
-                id: tag._id,
-                name: tag.name,
-                totalPublications: tagPublicationsCounts[tag.name]
+        return res.status(200).json(
+            tags.map(tag => ({
+            id: tag._id,
+            name: tag.name,
+            count: tagPublicationsCounts[tag.name]
             }))
-        });
+        );
     } catch (e) {
         return res.status(500).json({
             message: e.message
@@ -35,6 +35,7 @@ export const getPopularTags = async (req, res) => {
         const populatedTags = await Promise.all(tagCounts.map(async (tag) => {
             const populatedTag = await Tags.findById(tag._id);
             return {
+                id: populatedTag._id,
                 name: populatedTag.name,
                 count: tag.count
             };

@@ -94,7 +94,8 @@ export const CreatePublication = async (req, res) => {
         let author = req.profile;
         let image = req?.file?.filename;
 
-        const tagNames = tags.map(tag => tag.toLowerCase());
+        const tagNames = tags ? tags.map(tag => tag.toLowerCase()) : [];
+
         const foundTag = await Tags.find({ name: { $in : tagNames }})
 
         if(!foundTag ) foundTag = await new Tags({ name: tagNames }).save()
@@ -102,7 +103,7 @@ export const CreatePublication = async (req, res) => {
         let publication = new Publication({
             description,
             author: author.userId,
-            tags: foundTag.map(tag => tag._id)
+            tags: tags ? foundTag.map(tag => tag._id) : []
         });
 
         if (image) {
@@ -122,7 +123,6 @@ export const CreatePublication = async (req, res) => {
                     description: populatedPublication.description,
                     image: populatedPublication.image ? `http://localhost:3000/image/${populatedPublication.image}` : undefined,
                     date_create: populatedPublication.createdAt,
-                    date_update: populatedPublication.updatedAt,
                     likesUser: populatedPublication.likesUser,
                     likes: populatedPublication.likes,
                     tags: populatedPublication.tags.map(e => {
@@ -134,7 +134,7 @@ export const CreatePublication = async (req, res) => {
                     author: {
                         id: populatedPublication.author._id,
                         username: populatedPublication.author.username,
-                        avatar: `http://localhost:3000/image/${populatedPublication.author.avatar}`,
+                        avatar: `http://localhost:3000/avatar/${populatedPublication.author.avatar}`,
                     },
                 },
             });

@@ -4,6 +4,6 @@ import { search } from './../controllers/search.js';
 
 const searchRoutes = express.Router();
 
-searchRoutes.get('/', auth, search)
+searchRoutes.get('/',auth, search)
 
 export default searchRoutes ;

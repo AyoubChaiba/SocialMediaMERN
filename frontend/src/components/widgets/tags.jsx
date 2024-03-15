@@ -1,37 +1,20 @@
-import { useEffect, useState } from "react"
-import { AXIOS_CLIENT } from "../../lib/api/axios";
-import { useSelector } from 'react-redux';
 
-const Tags = () => {
-    const [people, setPeople] = useState([]);
-    const { user } = useSelector( state => state.user );
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom';
 
-    useEffect(() => {
-    const fetchPeople = async () => {
-        try {
-            const response = await AXIOS_CLIENT.get(`/users/people/follow`);
-            setPeople(response.data.people);
-        } catch (error) {
-            console.log(error);
-        }
-        };
-        fetchPeople();
-    }, []);
-
+const Tags = ({name, count}) => {
     return (
-        <div className="list-tags">
-            <ul className="list-group">
-                {/* {people.map((person) => (
-                    <CardPeople  key={person.id}
-                        id={person.id}
-                        username={person.username}
-                        avatar={person.avatar}
-                        user={user}
-                    />
-                ))} */}
-            </ul>
-        </div>
-    );
+        <Link to={`/tags/${name}`}>
+            <li className='tags'>{name}
+                <span>{count}</span>
+            </li>
+        </Link>
+    )
+}
+
+Tags.propTypes = {
+    name: PropTypes.string,
+    count: PropTypes.number,
 }
 
 export default Tags
