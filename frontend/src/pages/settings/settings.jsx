@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { ProfileCard } from '../../components';
 import SideBarLink from "../../components/widgets/sideBarLink";
 import "./settings.scss"
-import { FaAddressCard, FaShieldHalved } from "react-icons/fa6";
+import { FaAddressCard, FaShieldHalved, FaHouse } from "react-icons/fa6";
 
 
 const Settings = () => {
@@ -12,6 +12,11 @@ const Settings = () => {
                 <ProfileCard />
                     <hr />
                     <SideBarLink link={[
+                        {
+                            path: '/',
+                            icon: <FaHouse />,
+                            text: 'Home'
+                        },
                         {
                             path: '/settings',
                             icon: <FaAddressCard />,

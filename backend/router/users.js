@@ -8,12 +8,12 @@ import { getUser,
     unFollow,
     getPeople } from '../controllers/users.js';
 
-import upload from '../middleware/upload.js';
+import { avatarUpload } from '../middleware/upload.js';
 
 const usersRoutes = express.Router();
 
 usersRoutes.get('/:username', auth , getUser );
-usersRoutes.put('/:id' , auth , upload.single('avatar') , updateUser );
+usersRoutes.put('/:id' , auth , avatarUpload.single('avatar') , updateUser );
 usersRoutes.post('/:username/save', auth, favoritePost)
 usersRoutes.get('/:username/save', auth, getFavorite)
 usersRoutes.post('/follow/:id', auth, follow)

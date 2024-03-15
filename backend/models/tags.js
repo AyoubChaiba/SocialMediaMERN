@@ -3,12 +3,17 @@ import mongoose from 'mongoose';
 const tagsSchema = mongoose.Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        unique: true
+    },
+    numPost : {
+        type: Number,
+        default: 0
     }
 },{
     timestamps: true
 })
 
-let Tags = mongoose.model('Tags',tagsSchema) ;
+let Tags = mongoose.model('Tags', tagsSchema) ;
 
 export default Tags ;

@@ -24,20 +24,20 @@ export const User = async (req,res) => {
                     email : User.email ,
                     created : User.createdAt ,
                     update : User.updatedAt ,
-                    avatar : `http://localhost:3000/images/${User.avatar}` ,
+                    avatar : `http://localhost:3000/avatar/${User.avatar}` ,
                     favorite : User.saved,
                     followers: User.followers.map(e => {
                         return {
                             id: e._id,
                             username: e.username,
-                            avatar: `http://localhost:3000/images/${e.avatar}`,
+                            avatar: `http://localhost:3000/avatar/${e.avatar}`,
                         }
                     }),
                     following: User.following.map(e => {
                         return {
                             id: e._id,
                             username: e.username,
-                            avatar: `http://localhost:3000/images/${e.avatar}`,
+                            avatar: `http://localhost:3000/avatar/${e.avatar}`,
                         }
                     }),
                 }
@@ -132,7 +132,7 @@ export const Register = async (req,res) => {
                     id : profile._id ,
                     email : profile.email ,
                     username : profile.username ,
-                    avatar : `http://localhost:3000/images/${profile.avatar}`
+                    avatar : `http://localhost:3000/avatar/${profile.avatar}`
                 }
             })
         }else {

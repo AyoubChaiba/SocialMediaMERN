@@ -7,6 +7,8 @@ import dotenv from 'dotenv';
 import authRoutes from './router/auth.js';
 import usersRoutes from './router/users.js';
 import publicationRoutes from './router/publications.js';
+import searchRoutes from "./router/search.js";
+import tagsRoutes from "./router/tags.js";
 
 process.noDeprecation = true;
 
@@ -17,17 +19,18 @@ let app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/images' , express.static('uploads/images'));
+app.use('/image' , express.static('uploads/image'));
+app.use('/avatar' , express.static('uploads/avatar'));
 
 app.use('/api/auth' , authRoutes);
 app.use('/api/users' , usersRoutes);
 app.use('/api/publication' , publicationRoutes);
-
+app.use('/api/search' , searchRoutes);
+app.use('/api/tags' , tagsRoutes);
 
 let { PORT, MONGODB_URI } = process.env;
 
-mongoose.connect(MONGODB_URI, {
-}).then(() => {
+mongoose.connect(MONGODB_URI, {}).then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);

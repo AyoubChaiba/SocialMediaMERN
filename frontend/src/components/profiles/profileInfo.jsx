@@ -1,8 +1,50 @@
 import { Link } from 'react-router-dom';
 import './profileInfo.scss'
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { AXIOS_CLIENT } from '../../lib/api/axios';
+import { addfollow, removefollow } from '../../toolkit/userSlice';
+import { toast } from 'react-toastify';
 
 const ProfileInfo = ({ profile, postLength, user }) => {
+
+    const dispatch = useDispatch()
+
+    const FollowUser = async () => {
+        try {
+            const response = await AXIOS_CLIENT.post(`/users/follow/${profile.id}`);
+            toast.success(response.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            dispatch(addfollow({
+                id : profile.id,
+                username : profile.username,
+                avatar : profile.avatar
+            }));
+        } catch (error) {
+            if (error.response?.status === 401) {
+                toast.error(error.response.data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+        }
+    }
+
+    const UnFollowUser = async () => {
+        try {
+            const response = await AXIOS_CLIENT.post(`/users/unFollow/${profile.id}`);
+            toast.success(response.data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            dispatch(removefollow(profile.id));
+        } catch (error) {
+            if (error.response?.status === 401) {
+                toast.error(error.response.data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
+            }
+        }
+    }
     return (
         <div className="post-list">
             <div className="profile-avatar">
@@ -27,8 +69,8 @@ const ProfileInfo = ({ profile, postLength, user }) => {
                         <Link to={'/settings'}>Edit Profile</Link>:
                         (
                             user.following.filter(e => e.id === profile.id).length === 0 ?
-                            <button key={profile.id} >Follow</button> :
-                            <button key={profile.id} >unFollow</button>
+                            <button onClick={FollowUser} key={profile.id} >Follow</button> :
+                            <button onClick={UnFollowUser} key={profile.id} >unFollow</button>
                         )
                     }
                 </div>

@@ -14,7 +14,7 @@ const Search = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const res = await AXIOS_CLIENT.get(`publication/search/test`, {
+                const res = await AXIOS_CLIENT.get(`search`, {
                     params: {
                         query: searchItems,
                     },
@@ -37,8 +37,9 @@ const Search = () => {
         setSearchItems(searchValue);
     };
 
-    const handleToggleSuggestions = () => {
-        setShowSuggestions(!showSuggestions);
+    const handleToggleSuggestions = (e) => {
+        e._reactName === "onFocus"  && setShowSuggestions(true)
+        if (e._reactName === "onBlur"  && publications.length <= 0) setShowSuggestions(false)
     };
 
     return (
@@ -49,13 +50,18 @@ const Search = () => {
                     placeholder="Type to search..."
                     value={searchItems}
                     onChange={handleChange}
-                    onFocus={() => setShowSuggestions(true)}
+                    onFocus={handleToggleSuggestions}
                     onBlur={handleToggleSuggestions}
                 />
                 <FaMagnifyingGlass className="icon-search" />
             </div>
-            {(showSuggestions && (publications.length >= 0 || tags.length >= 0 || people.length >= 0)) && (
-                <SearchBarList publications={publications} tags={tags} people={people} />
+            {( showSuggestions && (publications.length >= 0 || tags.length >= 0 || people.length >= 0)) && (
+                <SearchBarList
+                    publications={publications}
+                    tags={tags}
+                    people={people}
+                    handleToggleSuggestions={handleToggleSuggestions}
+                    />
             )}
         </div>
     );

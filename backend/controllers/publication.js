@@ -1,6 +1,5 @@
 import Publication from '../models/publication.js';
 import Tags from '../models/tags.js';
-import Profile from '../models/Profile.js';
 import mongoose from 'mongoose';
 import fs from 'fs';
 
@@ -30,7 +29,7 @@ export const getPublications = async (req, res) => {
     let formatPublication = populatedPublication.map(publication => {
         return {
             id: publication._id,
-            image: publication.image ? `http://localhost:3000/images/${publication.image}` : undefined,
+            image: publication.image ? `http://localhost:3000/image/${publication.image}` : undefined,
             description: publication.description,
             date_create : publication.createdAt,
             date_update : publication.updatedAt,
@@ -45,7 +44,7 @@ export const getPublications = async (req, res) => {
             author: {
                 id: publication.author._id,
                 username: publication.author.username,
-                avatar: `http://localhost:3000/images/${publication.author.avatar}`,
+                avatar: `http://localhost:3000/avatar/${publication.author.avatar}`,
             },
         };
     });
@@ -59,60 +58,6 @@ export const getPublications = async (req, res) => {
     });
     }
 };
-
-
-
-export const search = async (req, res) => {
-    try {
-        const { query } = req.query;
-
-        const publications = await Publication.find({
-            description: { $regex: new RegExp(query, 'i') }
-        }).populate('author');
-
-        const profiles = await Profile.find({
-            $or: [
-                { username: { $regex: new RegExp(query, 'i') } },
-                { email: { $regex: new RegExp(query, 'i') } }
-            ]
-        });
-
-        const tags = await Tags.find({
-            name: { $regex: new RegExp(query, 'i') }
-        });
-
-        return res.status(200).json({
-            publications : publications.map(e => {
-                return {
-                    id: e._id,
-                    image: e.image? `http://localhost:3000/images/${e.image}` : undefined,
-                    description: e.description.slice(0, 100),
-                    author: e.author.username,
-                }
-            }) ,
-            people : profiles.map(e => {
-                return {
-                    id: e._id,
-                    username: e.username,
-                    avatar: `http://localhost:3000/images/${e.avatar}`,
-                }
-            }),
-            tags : tags.map(e => {
-                return {
-                    id: e._id,
-                    name: e.name,
-                }
-            })
-        });
-    } catch (err) {
-        console.error('An error occurred', err);
-        return res.status(500).json({
-            message: err.message,
-        });
-    }
-}
-
-
 
 
 export const getPublication = async (req,res)=> {
@@ -133,7 +78,7 @@ export const getPublication = async (req,res)=> {
             id : publication.id ,
             title : publication.title ,
             description : publication.description ,
-            image : `http://localhost:3000/images/${publication.image}`
+            image : `http://localhost:3000/image/${publication.image}`
         });
     } catch (error) {
         console.error("An error occurred" , error);
@@ -149,18 +94,15 @@ export const CreatePublication = async (req, res) => {
         let author = req.profile;
         let image = req?.file?.filename;
 
-        const tagIds = tags && await Promise.all(tags.map(async tagName => {
-            let foundTag = await Tags.findOne({ name: tagName });
+        const tagNames = tags.map(tag => tag.toLowerCase());
+        const foundTag = await Tags.find({ name: { $in : tagNames }})
 
-            if (!foundTag) foundTag = await new Tags({ name: tagName }).save();
-
-            return foundTag._id;
-        }));
+        if(!foundTag ) foundTag = await new Tags({ name: tagNames }).save()
 
         let publication = new Publication({
             description,
             author: author.userId,
-            tags: tagIds,
+            tags: foundTag.map(tag => tag._id)
         });
 
         if (image) {
@@ -178,7 +120,7 @@ export const CreatePublication = async (req, res) => {
                 publication: {
                     id: populatedPublication._id,
                     description: populatedPublication.description,
-                    image: populatedPublication.image ? `http://localhost:3000/images/${populatedPublication.image}` : undefined,
+                    image: populatedPublication.image ? `http://localhost:3000/image/${populatedPublication.image}` : undefined,
                     date_create: populatedPublication.createdAt,
                     date_update: populatedPublication.updatedAt,
                     likesUser: populatedPublication.likesUser,
@@ -192,7 +134,7 @@ export const CreatePublication = async (req, res) => {
                     author: {
                         id: populatedPublication.author._id,
                         username: populatedPublication.author.username,
-                        avatar: `http://localhost:3000/images/${populatedPublication.author.avatar}`,
+                        avatar: `http://localhost:3000/image/${populatedPublication.author.avatar}`,
                     },
                 },
             });
@@ -207,8 +149,6 @@ export const CreatePublication = async (req, res) => {
         });
     }
 };
-
-
 
 export const editPublication = async (req,res)=> {
     try {
@@ -252,8 +192,8 @@ export const deletePublication = async (req, res) => {
         return res.status(404).json({ message: 'id not found' });
     }
 
-    if (publication.image && fs.existsSync(`uploads/images/${publication.image}`)) {
-        fs.unlinkSync(`uploads/images/${publication.image}`);
+    if (publication.image && fs.existsSync(`uploads/image/${publication.image}`)) {
+        fs.unlinkSync(`uploads/image/${publication.image}`);
     }
 
     await Publication.findByIdAndDelete(id);
@@ -269,7 +209,6 @@ export const deletePublication = async (req, res) => {
     });
     }
 };
-
 
 export const likePublication = async (req, res) => {
     const { postID, userID } = req.query;

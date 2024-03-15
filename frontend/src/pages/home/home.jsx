@@ -5,6 +5,7 @@ import SideBarLink from "../../components/widgets/sideBarLink";
 import Friends from "../../components/widgets/friends";
 import People from "../../components/widgets/people";
 import { FaHouse, FaBookmark, FaUsers, FaHashtag } from "react-icons/fa6";
+import Tags from "../../components/widgets/tags";
 const Home = () => {
     return (
         <div className="home container mx-auto">
@@ -41,6 +42,7 @@ const Home = () => {
             </div>
             <div className="right">
                 <People />
+                <Tags />
             </div>
         </div>
     );

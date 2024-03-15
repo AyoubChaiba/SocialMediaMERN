@@ -297,7 +297,7 @@
                             -moz-border-radius: 15px;
                             -ms-border-radius: 15px;
                             -o-border-radius: 15px;
-}
+                    }
                     }
                     img {
                         border-radius: 19px;
@@ -410,7 +410,6 @@
                         .loading {
                             animation: spin 1s linear infinite;
                         }
-
                     }
                 }
             }
@@ -424,6 +423,7 @@
             padding: 20px 15px;
             display: flex;
             flex-direction: column;
+            gap: 15px;
             >div {
                 background-color: themed("bgSoftTwo");
                 padding: 12px;
@@ -432,6 +432,17 @@
             .list-people {
                 height: calc(100% / 2);
                 overflow-y: auto;
+                &::-webkit-scrollbar {
+                    width: 4px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background: themed("secondary");
+                    border-radius: 5px;
+                    -webkit-border-radius: 5px;
+                    -moz-border-radius: 5px;
+                    -ms-border-radius: 5px;
+                    -o-border-radius: 5px;
+                }
                 .list-group {
                     display: flex;
                     flex-wrap: wrap;

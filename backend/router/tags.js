@@ -1,11 +1,12 @@
 import express from 'express' ;
-import { tags } from '../controllers/auth.js';
 import { auth } from '../middleware/auth.js';
-
-const authRoutes = express.Router();
-
-authRoutes.get('/tags', auth, tags);
-authRoutes.get('/tags/:id', auth, tags);
+import { getTags, getTag } from '../controllers/tags.js';
 
 
-export default authRoutes;
+const tagsRoutes = express.Router();
+
+tagsRoutes.get('/', getTags);
+tagsRoutes.get('/:id', getTag);
+
+
+export default tagsRoutes;

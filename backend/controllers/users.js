@@ -1,6 +1,7 @@
 import Profile from '../models/Profile.js' ;
 import Publication from '../models/publication.js';
 import mongoose from 'mongoose';
+import sharp from "sharp"
 
 
 export const getUser = async (req, res) => {
@@ -22,13 +23,13 @@ export const getUser = async (req, res) => {
                         email: user.email,
                         created: user.createdAt,
                         updated: user.updatedAt,
-                        avatar: `http://localhost:3000/images/${user.avatar}`,
+                        avatar: `http://localhost:3000/avatar/${user.avatar}`,
                         followers: user.followers,
                         following: user.following,
                     },
                     publication: publications.map(publication => ({
                         id: publication._id,
-                        image: publication.image ? `http://localhost:3000/images/${publication.image}` : undefined,
+                        image: publication.image ? `http://localhost:3000/image/${publication.image}` : undefined,
                         description: publication.description,
                         date_create : publication.createdAt,
                         date_update : publication.updatedAt,
@@ -37,7 +38,7 @@ export const getUser = async (req, res) => {
                         author: {
                             id: user._id,
                             username: user.username,
-                            avatar: `http://localhost:3000/images/${user.avatar}`,
+                            avatar: `http://localhost:3000/avatar/${user.avatar}`,
                         },
                     }))
                 }
@@ -76,7 +77,7 @@ export const updateUser = async (req, res) => {
                 username: updatedUser.username,
                 email: updatedUser.email,
                 updatedAt: updatedUser.updatedAt,
-                avatar: `http://localhost:3000/images/${updatedUser.avatar}`,
+                avatar: `http://localhost:3000/avatar/${updatedUser.avatar}`,
             }
         });
     } catch (error) {
@@ -123,13 +124,13 @@ export const getFavorite = async (req, res) => {
             return {
                 id: post._id,
                 description: post.description,
-                image: post.image ? `http://localhost:3000/images/${post.image}` : undefined,
+                image: post.image ? `http://localhost:3000/image/${post.image}` : undefined,
                 date_create: post.createdAt,
                 date_update: post.updatedAt,
                 author: {
                     id: post.author._id,
                     username: post.author.username,
-                    avatar: `http://localhost:3000/images/${post.author.avatar}`,
+                    avatar: `http://localhost:3000/avatar/${post.author.avatar}`,
                 }
             };
         }),
@@ -194,7 +195,7 @@ export const getPeople = async (req, res) => {
                 return {
                     id : person.id,
                     username : person.username,
-                    avatar : `http://localhost:3000/images/${person.avatar}`,
+                    avatar : `http://localhost:3000/avatar/${person.avatar}`,
                 }
             })
         });
