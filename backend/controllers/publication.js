@@ -90,20 +90,25 @@ export const getPublication = async (req,res)=> {
 
 export const CreatePublication = async (req, res) => {
     try {
-        let { description, tags } = req.body;
-        let author = req.profile;
-        let image = req?.file?.filename;
+        const { description, tags } = req.body;
+        const author = req.profile;
+        const image = req?.file?.filename;
 
         const tagNames = tags ? tags.map(tag => tag.toLowerCase()) : [];
 
-        const foundTag = await Tags.find({ name: { $in : tagNames }})
+        const foundTags = await Tags.find({ name: { $in: tagNames }});
 
-        if(!foundTag ) foundTag = await new Tags({ name: tagNames }).save()
+        const newTags = await Promise.all(
+            tagNames.filter(tag => !foundTags.some(foundTag => foundTag.name === tag))
+                .map(tagName => new Tags({ name: tagName }).save())
+        );
 
-        let publication = new Publication({
+        const allTags = [...foundTags, ...newTags];
+
+        const publication = new Publication({
             description,
             author: author.userId,
-            tags: tags ? foundTag.map(tag => tag._id) : []
+            tags: allTags.map(tag => tag._id)
         });
 
         if (image) {
@@ -114,8 +119,8 @@ export const CreatePublication = async (req, res) => {
 
         if (savePublication) {
             const populatedPublication = await Publication.findById(publication._id)
-            .populate('author')
-            .populate('tags');
+                .populate('author')
+                .populate('tags');
             return res.status(200).json({
                 message: 'Publication created successfully.',
                 publication: {
@@ -125,12 +130,7 @@ export const CreatePublication = async (req, res) => {
                     date_create: populatedPublication.createdAt,
                     likesUser: populatedPublication.likesUser,
                     likes: populatedPublication.likes,
-                    tags: populatedPublication.tags.map(e => {
-                        return {
-                            id: e._id,
-                            name: e.name,
-                        };
-                    }),
+                    tags: populatedPublication.tags.map(e => ({ id: e._id, name: e.name })),
                     author: {
                         id: populatedPublication.author._id,
                         username: populatedPublication.author.username,
@@ -149,6 +149,8 @@ export const CreatePublication = async (req, res) => {
         });
     }
 };
+
+
 
 export const editPublication = async (req,res)=> {
     try {

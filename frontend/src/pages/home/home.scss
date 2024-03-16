@@ -172,6 +172,9 @@
                 font-size: 30px;
                 margin-left: 15px;
                 margin-bottom: 9px;
+                span {
+                    color: themed('primary');
+                }
             }
             .topFeed {
                 display: flex;
@@ -287,7 +290,7 @@
                     .tags {
                         display: flex;
                         gap: 15px;
-                        span {
+                        a {
                             background-color: themed('bgSoftTwo');
                             cursor: pointer;
                             color: themed('primary');
@@ -411,6 +414,85 @@
                             animation: spin 1s linear infinite;
                         }
                     }
+                }
+            }
+            .tags-container {
+                padding: 10px;
+                .list-tags {
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                    .tag-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        background-color: themed("bgSoftTwo");
+                        padding: 10px 15px;
+                        border-radius: 15px;
+                        -webkit-border-radius: 15px;
+                        -moz-border-radius: 15px;
+                        -ms-border-radius: 15px;
+                        -o-border-radius: 15px;
+                        cursor: pointer;
+                        position: relative;
+                        .count {
+                            background-color: themed("secondary");
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: themed("textColor");
+                            width:  30px;
+                            height: 30px;
+                            padding: 5px;
+                            border-radius: 50%;
+                            -webkit-border-radius: 50%;
+                            -moz-border-radius: 50%;
+                            -ms-border-radius: 50%;
+                            -o-border-radius: 50%;
+                        }
+                        .date  {
+                            position: absolute;
+                            bottom: 5px;
+                            left: 10px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            color: themed("textColorSoft");
+                        }
+                        transition: background-color 0.3s ease;
+                        &:hover {
+                            background-color: themed("primary");
+                        }
+                    }
+                }
+                .btn-list-tags {
+                    margin-top: 15px;
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                    color: themed("textColor");
+                    font-size: 30px;
+                    button:hover {
+                        color: themed("primary");
+                    }
+                    button:disabled {
+                        opacity: 0.7;
+                        cursor: not-allowed;
+                        color: themed("border");
+                    }
+                }
+                .prev {
+                    left: 0;
+                }
+                .next {
+                    right: 0;
+                }
+            }
+            .list-Popular {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+                .popular-item {
+
                 }
             }
         }

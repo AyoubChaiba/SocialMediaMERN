@@ -3,7 +3,10 @@ import Publication from './../models/publication.js';
 
 export const getTags = async (req, res) => {
     try {
-        const tags = await Tags.find({});
+        const { limit , page } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const tags = await Tags.find({}).skip(skip).limit(parseInt(limit)).sort({ createdAt: -1 });
+
         const tagPublicationsCounts = {};
         for (const tag of tags) {
             const publications = await Publication.find({ tags: tag._id });
@@ -12,9 +15,10 @@ export const getTags = async (req, res) => {
 
         return res.status(200).json(
             tags.map(tag => ({
-            id: tag._id,
-            name: tag.name,
-            count: tagPublicationsCounts[tag.name]
+                id: tag._id,
+                name: tag.name,
+                count: tagPublicationsCounts[tag.name],
+                date_created: tag.createdAt,
             }))
         );
     } catch (e) {
@@ -24,12 +28,14 @@ export const getTags = async (req, res) => {
     }
 };
 
+
 export const getPopularTags = async (req, res) => {
     try {
         const tagCounts = await Publication.aggregate([
             { $unwind: "$tags" },
             { $group: { _id: "$tags", count: { $sum: 1 } } },
-            { $sort: { count: -1 } }
+            { $sort: { count: -1 } },
+            {$limit: 12}
         ]);
 
         const populatedTags = await Promise.all(tagCounts.map(async (tag) => {
@@ -37,7 +43,8 @@ export const getPopularTags = async (req, res) => {
             return {
                 id: populatedTag._id,
                 name: populatedTag.name,
-                count: tag.count
+                count: tag.count,
+                date_created: populatedTag.createdAt,
             };
         }));
 
@@ -51,15 +58,17 @@ export const getPopularTags = async (req, res) => {
 
 
 export const getTag = async (req, res) => {
-    const { id } = req.params;
+    const { name } = req.params;
     try {
-        const tag = await Tags.findById(id);
+        const tag = await Tags.findOne({ name: name });
         if (!tag) {
             return res.status(404).json({
                 message: "Tag not found"
             });
         }
-        const publications = await Publication.find({ tags: tag._id });
+        const publications = await Publication.find({ tags: tag._id })
+        .populate('author')
+        .populate('tags');
         return res.status(200).json({
             tag: {
                 id: tag._id,
@@ -70,9 +79,12 @@ export const getTag = async (req, res) => {
                     id: post._id,
                     description: post.description,
                     image: post.image? `http://localhost:3000/image/${post.image}` : undefined,
+                    date_create: post.createdAt,
+                    tags: post.tags.map(e => ({ id: e._id, name: e.name })),
                     author: {
                         id: post.author._id,
                         username: post.author.username,
+                        avatar: `http://localhost:3000/avatar/${post.author.avatar}`,
                     }
                 }
             })

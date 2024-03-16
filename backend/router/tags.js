@@ -6,8 +6,8 @@ import { getTags, getTag, getPopularTags } from '../controllers/tags.js';
 const tagsRoutes = express.Router();
 
 tagsRoutes.get('/', auth, getTags);
-tagsRoutes.get('/:id', auth, getTag);
-tagsRoutes.get('/popular/post', auth, getPopularTags);
+tagsRoutes.get('/:name', auth, getTag);
+tagsRoutes.get('/popular/tags', auth, getPopularTags);
 
 
 export default tagsRoutes;

@@ -166,7 +166,7 @@ const PostCard = ({ post, user }) => {
                 <div className='tags'>
                     { post.tags &&
                         post.tags.map(e => {
-                            return <span key={e.id}>{e.name}</span>
+                            return <Link to={`tags/${e.name}`} key={e.id}>{e.name}</Link>
                         })
                     }
                 </div>

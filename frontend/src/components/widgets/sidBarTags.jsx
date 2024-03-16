@@ -9,7 +9,7 @@ const SidBarTags = () => {
     useEffect(() => {
         const fetchPeople = async () => {
             try {
-                const response = await AXIOS_CLIENT.get(`tags/popular/post`);
+                const response = await AXIOS_CLIENT.get(`tags/popular/tags`);
                 setPopularTags(response.data);
             } catch (error) {
                 console.log(error);

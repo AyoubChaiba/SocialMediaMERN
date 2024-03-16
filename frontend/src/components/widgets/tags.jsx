@@ -6,7 +6,7 @@ const Tags = ({name, count}) => {
     return (
         <Link to={`/tags/${name}`}>
             <li className='tags'>{name}
-                <span>{count}</span>
+                {count > 0  && <span>{count}</span>}
             </li>
         </Link>
     )
