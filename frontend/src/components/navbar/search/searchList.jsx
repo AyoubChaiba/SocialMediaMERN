@@ -1,7 +1,7 @@
-import SerachResult from "./serachResult"
+import SerachResult from "./serachResult";
 import { PropTypes } from 'prop-types';
 
-const SearchBarList = ({publications, tags, people }) => {
+const SearchBarList = ({ publications, tags, people }) => {
 
     return (
         <div className="searchList">
@@ -16,7 +16,7 @@ const SearchBarList = ({publications, tags, people }) => {
                                         text={item.description}
                                         image={item.image}
                                         author={item.author}
-                                        to={'/'}
+                                        to={`/post/${item.id}`}
                                     />
                                 )
                             })
@@ -53,7 +53,7 @@ const SearchBarList = ({publications, tags, people }) => {
                                 return (
                                     <SerachResult key={item.id}
                                         text={item.name}
-                                        to={'/tags'}
+                                        to={`/tags/${item.name}`}
                                     />
                                 )
                             })

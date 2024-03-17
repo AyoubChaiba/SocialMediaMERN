@@ -7,12 +7,13 @@ import { useEffect } from "react";
 import { useDispatch , useSelector } from "react-redux";
 import { setLoginOut , setCurrentUser , setToken } from "../../toolkit/userSlice";
 import { toast } from 'react-toastify'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { FaMoon , FaSun } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";
 import Search from "../../components/navbar/search/search";
+import { logoDark , logoLight } from "../../assets/logo"
 
 let NavBar = () => {
     const { token , isLogin , user } = useSelector(state => state.user);
@@ -59,11 +60,12 @@ let NavBar = () => {
 
     return (
         <nav className="navbar">
-            <div className="container m-auto">
+            <div className="container m-auto container-nav">
                 <div className="left">
-                    <div>
-                        <h1>Logo</h1>
-                    </div>
+                    <Link className="logo">
+                        <img src={mode ? logoDark : logoLight} alt="" />
+                        <div data-logo="mon avis"><span>mon avis</span></div>
+                    </Link>
                     <div className="btn_menu">
                         {/* <Link to={'/'}>
                             { <FaHouse />}

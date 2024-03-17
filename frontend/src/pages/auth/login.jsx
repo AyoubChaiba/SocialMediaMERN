@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from '../../lib/validation';
 import { AXIOS_CLIENT } from '../../lib/api/axios';
+import "./auth.scss";
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -42,12 +43,13 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen">
-            <form onSubmit={handleSubmit(loginProfile)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/3">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+        <div className="login-container h-screen">
+            <h1>Login</h1>
+            <form onSubmit={handleSubmit(loginProfile)} className="form-login shadow-md px-8 pt-6 pb-8 mb-4 w-1/3">
+                <div className="input-data mb-4">
+                    <label className="block text-sm font-bold mb-2">Username</label>
                     <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                        className={`shadow border rounded w-full py-2 px-3 leading-tight
                         ${errors.username ? ' border-red-500' : ''}`}
                         type="text"
                         placeholder="Username"
@@ -55,11 +57,10 @@ const Login = () => {
                     />
                     <p className='text-red-500'>{errors.username?.message}</p>
                 </div>
-                <div className="mb-6">
+                <div className="input-data mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                         <input
-                            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
-                            ${errors.password ? ' border-red-500' : ' '}`}
+                            className={`shadow border rounded w-full py-2 px-3  leading-tight ${errors.password ? ' border-red-500' : ' '}`}
                             type="password"
                             placeholder="Password"
                             {...register('password')}
@@ -67,12 +68,12 @@ const Login = () => {
                         <p className='text-red-500'>{errors.password?.message}</p>
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="btn-form flex items-center justify-between">
                     {submitCount > 10 ?
                         <div className="message-block">
                             <p className="text-red-500">You have been blocked</p>
                         </div>:
-                        <button className="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        <button className="flex font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             type="submit"
                             disabled={ isSubmitting  || !isValid  }>
                             {isSubmitting  && <FaSpinner className='animate-spin h-5 w-5 mr-3'/>}

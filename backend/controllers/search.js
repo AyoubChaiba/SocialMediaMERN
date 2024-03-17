@@ -8,18 +8,18 @@ export const search = async (req, res) => {
 
         const publications = await Publication.find({
             description: { $regex: new RegExp(query, 'i') }
-        }).populate('author');
+        }).populate('author').limit(5);
 
         const profiles = await Profile.find({
             $or: [
                 { username: { $regex: new RegExp(query, 'i') } },
                 { email: { $regex: new RegExp(query, 'i') } }
             ]
-        });
+        }).limit(5);
 
         const tags = await Tags.find({
             name: { $regex: new RegExp(query, 'i') }
-        });
+        }).limit(5);
 
         return res.status(200).json({
             publications : publications.map(e => {

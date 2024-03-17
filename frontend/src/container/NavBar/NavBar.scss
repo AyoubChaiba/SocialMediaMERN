@@ -7,19 +7,59 @@
         background-color: themed("bg");
         border-bottom: 1px solid themed("border");
         height: 60px;
-        padding: 0 15px;
         z-index: 999;
-        .container {
+        .container-nav {
+            padding: 0 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
             height: 100%;
             .left {
-                display: flex;
-                gap: 5px;
-                h1 {
-                    color: themed("textColor");
+                display: flex; 
+                .logo {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img {
+                        height: 50px;
+                    }
+                    >div {
+                        span {
+                            color: themed("textColor");
+                            display: inline-block;
+                            transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+                        }
+                        overflow: hidden;
+                        position: relative;
+                        display: inline-block;
+                        font-size: 21px;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        color: var(--font-b-color);
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            width: 100%;
+                            left: 0;
+                        }
+                        &::after {
+                            content: attr(data-logo);
+                            color: themed("primary");
+                            height: 100%;
+                            top: 0;
+                            transform-origin: 100% 50%;
+                            transform: translate3d(200%, 0, 0);
+                            transition: transform .3s ease-in-out;
+                        }
+
+                    }
+                    &:hover div::after {
+                        transform: translate3d(0, 0, 0);
+                    }
+                    &:hover div span {
+                        transform: translate3d(-200%, 0, 0);
+                    }
                 }
                 .btn_menu {
                     display: flex;

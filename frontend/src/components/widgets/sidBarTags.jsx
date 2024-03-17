@@ -37,7 +37,7 @@ const SidBarTags = () => {
             <ul className="list-group">
                 {
                     popularTags.map((tag) => (
-                        <Tags  key={tag.id}
+                        <Tags key={tag.id}
                             id={tag.id}
                             name={tag.name}
                             count={tag.count}
@@ -49,7 +49,7 @@ const SidBarTags = () => {
             <ul className="list-group">
                 {
                     tags.map((tag) => (
-                        <Tags  key={tag.id}
+                        <Tags key={tag.id}
                             id={tag.id}
                             name={tag.name}
                             count={tag.count}

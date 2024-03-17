@@ -1,0 +1,69 @@
+@import "../../scss/style.scss";
+
+.login-container {
+    @include themify($themes) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        h1 {
+            color: themed("textColor");
+            font-weight: 700;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+        .form-login {
+            background-color: themed("bgSoft");
+            border-radius: 15px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+            gap: 15px;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            -ms-border-radius: 15px;
+            -o-border-radius: 15px;
+            .input-data {
+                label {
+                    color: themed('textColor');
+                }
+                input {
+                    background-color: themed("bgSoftTwo");
+                    border-width: 2px solid themed("border");
+                    border-radius: 15px;
+                    padding: 10px 15px;
+                    width: 100%;
+                    color: themed("textColor");
+                    &:focus {
+                        border-color: themed("primary");
+                    }
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+            .btn-form {
+                display: flex;
+                justify-content: center;
+                button {
+                    background-color: themed("primary");
+                    color: themed("textColor");
+                    border-radius: 25px;
+                    padding: 12px 20px;
+                    -webkit-border-radius: 25px;
+                    -moz-border-radius: 25px;
+                    -ms-border-radius: 25px;
+                    -o-border-radius: 25px;
+                    &:hover {
+                        background-color: themed("primaryHover");
+                    }
+                    &:disabled {
+                        cursor: not-allowed;
+                        background-color: themed("border");
+                    }
+                }
+            }
+        }
+    }
+}

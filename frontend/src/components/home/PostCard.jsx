@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FaPenToSquare , FaBookmark , FaTrash , FaHeart , FaRegHeart, FaRegBookmark } from "react-icons/fa6";
 import { AXIOS_CLIENT } from '../../lib/api/axios';
 import { useDispatch } from 'react-redux';
-import { deletePost, toggleLike, } from '../../toolkit/postSlice';
+import { LikePost, LikePosts, deletePost } from '../../toolkit/postSlice';
 import { deleteProfilePost, postProfileLike, } from '../../toolkit/profilesSlice';
 import { toggleFavorite } from '../../toolkit/favoriteSlice';
 import { userFavorite, removefollow, addfollow } from '../../toolkit/userSlice';
@@ -40,8 +40,9 @@ const PostCard = ({ post, user }) => {
     const LikesPublication = async () => {
         try {
             await AXIOS_CLIENT.post(`/publication/likes/?postID=${post.id}&userID=${user.id}`);
-            dispatch(toggleLike({ postId: post.id, userId: user.id }));
+            dispatch(LikePosts({ postId: post.id, userId: user.id }));
             dispatch(postProfileLike({ postId: post.id, userId: user.id }));
+            dispatch(LikePost({userId: user.id }));
         } catch (error) {
             console.error(error);
         }
@@ -166,7 +167,7 @@ const PostCard = ({ post, user }) => {
                 <div className='tags'>
                     { post.tags &&
                         post.tags.map(e => {
-                            return <Link to={`tags/${e.name}`} key={e.id}>{e.name}</Link>
+                            return <Link to={`/tags/${e.name}`} key={e.id}>{e.name}</Link>
                         })
                     }
                 </div>

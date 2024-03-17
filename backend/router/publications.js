@@ -13,7 +13,7 @@ import {
 const publicationRoutes = express.Router();
 
 publicationRoutes.get('/', auth, getPublications)
-publicationRoutes.get('/:id', auth, getPublication)
+publicationRoutes.get('/:id', getPublication)
 publicationRoutes.post('/', auth, imageUpload.single('image'), CreatePublication)
 publicationRoutes.put('/:id', auth, imageUpload.single('image'), editPublication)
 publicationRoutes.delete('/:id', auth, imageUpload.single('image'), deletePublication)

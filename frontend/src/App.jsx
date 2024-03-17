@@ -9,7 +9,10 @@ const App = () => {
     const { mode } = useSelector(state => state.darkMode);
     return (
         <div className={`theme-${mode ? "dark" : "light"}`}>
-            <ToastContainer />
+            <ToastContainer
+                autoClose={1000}
+                toastStyle={{ backgroundColor: `${mode ? "#222" : "#eee"}` }}
+            />
             <RouterProvider router={Router} />
         </div>
     );

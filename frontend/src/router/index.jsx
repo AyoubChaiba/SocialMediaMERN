@@ -1,6 +1,7 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/layout';
 import { Home, Settings, Login, Register } from "../pages/index";
+import { Auth, Guest } from '../lib/middleware';
 
 import FeedHome from '../components/widgets/FeedHome';
 import FavoritePost from '../components/widgets/favoritePost';
@@ -9,18 +10,7 @@ import Profile from '../components/widgets/profile';
 import EditProfile from './../components/widgets/editProfile';
 import PageTag from '../components/widgets/pageTag';
 import PageTags from '../components/widgets/pageTags';
-import { useSelector } from 'react-redux';
-
-const PrivateRoute = ({ element: Component, ...props }) => {
-    const { user } = useSelector(state => state.user);
-    return user ? <Component {...props} /> : <Navigate to="/login" replace />;
-};
-
-const PrivateLogin = ({ element: Component, ...rest }) => {
-    const { user } = useSelector(state => state.user);
-    return user ? <Navigate to="/" replace /> : <Component {...rest} />;
-};
-
+import ShowPost from '../components/widgets/showPost';
 
 
 export const Router = createBrowserRouter([
@@ -28,11 +18,15 @@ export const Router = createBrowserRouter([
         element: <Layout />,
         children: [
             {
-                element: <PrivateRoute element={Home} /> ,
+                element: <Auth element={Home} /> ,
                 children: [
                     {
                         path: '/',
                         element: <FeedHome />
+                    },
+                    {
+                        path: '/post/:id',
+                        element: <ShowPost />
                     },
                     {
                         path: '/saved',
@@ -61,7 +55,7 @@ export const Router = createBrowserRouter([
                 ]
             },
             {
-                element: <Settings />,
+                element: <Auth element={Settings} />,
                 children: [
                     {
                         path: '/settings',
@@ -75,14 +69,14 @@ export const Router = createBrowserRouter([
             },
             {
                 path: '/login',
-                element: <PrivateLogin element={Login} />
+                element: <Guest element={Login}/>
             },
             {
                 path: '/register',
-                element: <PrivateLogin element={Register} />
+                element: <Guest element={Register} />
             },
             {
-                path: '*',
+                path: '/*',
                 element: 'not found this page'
             }
         ]

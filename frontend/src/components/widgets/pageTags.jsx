@@ -49,7 +49,6 @@ const PageTags = () => {
             try {
                 setLoading(true);
                 const { data } = await AXIOS_CLIENT.get(`tags/popular/tags`);
-                console.log(data)
                 setTagsPopular(data);
             } catch (error) {
                 console.log(error);
@@ -78,7 +77,7 @@ const PageTags = () => {
                         <p>Loading...</p>
                     ) : (
                         tags.map(tag => (
-                            <Link to={`${tag.name}`} key={tag._id}>
+                            <Link to={`${tag.name}`} key={tag.id}>
                                 <li className="tag-item">
                                     <h1>#{tag.name}</h1>
                                     {tag.count > 0  && <span className="count">{tag.count}</span>}
@@ -100,7 +99,7 @@ const PageTags = () => {
                         <p>Loading...</p>
                     ) : (
                         tagsPopular.map(tag => (
-                            <Link to={`${tag.name}`} key={tag._id}>
+                            <Link to={`${tag.name}`} key={tag.id}>
                                 <li className="tag-item">
                                     <h1>#{tag.name}</h1>
                                     {tag.count > 0  && <span className="count">{tag.count}</span>}

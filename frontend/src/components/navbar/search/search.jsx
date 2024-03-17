@@ -9,7 +9,7 @@ const Search = () => {
     const [tags, setTags] = useState([]);
     const [people, setPeople] = useState([]);
     const [searchItems, setSearchItems] = useState("");
-    const [showSuggestions, setShowSuggestions] = useState(false); // State to track suggestion visibility
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
     useEffect(() => {
         const fetchItems = async () => {

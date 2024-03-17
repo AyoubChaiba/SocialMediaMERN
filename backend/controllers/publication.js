@@ -70,16 +70,32 @@ export const getPublication = async (req,res)=> {
                 }
             )
         }
-        let publication = await Publication.findById(id);
+        let publication = await Publication.findById(id)
+        .populate('author')
+        .populate('tags');;
         if (!publication) {
             return res.status(404).json({ message: 'publication not found'})
         } ;
-        return res.status(200).json({
-            id : publication.id ,
-            title : publication.title ,
-            description : publication.description ,
-            image : `http://localhost:3000/image/${publication.image}`
-        });
+        return res.status(200).json([{
+            id: publication._id,
+            image: publication.image ? `http://localhost:3000/image/${publication.image}` : undefined,
+            description: publication.description,
+            date_create : publication.createdAt,
+            date_update : publication.updatedAt,
+            likesUser : publication.likesUser,
+            likes : publication.likes,
+            tags : publication.tags.map(e => {
+                return {
+                    id: e._id,
+                    name: e.name,
+                };
+            }),
+            author: {
+                id: publication.author._id,
+                username: publication.author.username,
+                avatar: `http://localhost:3000/avatar/${publication.author.avatar}`,
+            },
+        }]);
     } catch (error) {
         console.error("An error occurred" , error);
         return res.status(500).json({
