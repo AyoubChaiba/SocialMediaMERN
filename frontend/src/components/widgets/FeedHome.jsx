@@ -90,10 +90,10 @@ const FeedHome = () => {
                     dataLength={posts.length}
                     next={onLoadMore}
                     hasMore={hasMore}
-                    loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
+                    loader={<h4 className="loader">Loading...</h4>}
                     endMessage={
-                        <p style={{ textAlign: 'center' , color: "white" }}>
-                            <b>Yay! You have seen it all</b>
+                        <p className="loader">
+                            <b >Yay! You have seen it all</b>
                         </p>
                     }
                     >

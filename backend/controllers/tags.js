@@ -68,7 +68,7 @@ export const getTag = async (req, res) => {
         }
         const publications = await Publication.find({ tags: tag._id })
         .populate('author')
-        .populate('tags');
+        .populate('tags').sort({ createdAt : -1});
         return res.status(200).json({
             tag: {
                 id: tag._id,
@@ -83,6 +83,7 @@ export const getTag = async (req, res) => {
                     tags: post.tags.map(e => ({ id: e._id, name: e.name })),
                     author: {
                         id: post.author._id,
+                        fullName: post.author.fullName,
                         username: post.author.username,
                         avatar: `http://localhost:3000/avatar/${post.author.avatar}`,
                     }

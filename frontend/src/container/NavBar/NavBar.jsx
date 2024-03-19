@@ -9,11 +9,12 @@ import { setLoginOut , setCurrentUser , setToken } from "../../toolkit/userSlice
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from "react-router-dom";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
-import { FaMoon , FaSun } from "react-icons/fa6";
+import { FaMoon , FaSun, FaBarsStaggered  } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";
 import Search from "../../components/navbar/search/search";
 import { logoDark , logoLight } from "../../assets/logo"
+import MenuMobile from "../../components/navbar/MenuMobile";
 
 let NavBar = () => {
     const { token , isLogin , user } = useSelector(state => state.user);
@@ -64,20 +65,21 @@ let NavBar = () => {
                 <div className="left">
                     <Link className="logo">
                         <img src={mode ? logoDark : logoLight} alt="" />
-                        <div data-logo="mon avis"><span>mon avis</span></div>
+                        <div data-logo="NetMERN"><span>NetMERN</span></div>
                     </Link>
                     <div className="btn_menu">
-                        {/* <Link to={'/'}>
-                            { <FaHouse />}
-                        </Link> */}
-                        <button onClick={darkMode}>
+                            { <MenuMobile />}
+                        <button onClick={darkMode} className="toggle-theme" >
                             { mode ? <FaSun />  : <FaMoon />}
                         </button>
                     </div>
                 </div>
-                <div className="center">
-                    <Search />
-                </div>
+                {
+                    isLogin &&
+                        <div className="center">
+                            <Search />
+                        </div>
+                }
                 <div className="right">
                     { isLogin ? <ProfileNav user={user} loginOut={loginOut} /> :<BtnConnect />}
                 </div>

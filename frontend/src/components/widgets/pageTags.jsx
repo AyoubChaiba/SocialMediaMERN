@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { Link } from "react-router-dom";
-import { FaRegCircleRight, FaRegCircleLeft } from "react-icons/fa6";
+import { FaRegCircleRight, FaRegCircleLeft, FaCircleNotch } from "react-icons/fa6";
 
 
 const PageTags = () => {
@@ -74,7 +74,9 @@ const PageTags = () => {
             <div className="tags-container">
                 <ul className="list-tags">
                     {loading ? (
-                        <p>Loading...</p>
+                        <div className="flex justify-center items-center loading mx-auto">
+                            <FaCircleNotch />
+                        </div>
                     ) : (
                         tags.map(tag => (
                             <Link to={`${tag.name}`} key={tag.id}>
@@ -96,7 +98,9 @@ const PageTags = () => {
             <div className="tags-container">
                 <ul className="list-tags">
                     {loading ? (
-                        <p>Loading...</p>
+                        <div className="flex justify-center items-center loading mx-auto">
+                            <FaCircleNotch />
+                        </div>
                     ) : (
                         tagsPopular.map(tag => (
                             <Link to={`${tag.name}`} key={tag.id}>

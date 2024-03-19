@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
 import { useSelector } from 'react-redux';
 import { FaCircleNotch } from "react-icons/fa";
-// import InfiniteScroll from 'react-infinite-scroll-component';
 import { useParams } from 'react-router-dom';
 import PostCard from '../home/PostCard';
 
@@ -41,21 +40,6 @@ const PageTag = () => {
                         <PostCard key={post.id} post={post} user={user} />
                     ))}
                 </>
-                // <InfiniteScroll
-                //         dataLength={favorite.length}
-                //         next={onLoadMore}
-                //         hasMore={hasMore}
-                //         loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
-                //         endMessage={
-                //             <p style={{ textAlign: 'center' , color: "white" }}>
-                //                 <b>Yay! You have seen it all</b>
-                //             </p>
-                //         }
-                //     >
-                //     {favorite.map(favorite => (
-                //         <PostCard key={favorite.id} post={favorite} profile={profile} />
-                //     ))}
-                // </InfiniteScroll>
             )}
         </>
     );

@@ -19,8 +19,8 @@ const FormEdit = ({user}) => {
         defaultValues: {
             username: user?.username,
             email: user?.email,
-            firstName: user?.firstName,
-            lastName : user?.lastName,
+            firstName: user?.fullName.split(' ')[0],
+            lastName : user?.fullName.split(' ')[1],
             avatar: '',
         },
     })
@@ -29,12 +29,14 @@ const FormEdit = ({user}) => {
         const formData = new FormData();
         formData.append('avatar', data.avatar[0]);
         formData.append('username', data.username);
+        formData.append('fullName', `${data.firstName} ${data.lastName}`);
         formData.append('email', data.email);
         try {
             const { data } = await AXIOS_CLIENT.put(`users/${user.id}`, formData);
             dispatch(setCurrentUser({
                 ...user,
                 username: data.profile.username,
+                fullName: data.profile.fullName,
                 email: data.profile.email,
                 avatar: data.profile.avatar
             }));

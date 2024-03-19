@@ -11,7 +11,7 @@ const Settings = () => {
             <div className="left">
                 <ProfileCard />
                     <hr />
-                    <SideBarLink link={[
+                    <SideBarLink className={"link"} link={[
                         {
                             path: '/',
                             icon: <FaHouse />,

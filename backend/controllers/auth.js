@@ -2,10 +2,14 @@ import Profile from '../models/Profile.js' ;
 import bcrypt from 'bcryptjs' ;
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import {OAuth2Client} from  'google-auth-library'
 
 dotenv.config();
 
+
 const JWT_SECRET = process.env.JWT_SECRET
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 
 export const User = async (req,res) => {
     try {
@@ -20,6 +24,7 @@ export const User = async (req,res) => {
                 message : "user is found",
                 profile : {
                     id : User._id ,
+                    fullName: User.fullName,
                     username : User.username ,
                     email : User.email ,
                     created : User.createdAt ,
@@ -80,6 +85,7 @@ export const Login = async (req,res) => {
                     message : "User logged in successfully.",
                     profile : {
                         _id : profile._id,
+                        fullName: profile.fullName,
                         username : profile.username,
                         email : profile.email
                     },
@@ -104,22 +110,22 @@ export const Login = async (req,res) => {
 
 export const Register = async (req,res) => {
     try {
-        let {username , email , password} = req.body
-        if (!username, !email, !password) {
+        let {firstName, lastName, username , email , password} = req.body
+        if (!username || !email || !password || !firstName || !lastName) {
             return res.status(422).json({
-                message : "All the fields are required."
-            })
+                message: "All fields are required."
+            });
         }
-        let existEmail = await Profile.findOne({email});
-        let existUsername = await Profile.findOne({username});
-        if (existEmail || existUsername) {
+        let existingUser = await Profile.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
             return res.status(422).json({
-                username : existUsername ? "username already" : "username is valid" ,
-                email : existEmail ? "email already" : "email is valid" ,
-            })
+                username: existingUser.username === username ? "Username already exists." : "Username is valid.",
+                email: existingUser.email === email ? "Email already exists." : "Email is valid."
+            });
         }
+        const fullName = `${firstName} ${lastName}`
         let hashPssword = await bcrypt.hash(password ,10)
-        let  profile = new Profile({username , email ,password : hashPssword});
+        let  profile = new Profile({fullName, username, email, password: hashPssword});
         // profile.avatar = `default-avatar-image.jpg`
         // if (req.file) {
         //     profile.avatar = req.file.path
@@ -130,6 +136,7 @@ export const Register = async (req,res) => {
                 message : "User created successfully.",
                 user : {
                     id : profile._id ,
+                    fullName: profile.fullName,
                     email : profile.email ,
                     username : profile.username ,
                     avatar : `http://localhost:3000/avatar/${profile.avatar}`
@@ -144,3 +151,54 @@ export const Register = async (req,res) => {
         })
     }
 }
+
+export const googleLogin = async (req, res) => {
+    try {
+        const { tokenId } = req.body;
+        client.verifyIdToken({ idToken: tokenId, audience: GOOGLE_CLIENT_ID }).then(
+            async response => {
+                const { email_verified, name, email, picture } = response.payload;
+                if (email_verified) {
+                    const user = await Profile.findOne({ email: email });
+                    if (user) {
+                        const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+                        return res.status(200).json({
+                            message: "User logged in successfully.",
+                            profile: {
+                                _id: user._id,
+                                fullName: user.fullName,
+                                username: user.username,
+                                email: user.email,
+                                avatar: user.avatar
+                            },
+                            token: token
+                        });
+                    } else {
+                        let hashPassword = await bcrypt.hash(email.split('@')[0] + JWT_SECRET, 10);
+                        const newUser = new Profile({
+                            email,
+                            fullName: name,
+                            username: email.split('@')[0],
+                            password: hashPassword,
+                        });
+                        await newUser.save();
+                        const token = jwt.sign({ userId: newUser._id }, JWT_SECRET);
+                        return res.status(200).json({
+                            message: "User logged in successfully.",
+                            profile: {
+                                _id: newUser._id,
+                                fullName: newUser.fullName,
+                                username: newUser.username,
+                                email: newUser.email
+                            },
+                            token: token
+                        });
+                    }
+                }
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+};

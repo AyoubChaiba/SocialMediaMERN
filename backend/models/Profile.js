@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
 let ProfileSchema = mongoose.Schema({
-    // fullName : {
-    //     type : String,
-    //     default: 'ayoubaygami'
-    // },
+    fullName : {
+        type : String,
+        required : true ,
+    },
+    googleId: String,
     username : {
         type : String ,
         required : true ,
+        unique: true,
     },
     email : {
         type : String,

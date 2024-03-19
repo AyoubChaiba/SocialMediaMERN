@@ -43,6 +43,7 @@ export const getPublications = async (req, res) => {
             }),
             author: {
                 id: publication.author._id,
+                fullName: publication.author.fullName,
                 username: publication.author.username,
                 avatar: `http://localhost:3000/avatar/${publication.author.avatar}`,
             },
@@ -92,6 +93,7 @@ export const getPublication = async (req,res)=> {
             }),
             author: {
                 id: publication.author._id,
+                fullName: publication.author.fullName,
                 username: publication.author.username,
                 avatar: `http://localhost:3000/avatar/${publication.author.avatar}`,
             },
@@ -149,6 +151,7 @@ export const CreatePublication = async (req, res) => {
                     tags: populatedPublication.tags.map(e => ({ id: e._id, name: e.name })),
                     author: {
                         id: populatedPublication.author._id,
+                        fullName: populatedPublication.author.fullName,
                         username: populatedPublication.author.username,
                         avatar: `http://localhost:3000/avatar/${populatedPublication.author.avatar}`,
                     },

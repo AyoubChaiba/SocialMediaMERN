@@ -11,10 +11,7 @@ const FavoritePost = () => {
     const { user } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-
     const [loading, setLoading] = useState(true);
-    // const [page, setPage] = useState(1);
-    // const [hasMore, setHasMore] = useState(true);
 
 
     useEffect(() => {
@@ -23,7 +20,6 @@ const FavoritePost = () => {
                 const response = await AXIOS_CLIENT.get(`/users/${user?.username}/save`);
                 const newPosts = response.data.favorite;
                     dispatch(setFavorite(newPosts));
-                    // setHasMore(newPosts.length > 0);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -32,11 +28,6 @@ const FavoritePost = () => {
         };
         fetchPublications();
     }, [dispatch, user]);
-
-    // const onLoadMore = () => {
-    //     setPage(prevPage => prevPage + 1);
-    // };
-
 
     return (
         <>
@@ -51,21 +42,6 @@ const FavoritePost = () => {
                         <PostCard key={favorite.id} post={favorite} user={user} isValid={isValid} />
                     ))}
                 </>
-                // <InfiniteScroll
-                //         dataLength={favorite.length}
-                //         next={onLoadMore}
-                //         hasMore={hasMore}
-                //         loader={<h4 style={{ textAlign: 'center' , color: "white" }}>Loading...</h4>}
-                //         endMessage={
-                //             <p style={{ textAlign: 'center' , color: "white" }}>
-                //                 <b>Yay! You have seen it all</b>
-                //             </p>
-                //         }
-                //     >
-                //     {favorite.map(favorite => (
-                //         <PostCard key={favorite.id} post={favorite} profile={profile} />
-                //     ))}
-                // </InfiniteScroll>
             )}
         </>
     );

@@ -54,7 +54,7 @@ const ProfileInfo = ({ profile, postLength, user }) => {
             </div>
             <div className="profile-info">
                 <div className="profile-name">
-                    <h2>full name</h2>
+                    <h2>{profile?.fullName}</h2>
                     <span>@{profile?.username}</span>
                     <p>{profile?.email}</p>
                 </div>

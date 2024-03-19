@@ -4,11 +4,14 @@
     @include themify($themes) {
         display: flex;
         gap: 25px;
-        padding: 15px 0 ;
+        padding: 15px;
         &>div {
             border-radius: 25px;
         }
         .left {
+            @include tablet {
+                display: none;
+            }
             background-color: themed("bgSoft");
             flex: 2 1;
             position: sticky;
@@ -65,6 +68,29 @@
                         border-radius: 15px;
                         padding: 15px;
                         transition: all .3s ease-in-out;
+                        position: relative;
+                        span {
+                            position: absolute;
+                            background-color: themed("secondary");
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            top: 50%;
+                            right: 5px;
+                            transform: translateY(-50%);
+                            border-radius: 50%;
+                            width:15px;
+                            height: 15px;
+                            //color: themed('textColor');
+                            font-size: 15px;
+                            font-weight: 600;
+                            padding: 15px;
+                            border: 3px solid themed("bgSoftTwo");
+                            -webkit-transform: translateY(-50%);
+                            -moz-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                            -o-transform: translateY(-50%);
+                    }
                     }
                     svg {
                         font-size: 25px;
@@ -201,6 +227,12 @@
 
                 }
             }
+            .loader {
+                text-align: center;
+                font-weight: 500;
+                color: themed('textColor');
+                font-size: 19px;
+            }
             // #parentScrolldiv {
             //     height: calc(100vh - 60px - 15px);
             //     overflow: auto;
@@ -212,6 +244,7 @@
                 border-radius: 25px;
                 padding: 25px 30px;
                 margin-bottom: 15px;
+
                 .top {
                     position: relative;
                     display: flex;
@@ -491,12 +524,12 @@
                 display: flex;
                 gap: 15px;
                 flex-wrap: wrap;
-                .popular-item {
-
-                }
             }
         }
         .right {
+            @include web {
+                display: none;
+            }
             background-color: themed("bgSoft");
             flex: 2 1;
             position: sticky;

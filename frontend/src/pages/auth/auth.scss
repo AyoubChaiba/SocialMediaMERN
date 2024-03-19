@@ -6,7 +6,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        h1 {
+        >h1 {
             color: themed("textColor");
             font-weight: 700;
             font-size: 30px;
@@ -35,6 +35,9 @@
                     padding: 10px 15px;
                     width: 100%;
                     color: themed("textColor");
+                    &::placeholder {
+                        color: themed("textColor");
+                    }
                     &:focus {
                         border-color: themed("primary");
                     }
@@ -46,12 +49,19 @@
             .btn-form {
                 display: flex;
                 justify-content: center;
-                button {
+                flex-direction: column;
+                gap: 15px;
+                >button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 15px;
+                    margin: 0 15px;
                     background-color: themed("primary");
                     color: themed("textColor");
                     border-radius: 25px;
                     padding: 12px 20px;
-                    -webkit-border-radius: 25px;
+                    -webkit-border-radius: 25px ;
                     -moz-border-radius: 25px;
                     -ms-border-radius: 25px;
                     -o-border-radius: 25px;
@@ -64,6 +74,25 @@
                     }
                 }
             }
+        }
+        .form-login-google {
+            h1 {
+                text-align: center;
+                color: themed("textColor");
+                font-size: 15px;
+                font-weight: 500;
+            }
+            background-color: themed("bgSoft");
+            border-radius: 15px;
+            padding: 20px 35px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+            gap: 15px;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            -ms-border-radius: 15px;
+            -o-border-radius: 15px;
         }
     }
 }

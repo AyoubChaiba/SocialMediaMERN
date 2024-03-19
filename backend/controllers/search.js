@@ -33,6 +33,7 @@ export const search = async (req, res) => {
             people : profiles.map(e => {
                 return {
                     id: e._id,
+                    fullName: e.fullName,
                     username: e.username,
                     avatar: `http://localhost:3000/avatar/${e.avatar}`,
                 }

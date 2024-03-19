@@ -79,7 +79,7 @@ const CreatePostPublication = ({ user }) => {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder={`What's on your mind ${user ? user?.username : ''}`}
+                placeholder={`What's on your mind ${user ? user?.fullName : ''}`}
                 required
               />
             </div>

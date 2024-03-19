@@ -15,16 +15,23 @@
             justify-content: space-between;
             gap: 15px;
             height: 100%;
+            position: relative;
             .left {
-                display: flex; 
+                display: flex;
                 .logo {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    gap: 8px;
                     img {
+                        max-width:none;
                         height: 50px;
+                        width: 50px;
                     }
                     >div {
+                        @include tablet {
+                            display: none;
+                        }
                         span {
                             color: themed("textColor");
                             display: inline-block;
@@ -36,7 +43,6 @@
                         font-size: 21px;
                         font-weight: 900;
                         text-transform: uppercase;
-                        color: var(--font-b-color);
                         &::after {
                             content: '';
                             position: absolute;
@@ -51,7 +57,11 @@
                             transform-origin: 100% 50%;
                             transform: translate3d(200%, 0, 0);
                             transition: transform .3s ease-in-out;
-                        }
+                            -webkit-transition: transform .3s ease-in-out;
+                            -moz-transition: transform .3s ease-in-out;
+                            -ms-transition: transform .3s ease-in-out;
+                            -o-transition: transform .3s ease-in-out;
+}
 
                     }
                     &:hover div::after {
@@ -66,12 +76,77 @@
                     align-items: center;
                     gap: 15px;
                     margin-left: 25px;
+                    .menu-container {
+                        display: none;
+                        @include tablet {
+                            display: block;
+                        }
+                        .menu-mobile  {
+                            position: absolute;
+                            top: 63px;
+                            left: 0;
+                            margin: 0 15px;
+                            width: calc(100% - 30px);
+                            z-index: 4;
+                            border-radius: 15px;
+                            background-color: themed('bgSoft');
+                            li {
+                                padding: 12px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 15px;
+                                a {
+                                    color: themed('textColor');
+                                    font-size: 15px;
+                                    font-weight: 600;
+                                    display: flex;
+                                    gap: 15px;
+                                    border-radius: 15px;
+                                    padding: 15px;
+                                    transition: all .3s ease-in-out;
+                                    position: relative;
+                                    span {
+                                        position: absolute;
+                                        background-color: themed("secondary");
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        top: 50%;
+                                        right: 5px;
+                                        transform: translateY(-50%);
+                                        border-radius: 50%;
+                                        width:15px;
+                                        height: 15px;
+                                        //color: themed('textColor');
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                        padding: 15px;
+                                        border: 3px solid themed("bgSoftTwo");
+                                        -webkit-transform: translateY(-50%);
+                                        -moz-transform: translateY(-50%);
+                                        -ms-transform: translateY(-50%);
+                                        -o-transform: translateY(-50%);
+                                }
+                                }
+                                svg {
+                                    font-size: 25px;
+                                }
+                                .active {
+                                    background-color: themed("secondary");
+                                    color: themed("text");
+                                    svg {
+                                        color: themed('text');
+                                    }
+                                }
+                            }
+                        }
+                    }
                     svg {
                         margin: 0 5px;
                         font-size: 25px;
-                        color: themed('textColorSoft');
+                        color: themed('textColor');
                     }
-                    button {
+                    .toggle-theme {
                         svg {
                             font-size: 24px;
                             color: themed('dark-mode');

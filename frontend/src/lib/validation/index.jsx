@@ -12,6 +12,8 @@ export const LoginSchema = yup.object().shape({
     })
 
 export const RegisterSchema = yup.object().shape({
+    firstName: yup.string().min(2).max(15).required('First name is required'),
+    lastName: yup.string().min(2).max(15).required('Last name is required'),
     username: yup.string().min(3).max(15).required('username is required'),
     email: yup.string().email('There are errors in writing an email').required('Email is required'),
     password: yup.string().min(8).max(20).required('password is required').matches(

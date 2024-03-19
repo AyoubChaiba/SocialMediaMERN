@@ -1,7 +1,6 @@
 import Profile from '../models/Profile.js' ;
 import Publication from '../models/publication.js';
 import mongoose from 'mongoose';
-import sharp from "sharp"
 
 
 export const getUser = async (req, res) => {
@@ -20,6 +19,7 @@ export const getUser = async (req, res) => {
                     user : {
                         id: user._id,
                         username: user.username,
+                        fullName: user.fullName,
                         email: user.email,
                         created: user.createdAt,
                         updated: user.updatedAt,
@@ -56,7 +56,7 @@ export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
         const avatar = req?.file?.filename;
-        const { username, email } = req.body;
+        const { username, email, fullName } = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).json({
@@ -64,7 +64,7 @@ export const updateUser = async (req, res) => {
             })
         }
 
-        const data = avatar ? { username, email, avatar } : { username, email };
+        const data = avatar ? { username, email, avatar } : { username, email, fullName };
         const updatedUser = await Profile.findByIdAndUpdate(id, data, { new: true, runValidators: true });
 
         if (!updatedUser) {
@@ -75,6 +75,7 @@ export const updateUser = async (req, res) => {
             message: "Profile updated successfully",
             profile: {
                 username: updatedUser.username,
+                fullName: updatedUser.fullName,
                 email: updatedUser.email,
                 updatedAt: updatedUser.updatedAt,
                 avatar: `http://localhost:3000/avatar/${updatedUser.avatar}`,
@@ -115,13 +116,22 @@ export const favoritePost = async (req, res) => {
 
 
 export const getFavorite = async (req, res) => {
-    const { userId } = req.profile;
-    const user = await Profile.findById(userId).populate("saved").sort({ createdAt: -1 });
-    if (!user) return res.status(404).json({ message: "User or publication not found" });
-    for (const post of user.saved) await post.populate("author");
-    return res.status(200).json({
-        favorite: user.saved.map((post) => {
-            return {
+    try {
+        const { userId } = req.profile;
+        const user = await Profile.findById(userId).populate({
+            path: "saved",
+            populate: {
+                path: "author",
+                select: "username fullName avatar"
+            }
+        }).lean().sort({ createdAt: -1 });
+
+        if (!user) {
+            return res.status(404).json({ message: "User or publication not found" });
+        }
+
+        return res.status(200).json({
+            favorite: user.saved.reverse().map((post) => ({
                 id: post._id,
                 description: post.description,
                 image: post.image ? `http://localhost:3000/image/${post.image}` : undefined,
@@ -130,12 +140,17 @@ export const getFavorite = async (req, res) => {
                 author: {
                     id: post.author._id,
                     username: post.author.username,
-                    avatar: `http://localhost:3000/avatar/${post.author.avatar}`,
+                    fullName: post.author.fullName,
+                    avatar: post.author.avatar ? `http://localhost:3000/avatar/${post.author.avatar}` : undefined,
                 }
-            };
-        }),
-    });
+            }))
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
+
 
 
 export const follow = async (req, res) => {
@@ -195,6 +210,7 @@ export const getPeople = async (req, res) => {
                 return {
                     id : person.id,
                     username : person.username,
+                    fullName: person.fullName,
                     avatar : `http://localhost:3000/avatar/${person.avatar}`,
                 }
             })
