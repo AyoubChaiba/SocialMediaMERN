@@ -47,9 +47,8 @@ npm run dev
 cd SociaMediaMern/frontend
 
 # Install frontend dependencies
-npm install react react-dom react-google-login react-hook-form react-icons
-react-infinite-scroll-component react-lazy-load-image-component
-react-redux react-toastify redux-thunk yup axios @reduxjs/toolkit
+npm install react react-dom react-google-login react-hook-form react-icons react-infinite-scroll-component
+react-lazy-load-image-component react-redux react-toastify redux-thunk yup axios @reduxjs/toolkit
 
 # Create a .env file and add the following environment variables:
 # VITE_APP_URL_API=http://localhost:5000
