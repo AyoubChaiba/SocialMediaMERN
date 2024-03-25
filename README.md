@@ -30,12 +30,13 @@ cd SociaMediaMern/backend
 # Install backend dependencies
 npm install bcryptjs cors dotenv express jsonwebtoken mongodb mongoose multer nodemon sharp-multer
 
-# Create a .env file and add the following environment variables:
-# MONGODB_URI=<your MongoDB connection string>
-# PORT=<your MongoDB connection string>
-# JWT_SECRETI=<your MongoDB connection string>
-# GOOGLE_CLIENT_ID=<your MongoDB connection string>
-# GOOGLE_CLIENT_SECRET=<your MongoDB connection string>
+# Create a .env file in the backend directory and add the following environment variables:
+
+MONGODB_URI=<your MongoDB connection string>
+PORT=<your server port>
+JWT_SECRET=<your JWT secret key>
+GOOGLE_CLIENT_ID=<your Google client ID>
+GOOGLE_CLIENT_SECRET=<your Google client secret>
 
 # Start the backend server
 npm start
