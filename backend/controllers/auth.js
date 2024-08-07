@@ -1,11 +1,10 @@
 import Profile from '../models/Profile.js' ;
-import bcrypt from 'bcryptjs' ;
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import {OAuth2Client} from  'google-auth-library'
+import {OAuth2Client} from  'google-auth-library';
 
 dotenv.config();
-
 
 const JWT_SECRET = process.env.JWT_SECRET
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID

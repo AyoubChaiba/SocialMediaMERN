@@ -9,7 +9,7 @@ import { setLoginOut , setCurrentUser , setToken } from "../../toolkit/userSlice
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from "react-router-dom";
 import { AXIOS_CLIENT } from "../../lib/api/axios";
-import { FaMoon , FaSun, FaBarsStaggered  } from "react-icons/fa6";
+import { FaMoon , FaSun  } from "react-icons/fa6";
 import "./NavBar.scss"
 import { setDarkMode } from "../../toolkit/darkModeSlice";
 import Search from "../../components/navbar/search/search";

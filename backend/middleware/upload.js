@@ -18,7 +18,6 @@ const image = SharpMulter({
     },
 });
 
-
 const avatar = SharpMulter({
     destination: function (req, file, cb) {
         cb(null, 'uploads/avatar');
